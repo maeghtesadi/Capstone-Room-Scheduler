@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+            @*the image here can be fetched through a model*@
+            <li>
+                <img src="http://i.cbc.ca/1.3609850.1464809932!/cpImage/httpImage/image.jpg_gen/derivatives/16x9_1180/correction-zoo-gorilla-child-hurt.jpg;" class="img-circle" style="display:block; margin-left: auto;
+    margin-right: auto;width:150px;height:150px;margin-top: 25px;">
+            </li>
+            <li><h3 style="text-align:center; color:white;">Hi Harambe</h3></li>
+        </ul>
+        <ul class="nav nav-sidebar">
+            <li class="active"><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>User Profile <span class="sr-only">(current)</span></a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>View Calendar</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>Reservations</a></li>
+            <li><a href="@Url.Action("Contact", "Home")"><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span>Contact us</a></li>
+        </ul>
+
+    </div>
+    <div class="navbar navbar-inverse col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("HaramBook", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav"></ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+        <div class="container-right col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 ">
+            
+                @RenderBody()
+                <hr />
+
+            
+        </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
