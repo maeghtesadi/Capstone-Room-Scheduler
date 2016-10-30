@@ -24,11 +24,13 @@ textarea {
 }
 .navbar{
   border-color: #0c84e4;
-  top:-50px;    
+  top: 0px;    
   padding-bottom:0px;
   margin-bottom:0px;
+  position:fixed;
+  width:100%;
 }
 .container-right{
     min-height: 2000px;
-    top: -66px;
+    top: 0px;
 }
