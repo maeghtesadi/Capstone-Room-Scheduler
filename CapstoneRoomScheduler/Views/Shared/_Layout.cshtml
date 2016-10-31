@@ -22,7 +22,7 @@
             <li class="active"><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>User Profile <span class="sr-only">(current)</span></a></li>
             <li><a href="#"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>View Calendar</a></li>
             <li><a href="#"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>Reservations</a></li>
-            <li><a href="@Url.Action("Contact", "Home")"><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span>Contact us</a></li>
+            <li><a href="@Url.Action("Contact", "Console")"><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span>Contact us</a></li>
         </ul>
 
     </div>
@@ -34,7 +34,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("HaramBook", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("HaramBook", "Calendar", "Console", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav"></ul>

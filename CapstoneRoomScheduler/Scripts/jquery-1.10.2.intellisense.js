@@ -1244,7 +1244,7 @@ intellisense.annotate(jQuery.fn, {
   'eq': function() {
     /// <signature>
     ///   <summary>Select the element at index n within the matched set.</summary>
-    ///   <param name="index" type="Number">Zero-based index of the element to match.</param>
+    ///   <param name="Calendar" type="Number">Zero-based index of the element to match.</param>
     /// </signature>
     /// <signature>
     ///   <summary>Select the element at index n within the matched set.</summary>
@@ -1438,14 +1438,14 @@ intellisense.annotate(jQuery.fn, {
   'get': function() {
     /// <signature>
     ///   <summary>Retrieve the DOM elements matched by the jQuery object.</summary>
-    ///   <param name="index" type="Number">A zero-based integer indicating which element to retrieve.</param>
+    ///   <param name="Calendar" type="Number">A zero-based integer indicating which element to retrieve.</param>
     ///   <returns type="Element, Array" />
     /// </signature>
   },
   'gt': function() {
     /// <signature>
     ///   <summary>Select all elements at an index greater than index within the matched set.</summary>
-    ///   <param name="index" type="Number">Zero-based index.</param>
+    ///   <param name="Calendar" type="Number">Zero-based index.</param>
     /// </signature>
   },
   'has': function() {
@@ -1719,7 +1719,7 @@ intellisense.annotate(jQuery.fn, {
   'lt': function() {
     /// <signature>
     ///   <summary>Select all elements at an index less than index within the matched set.</summary>
-    ///   <param name="index" type="Number">Zero-based index.</param>
+    ///   <param name="Calendar" type="Number">Zero-based index.</param>
     /// </signature>
   },
   'map': function() {
@@ -1895,25 +1895,25 @@ intellisense.annotate(jQuery.fn, {
   'nth-child': function() {
     /// <signature>
     ///   <summary>Selects all elements that are the nth-child of their parent.</summary>
-    ///   <param name="index" type="String">The index of each child to match, starting with 1, the string even or odd, or an equation ( eg. :nth-child(even), :nth-child(4n) )</param>
+    ///   <param name="Calendar" type="String">The index of each child to match, starting with 1, the string even or odd, or an equation ( eg. :nth-child(even), :nth-child(4n) )</param>
     /// </signature>
   },
   'nth-last-child': function() {
     /// <signature>
     ///   <summary>Selects all elements that are the nth-child of their parent, counting from the last element to the first.</summary>
-    ///   <param name="index" type="String">The index of each child to match, starting with the last one (1), the string even or odd, or an equation ( eg. :nth-last-child(even), :nth-last-child(4n) )</param>
+    ///   <param name="Calendar" type="String">The index of each child to match, starting with the last one (1), the string even or odd, or an equation ( eg. :nth-last-child(even), :nth-last-child(4n) )</param>
     /// </signature>
   },
   'nth-last-of-type': function() {
     /// <signature>
     ///   <summary>Selects all elements that are the nth-child of their parent, counting from the last element to the first.</summary>
-    ///   <param name="index" type="String">The index of each child to match, starting with the last one (1), the string even or odd, or an equation ( eg. :nth-last-of-type(even), :nth-last-of-type(4n) )</param>
+    ///   <param name="Calendar" type="String">The index of each child to match, starting with the last one (1), the string even or odd, or an equation ( eg. :nth-last-of-type(even), :nth-last-of-type(4n) )</param>
     /// </signature>
   },
   'nth-of-type': function() {
     /// <signature>
     ///   <summary>Selects all elements that are the nth child of their parent in relation to siblings with the same element name.</summary>
-    ///   <param name="index" type="String">The index of each child to match, starting with 1, the string even or odd, or an equation ( eg. :nth-of-type(even), :nth-of-type(4n) )</param>
+    ///   <param name="Calendar" type="String">The index of each child to match, starting with 1, the string even or odd, or an equation ( eg. :nth-of-type(even), :nth-of-type(4n) )</param>
     /// </signature>
   },
   'odd': function() {
@@ -2242,7 +2242,7 @@ intellisense.annotate(jQuery.fn, {
   'root': function() {
     /// <signature>
     ///   <summary>Selects the element that is the root of the document.</summary>
-    ///   <param name="index" type="String">The index of each child to match, starting with 1, the string even or odd, or an equation ( eg. :nth-last-child(even), :nth-last-child(4n) )</param>
+    ///   <param name="Calendar" type="String">The index of each child to match, starting with 1, the string even or odd, or an equation ( eg. :nth-last-child(even), :nth-last-child(4n) )</param>
     /// </signature>
   },
   'scroll': function() {

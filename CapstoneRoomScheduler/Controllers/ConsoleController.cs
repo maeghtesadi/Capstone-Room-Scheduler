@@ -4,11 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace PresentationLayer.Controllers
+namespace CapstoneRoomScheduler.Controllers
 {
-    public class HomeController : Controller
+    public class ConsoleController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Calendar()
         {
             return View();
         }
