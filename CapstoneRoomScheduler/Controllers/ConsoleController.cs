@@ -19,6 +19,12 @@ namespace CapstoneRoomScheduler.Controllers
 
             return View();
         }
+        public ActionResult Reservations()
+        {
+           
+
+            return View();
+        }
 
         public ActionResult Contact()
         {
