@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace CapstoneRoomScheduler
+namespace PresentationLayer
 {
     public class FilterConfig
     {

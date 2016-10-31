@@ -10,9 +10,9 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using CapstoneRoomScheduler.Models;
+using PresentationLayer.Models;
 
-namespace CapstoneRoomScheduler
+namespace PresentationLayer
 {
     public class EmailService : IIdentityMessageService
     {

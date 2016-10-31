@@ -6,9 +6,9 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using CapstoneRoomScheduler.Models;
+using PresentationLayer.Models;
 
-namespace CapstoneRoomScheduler.Controllers
+namespace PresentationLayer.Controllers
 {
     [Authorize]
     public class ManageController : Controller

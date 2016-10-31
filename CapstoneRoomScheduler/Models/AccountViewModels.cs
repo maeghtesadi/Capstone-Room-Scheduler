@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace CapstoneRoomScheduler.Models
+namespace PresentationLayer.Models
 {
     public class ExternalLoginConfirmationViewModel
     {

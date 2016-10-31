@@ -1,8 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(CapstoneRoomScheduler.Startup))]
-namespace CapstoneRoomScheduler
+[assembly: OwinStartupAttribute(typeof(PresentationLayer.Startup))]
+namespace PresentationLayer
 {
     public partial class Startup
     {
