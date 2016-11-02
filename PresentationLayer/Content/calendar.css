@@ -64,7 +64,8 @@ vertical-align:middle;
  line-height: 70px;
 }
 .room li ul li.active{
-  background-color:blue;
+  background-color:#2f6594;
+  color:white;
 }
 
 

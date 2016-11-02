@@ -1,3 +1,3 @@
 ﻿function addActiveClass(element) {
-    element.classList.add("active");
+    element.classList.toggle("active");
 }
