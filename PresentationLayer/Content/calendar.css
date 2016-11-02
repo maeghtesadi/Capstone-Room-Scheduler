@@ -1,0 +1,83 @@
+﻿* {box-sizing:border-box;}
+ul {list-style-type: none;}
+body {font-family: Verdana,sans-serif;}
+
+.day {
+    padding: 25px 25px;
+    width: 100%;
+    background: #428bca;
+}
+
+.day ul {
+    margin: 0;
+    padding: 0;
+}
+
+.day ul li {
+    color: white;
+    font-size: 40px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.day .prev {
+    float: left;
+    padding-top: 10px;
+}
+
+.day .next {
+    float: right;
+    padding-top: 10px;
+}
+
+.room {
+    margin: 0;
+    padding: 10px 0;
+    background-color: #ddd;
+    padding-bottom:0px;
+}
+
+.room li {
+    display: inline-block;
+    width: 20%;
+    color: #666;
+    text-align: center;
+margin-right:-5px;
+}
+.room li ul {
+    width: 100%;
+    color: #666;
+    text-align: center;
+    background: #eee;
+    margin-top:15px;
+  
+padding-left:0px;
+
+}
+.room li ul li{
+   display:block;
+   height:70px;
+   margin-right:0px;
+text-align:center;
+width:100%;
+vertical-align:middle;
+ line-height: 70px;
+}
+.room li ul li.active{
+  background-color:blue;
+}
+
+
+/* Add media queries for smaller screens */
+@media screen and (max-width:720px) {
+    .weekdays li, .days li {width: 13.1%;}
+}
+
+@media screen and (max-width: 420px) {
+    .weekdays li, .days li {width: 12.5%;}
+    .days li .active {padding: 2px;}
+}
+
+@media screen and (max-width: 290px) {
+    .weekdays li, .days li {width: 12.2%;}
+}

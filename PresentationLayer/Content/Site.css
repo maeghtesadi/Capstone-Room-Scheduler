@@ -32,5 +32,6 @@ textarea {
 }
 .container-right{
     min-height: 2000px;
-    top: 0px;
+    top: 15px;
+    padding:0px
 }

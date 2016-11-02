@@ -3,3 +3,30 @@
 }
 
 
+<div class="day">
+    <ul>
+        <li class="prev">❮</li>
+        <li class="next">❯</li>
+        <li style="text-align:center">
+            @DateTime.Now.DayOfWeek<br>
+            <div style="font-size:18px; margin-top:-20px">@DateTime.Now.ToString("MMMM") @DateTime.Now.ToString("dd")</div>
+        </li>
+    </ul>
+</div>
+
+<ul class="room">
+    @for(var i = 1; i <= 5; i++) { 
+        <li>
+            Room @i
+            <ul>
+                @for(var j=10; j<=22;j++){
+                <li onClick="addActiveClass(this)">@j:00</li>
+              
+                }    
+            </ul>
+        </li>
+  
+    }
+</ul>
+
+</ul>
