@@ -30,8 +30,8 @@ textarea {
   position:fixed;
   width:100%;
 }
-.container-right{
-   
+.container-right{   
     top: 15px;
-    padding:0px
+    padding:0px;    
+    z-index:-1;
 }
