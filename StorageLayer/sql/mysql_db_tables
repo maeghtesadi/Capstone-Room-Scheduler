@@ -61,6 +61,8 @@ CREATE TABLE `user` (
   `userID` int(11) NOT NULL,
   `name` varchar(30) NOT NULL,
   `numOfReservations` int(11) NOT NULL,
+  `password` varchar(30) NOT NULL,
+  
   PRIMARY KEY (userID)
   
   
