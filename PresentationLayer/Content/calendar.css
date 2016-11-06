@@ -3,16 +3,17 @@ ul {list-style-type: none;}
 body {font-family: Verdana,sans-serif;}
 
 .calendar-header {
-    padding: 0px 25px;
+    
     width: 100%;
     background: #3193c6;
-    height:140px;
-    position:relative;
+    height:115px;
+    position:fixed;
+    top:64px;
 }
 
 .upper-header{
     margin: 0;
-    padding: 0;
+    padding: 0px 25px;
 }
 
 .upper-header li {
@@ -22,13 +23,16 @@ body {font-family: Verdana,sans-serif;}
     letter-spacing: 3px;
 }
 
-
-
-.room {
+.room{
     margin: 0;
     padding: 10px 0;
     background-color: #ddd;
     padding-bottom:0px;
+    margin-top:47px;
+    padding-left:0px;
+    padding-right:0px;
+    height:40px;
+
 }
 
 .room li {
@@ -38,7 +42,24 @@ body {font-family: Verdana,sans-serif;}
     text-align: center;
 margin-right:-5px;
 }
-.room li ul {
+
+.timeslots {
+    margin: 0;
+    padding: 0px;
+  
+    background-color: #ddd;
+    padding-bottom:0px;
+    margin-top:140px;
+}
+
+.timeslots li {
+    display: inline-block;
+    width: 20%;
+    color: #666;
+    text-align: center;
+margin-right:-5px;
+}
+.timeslots li ul {
     width: 100%;
     color: #666;
     text-align: center;
@@ -48,16 +69,20 @@ margin-right:-5px;
 padding-left:0px;
 
 }
-.room li ul li{
-   display:block;
-   height:70px;
-   margin-right:0px;
-text-align:center;
-width:100%;
-vertical-align:middle;
- line-height: 70px;
+.timeslots li ul li{
+    display: block;
+    height: 40px;
+    margin-right: 0px;
+    text-align: center;
+    width: 100%;
+    vertical-align: middle;
+    line-height: 40px;
+    border: #d0d0d0;
+    border-style: solid;
+    border-width: 1px 1px 0px 0px;
+    border-bottom-style: dotted;
 }
-.room li ul li.active{
+.timeslots li ul li.active{
   background-color:#2f6594;
   color:white;
 }
@@ -66,7 +91,7 @@ vertical-align:middle;
     color: white;
     position: absolute;
     bottom:3px;
-    padding:0;
+   padding: 0px 25px;
     margin:0px;
    
 }

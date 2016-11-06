@@ -16,15 +16,21 @@
         <li>Day</li>
         <li>Week</li>
     </ul>
+    <ul class="room">
+        @for (var room = 1; room <= 5; room++)
+        {
+            <li>Room @room</li>
+        }
+    </ul>
 </div>
 
-<ul class="room">
-    @for(var i = 1; i <= 5; i++) { 
+<ul class="timeslots">
+    @for(var room = 1; room <= 5; room++) {
         <li>
-            Room @i
+            
             <ul>
-                @for(var j=10; j<=22;j++){
-                <li onClick="addActiveClass(this)">@j:00</li>
+                @for(var timeslot=8; timeslot<=23;timeslot++){
+                <li onClick="addActiveClass(this)" data-room="@room" data-timeslot="@timeslot">@timeslot:00</li>
               
                 }    
             </ul>
