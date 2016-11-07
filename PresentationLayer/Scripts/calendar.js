@@ -12,7 +12,7 @@ $(".timeslots li ul li").click(function () {
             if ($(this).attr('data-room') == room) {
                 for (var i = parseInt(timeslot) + 1; i <= parseInt($(this).attr('data-timeslot')) ; i++) {
                     //You need to make find a jquery selector that selects an elemtn with [data-timeslot]=i and [data-room]=room
-                    $("li[data-timeslot='" + i + "']").toggle("active");
+                    $("li[data-timeslot='" + i + "']li[data-room='" + room + "']").toggleClass("active");
                 }
             }
 
