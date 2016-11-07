@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2016 at 09:13 PM
+-- Generation Time: Nov 07, 2016 at 12:39 AM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -19,9 +19,23 @@ SET time_zone = "+00:00";
 --
 -- Database: `reservation_system`
 --
+CREATE DATABASE IF NOT EXISTS `reservation_system` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `reservation_system`;
 
 -- --------------------------------------------------------
 
+--
+-- Table structure for table `reservation`
+--
+
+CREATE TABLE `reservation` (
+  `reservationID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `roomID` int(11) NOT NULL,
+  `description` text NOT NULL,
+  `date` date NOT NULL,
+  `hour` enum('8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -31,24 +45,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `room` (
   `roomID` int(11) NOT NULL,
-  `roomNum` varchar(10) NOT NULL,
-  PRIMARY KEY (roomID)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `timeslot`
---
-
-CREATE TABLE `timeslot` (
-  `timeslotID` int(11) NOT NULL,
-  `roomID` int(11) NOT NULL,
-  `hourlyID` enum('8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23') NOT NULL,
-  `date` date NOT NULL,
-  PRIMARY KEY (timeslotID),
-  FOREIGN KEY (roomID) REFERENCES  room(roomID)
-  
+  `roomNum` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -59,34 +56,12 @@ CREATE TABLE `timeslot` (
 
 CREATE TABLE `user` (
   `userID` int(11) NOT NULL,
-  `name` varchar(30) NOT NULL,
-  `numOfReservations` int(11) NOT NULL,
   `password` varchar(30) NOT NULL,
-  
-  PRIMARY KEY (userID)
-  
-  
+  `name` varchar(30) NOT NULL,
+  `numOfReservations` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
-
-
-
---
--- Table structure for table `reservation`
---
-
-CREATE TABLE `reservation` (
-  `reservationID` int(11) NOT NULL,
-  `userID` int(11) NOT NULL,
-  `timeSlotID` int(11) NOT NULL,
-  `description` text NOT NULL,
-  PRIMARY KEY (`reservationID`),
-  FOREIGN KEY (userID) REFERENCES  user(userID),
-  FOREIGN KEY (timeSlotID) REFERENCES timeslot(timeslotID)
-  
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 --
 -- Table structure for table `waitsfor`
@@ -95,18 +70,57 @@ CREATE TABLE `reservation` (
 CREATE TABLE `waitsfor` (
   `userID` int(11) NOT NULL,
   `reservationID` int(11) NOT NULL,
-  `dateTime` datetime NOT NULL,
-  PRIMARY KEY (userID, reservationID),
-  FOREIGN KEY (userID) REFERENCES  user(userID),
-  FOREIGN KEY (reservationID) REFERENCES  reservation(reservationID)
-  
+  `dateTime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Indexes for dumped tables
 --
 
+--
+-- Indexes for table `reservation`
+--
+ALTER TABLE `reservation`
+  ADD PRIMARY KEY (`reservationID`),
+  ADD KEY `userID` (`userID`),
+  ADD KEY `roomID` (`roomID`);
 
+--
+-- Indexes for table `room`
+--
+ALTER TABLE `room`
+  ADD PRIMARY KEY (`roomID`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`userID`);
+
+--
+-- Indexes for table `waitsfor`
+--
+ALTER TABLE `waitsfor`
+  ADD PRIMARY KEY (`userID`,`reservationID`),
+  ADD KEY `reservationID` (`reservationID`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `reservation`
+--
+ALTER TABLE `reservation`
+  ADD CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`),
+  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`roomID`) REFERENCES `room` (`roomID`);
+
+--
+-- Constraints for table `waitsfor`
+--
+ALTER TABLE `waitsfor`
+  ADD CONSTRAINT `waitsfor_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`),
+  ADD CONSTRAINT `waitsfor_ibfk_2` FOREIGN KEY (`reservationID`) REFERENCES `reservation` (`reservationID`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
