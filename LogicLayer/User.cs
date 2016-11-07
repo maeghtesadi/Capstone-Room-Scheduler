@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace LogicLayer
 {
-    //
     class User
     {
     }
