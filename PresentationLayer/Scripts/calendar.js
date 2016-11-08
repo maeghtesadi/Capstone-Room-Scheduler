@@ -1,4 +1,5 @@
 ﻿var funcCalled = false;
+var confirmRservation = $(".reservation-popup h1").html();
 //Function is run when any of the timeslot li is clicked
 $(".timeslots li ul li").click(function () {
     if (funcCalled == false) {
@@ -13,7 +14,9 @@ $(".timeslots li ul li").click(function () {
                 for (var i = parseInt(timeslot) + 1; i <= parseInt($(this).attr('data-timeslot')) ; i++) {
                     //You need to make find a jquery selector that selects an elemtn with [data-timeslot]=i and [data-room]=room
                     $("li[data-timeslot='" + i + "']li[data-room='" + room + "']").toggleClass("active");
+                   
                 }
+                $(".reservation-popup h1").html(confirmRservation);
             }
 
         });
