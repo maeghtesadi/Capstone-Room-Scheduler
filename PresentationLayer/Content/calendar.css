@@ -128,11 +128,33 @@ margin-right:100px;
 
 }
 .reservation-popup-test{
-width:300px;
-height:500px;
-position:element(.reservation-popup);
-}
+    width:300px;
+    height:200px;
+    background-color:white;
+     box-shadow: 0px 0px 9px grey;
+    position:fixed;
+   
 
+}
+.reservation-popup-test ul{
+padding:0px;
+
+}
+.reservation-popup-test .header{
+    width:100%;
+    background-color:#3f4350;
+    padding-left:0px;
+    height:40px;
+    padding-left:20px;
+    line-height:37px;
+    font-size:14px;
+    color:white;
+}
+.reservation-popup-test .header span{
+   float:right;
+   margin-top:10px;
+   font-size:15px;
+}
 
 
 

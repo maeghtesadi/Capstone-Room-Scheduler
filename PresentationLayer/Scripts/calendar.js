@@ -3,12 +3,21 @@ var confirmRservation = $(".reservation-popup h1").html();
 //Function is run when any of the timeslot li is clicked
 $(".timeslots li ul li").click(function () {
     if (funcCalled == false) {
+        var thisElement = this;
         var room = $(this).attr('data-room');
         var timeslot = $(this).attr('data-timeslot');
         funcCalled = true;
         this.classList.toggle("active");
-        $(".reservation-popup h1").html("Select another timeslot");
-        $(".reservation-popup").show(250);
+        $(".reservation-popup-test h1").html("Select another timeslot");
+        //$(".reservation-popup-test").show(1);
+        $(".reservation-popup-test").position({
+            my: "left top",
+            at:"right top",
+            of: thisElement,
+            collision:"fit"
+        
+        });
+       
         $(".timeslots li ul li").click(function () {
             if ($(this).attr('data-room') == room) {
                 for (var i = parseInt(timeslot) + 1; i <= parseInt($(this).attr('data-timeslot')) ; i++) {
