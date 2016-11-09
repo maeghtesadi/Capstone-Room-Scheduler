@@ -12,7 +12,7 @@ $(".timeslots li ul li").click(function () {
         //$(".reservation-popup-test").show(1);
         $(".reservation-popup-test").position({
             my: "left top",
-            at:"right top",
+            at:"right+7 top+-7",
             of: thisElement,
             collision:"fit"
         
@@ -35,6 +35,6 @@ $(".timeslots li ul li").click(function () {
 });
 
 //Function is run when cancel button is clicked
-$(".btn-danger").click(function () {
-    $(".reservation-popup").hide(250);
+$(".reservation-popup-test .header span").click(function () {
+    $(".reservation-popup-test").hide(250);
 });
