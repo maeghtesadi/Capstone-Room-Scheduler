@@ -9,10 +9,12 @@ $(".timeslots li ul li").click(function () {
         var room = $(this).data("room");
         var timeslot = $(this).data("timeslot");
         firstAndLastTimeslot[0] = timeslot;
+        $("#firstTimeslot").html(firstAndLastTimeslot[0]);
+        $("#lastTimeslot").html(firstAndLastTimeslot[0]+1);
         funcCalled = true;
         this.classList.toggle("active");
         $(".reservation-popup-test h1").html("Select another timeslot");
-        //$(".reservation-popup-test").show(1);
+        
         $(".reservation-popup-test").position({
             my: "left top",
             at:"right+7 top+-7",
@@ -20,8 +22,10 @@ $(".timeslots li ul li").click(function () {
             collision:"fit"
         
         });
+        $(".reservation-popup-test").show(300);
         
         $(".timeslots li ul li").click(function () {
+        
             var timeslot2 = $(this).data("timeslot");
 
             if (seconfuncCalled == false) {
@@ -75,7 +79,8 @@ $(".timeslots li ul li").click(function () {
                 //firstAndLastTimeslot[1] = $(this).data("timeslot");
                 $(".reservation-popup h1").html(confirmRservation);
             }
-            
+            $("#firstTimeslot").html(firstAndLastTimeslot[0]);
+            $("#lastTimeslot").html(firstAndLastTimeslot[1] + 1);
         });
     }
 
@@ -85,4 +90,7 @@ $(".timeslots li ul li").click(function () {
 //Function is run when cancel button is clicked
 $(".reservation-popup-test .header span").click(function () {
     $(".reservation-popup-test").hide(250);
+    funCalled = true;
+    $(".timeslots .active").toggleClass("active");
+    
 });
