@@ -133,6 +133,7 @@ margin-right:100px;
     background-color:white;
      box-shadow: 0px 0px 9px grey;
     position:fixed;
+    font-size:12px;
    
 
 }
@@ -156,7 +157,14 @@ padding:0px;
    font-size:15px;
 }
 
-
+.reservation-popup-test ul li{
+margin-bottom:10px;
+}
+#submitButton{
+border-radius:0px;
+font-size:12px;
+background-color:#3f4350
+}
 
 /* Add media queries for smaller screens */
 @media screen and (max-width:720px) {
