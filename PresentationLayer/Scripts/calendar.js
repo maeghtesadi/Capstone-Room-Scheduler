@@ -24,7 +24,7 @@ $(".timeslots li ul li").click(function () {
         });
         $(".reservation-popup-test").show(300);
         
-        $(".timeslots li ul li").click(function () {
+        $(".timeslots li ul li").on("click.secondFunction",function () {
         
             var timeslot2 = $(this).data("timeslot");
 
@@ -91,6 +91,7 @@ $(".timeslots li ul li").click(function () {
 $(".reservation-popup-test .header span").click(function () {
     $(".reservation-popup-test").hide(250);
     funCalled = true;
+    $(".timeslots li ul li").off("click.secondFunction");
     $(".timeslots .active").toggleClass("active");
     
 });
