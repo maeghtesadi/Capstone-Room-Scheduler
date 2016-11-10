@@ -1,29 +1,29 @@
-﻿var funcCalled = false;
-var seconfuncCalled = false;
-var firstAndLastTimeslot = [0,0];
-var confirmRservation = $(".reservation-popup h1").html();
+﻿
+
+
 //Function is run when any of the timeslot li is clicked
-$(".timeslots li ul li").click(function () {
-    if (funcCalled == false) {
-        var thisElement = this;
-        var room = $(this).data("room");
-        var timeslot = $(this).data("timeslot");
+function timeslotClicked(event) {
+        var seconfuncCalled = false;
+        var firstAndLastTimeslot = [0, 0];
+        var thisElement = event;
+        var room = $(event).data("room");
+        var timeslot = $(event).data("timeslot");
         firstAndLastTimeslot[0] = timeslot;
         $("#firstTimeslot").html(firstAndLastTimeslot[0]);
         $("#lastTimeslot").html(firstAndLastTimeslot[0]+1);
         funcCalled = true;
-        this.classList.toggle("active");
+        $(event).addClass("active");
         $(".reservation-popup-test h1").html("Select another timeslot");
-        
+        $(".reservation-popup-test").toggle(300);
         $(".reservation-popup-test").position({
             my: "left top",
             at:"right+7 top+-7",
             of: thisElement,
-            collision:"fit"
+           
         
         });
-        $(".reservation-popup-test").show(300);
         
+        $( ".timeslots li ul li").off("click.firstFunction");
         $(".timeslots li ul li").on("click.secondFunction",function () {
         
             var timeslot2 = $(this).data("timeslot");
@@ -82,16 +82,21 @@ $(".timeslots li ul li").click(function () {
             $("#firstTimeslot").html(firstAndLastTimeslot[0]);
             $("#lastTimeslot").html(firstAndLastTimeslot[1] + 1);
         });
-    }
+    
 
 
+}
+$(".timeslots li ul li").on("click.firstFunction", function () {
+    timeslotClicked(this);
 });
 
 //Function is run when cancel button is clicked
 $(".reservation-popup-test .header span").click(function () {
-    $(".reservation-popup-test").hide(250);
-    funCalled = true;
+    $(".reservation-popup-test").toggle(250);
     $(".timeslots li ul li").off("click.secondFunction");
+    $(".timeslots li ul li").on("click.firstFunction", function () {
+        timeslotClicked(this);
+    });
     $(".timeslots .active").toggleClass("active");
     
 });
