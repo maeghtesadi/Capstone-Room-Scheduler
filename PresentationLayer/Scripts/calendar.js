@@ -7,6 +7,7 @@ function timeslotClicked(event) {
         var firstAndLastTimeslot = [0, 0];
         var thisElement = event;
         var room = $(event).data("room");
+        $("input[name='room']").attr("value", room);
         var timeslot = $(event).data("timeslot");
         firstAndLastTimeslot[0] = timeslot;
         $("#firstTimeslot").html(firstAndLastTimeslot[0]);
@@ -77,10 +78,14 @@ function timeslotClicked(event) {
                 
 
                 //firstAndLastTimeslot[1] = $(this).data("timeslot");
-                $(".reservation-popup h1").html(confirmRservation);
+         
             }
             $("#firstTimeslot").html(firstAndLastTimeslot[0]);
+            $("input[name='firstTimeslot']").attr("value", firstAndLastTimeslot[0]);
+
             $("#lastTimeslot").html(firstAndLastTimeslot[1] + 1);
+            $("input[name='lastTimeslot']").attr("value", firstAndLastTimeslot[1]);
+
         });
     
 
