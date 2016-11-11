@@ -11,6 +11,25 @@ namespace LogicLayer
         int roomID;
         string roomNum;
 
+        public void setRoomID(int id)
+        {
+            roomID = id;
+        }
+
+        public int getRoomID()
+        {
+            return roomID;
+        }
+
+        public void setRoomNum(string num)
+        {
+            roomNum = num;
+        }
+
+        public string getRoomNum()
+        {
+            return roomNum;
+        }
 
         public bool find(TimeSlot timeSlot)
         {
@@ -21,6 +40,5 @@ namespace LogicLayer
         {
             return true;
         }
-
     }
 }

@@ -22,7 +22,9 @@ namespace PresentationLayer
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js",
-                       "~/Scripts/calendar.js"));
+                       "~/Scripts/calendar.js",
+                       "~/Scripts/jquery-ui-1.12.1.js",
+                       "~/Scripts/jquery.unobtrusive-ajax.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-paper.css",
