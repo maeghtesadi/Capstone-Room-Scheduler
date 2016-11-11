@@ -12,7 +12,7 @@ namespace LogicLayer
 
         public UserCatalog()
         {
-            this.registeredUsers = new List<int>();
+            registeredUsers = new List<int>();
         }
 
     }

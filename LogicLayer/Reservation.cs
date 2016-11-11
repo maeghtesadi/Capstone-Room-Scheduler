@@ -8,5 +8,15 @@ namespace LogicLayer
 {
     class Reservation
     {
+        int reservationID;
+        string reservationDescription;
+        List<int> waitList;
+
+        public Reservation()
+        {
+            reservationID = 0;
+            reservationDescription = "";
+            waitList = new List<int>();
+        }
     }
 }
