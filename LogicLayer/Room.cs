@@ -8,5 +8,19 @@ namespace LogicLayer
 {
     class Room
     {
+        int roomID;
+        string roomNum;
+
+
+        public bool find(TimeSlot timeSlot)
+        {
+            return true;
+        }
+
+        public bool checkAvailability()
+        {
+            return true;
+        }
+
     }
 }
