@@ -14,7 +14,7 @@ namespace LogicLayer
         public Room()
         {
             roomID = 0;
-            roomNum = "":
+            roomNum = "";
         }
 
         public Room(int roomID, string roomNum)
