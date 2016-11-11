@@ -8,9 +8,23 @@ namespace LogicLayer
 {
     class TimeSlot
     {
-        int timeSlotID;
-        int hourlyID;
-        DateTime date;
+        private int timeSlotID;
+        private int hourlyID;
+        private DateTime date;
+
+        public TimeSlot()
+        {
+            timeSlotID = 0;
+            hourlyID = 0;
+            date = new DateTime();
+        }
+
+        public TimeSlot(int timeSlotID, int hourlyID, DateTime date)
+        {
+            this.timeSlotID = timeSlotID;
+            this.hourlyID = hourlyID;
+            this.date = date;
+        }
 
         public void setTimeSlotID(int id)
         {

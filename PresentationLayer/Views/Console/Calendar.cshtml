@@ -38,13 +38,9 @@
   
     }
 </ul>
-<div class="reservation-popup">
-<h1>Do you wish to reserve Room from <button type="button" class="btn btn-success">Yes</button> <button type="button" class="btn btn-danger">No</button>
-
-</div>
-@using (Ajax.BeginForm("acceptTimeslots", "Console", new AjaxOptions { 
-    HttpMethod = "Post", 
-    UpdateTargetId = "result" 
+@using (Ajax.BeginForm("acceptTimeSlots", "Console", new AjaxOptions {
+    HttpMethod = "Post",
+    UpdateTargetId = "result"
 }))
 {
 <div class="reservation-popup-test ">

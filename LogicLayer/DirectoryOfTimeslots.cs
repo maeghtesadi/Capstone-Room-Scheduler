@@ -6,7 +6,21 @@ using System.Threading.Tasks;
 
 namespace LogicLayer
 {
-    class DirectoryOfTimeslots
+    class DirectoryOfTimeSlots
     {
+
+        public DirectoryOfTimeSlots()
+        {
+        }
+
+        public void addToWaitList(int timeSlotID, DateTime date, int userID)
+        {
+
+        }
+
+        public void findTimeSlot()
+        {
+
+        }
     }
 }

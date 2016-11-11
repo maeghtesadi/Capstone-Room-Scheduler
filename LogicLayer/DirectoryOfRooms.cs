@@ -8,5 +8,20 @@ namespace LogicLayer
 {
     class DirectoryOfRooms
     {
+
+        public DirectoryOfRooms()
+        {
+
+        }
+
+        public void getRoom()
+        {
+
+        }
+
+        public void getAll()
+        {
+
+        }
     }
 }

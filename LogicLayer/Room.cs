@@ -8,8 +8,20 @@ namespace LogicLayer
 {
     class Room
     {
-        int roomID;
-        string roomNum;
+        private int roomID;
+        private string roomNum;
+
+        public Room()
+        {
+            roomID = 0;
+            roomNum = "";
+        }
+
+        public Room(int roomID, string roomNum)
+        {
+            this.roomID = roomID;
+            this.roomNum = roomNum;
+        }
 
         public void setRoomID(int id)
         {
