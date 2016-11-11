@@ -8,5 +8,8 @@ namespace LogicLayer
 {
     class User
     {
+        int userID;
+        string name;
+        int numOfReservations;
     }
 }
