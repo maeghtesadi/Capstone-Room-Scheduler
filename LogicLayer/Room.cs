@@ -8,8 +8,8 @@ namespace LogicLayer
 {
     class Room
     {
-        int roomID;
-        string roomNum;
+        private int roomID;
+        private string roomNum;
 
         public Room()
         {

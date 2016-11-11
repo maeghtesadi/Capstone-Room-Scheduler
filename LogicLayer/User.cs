@@ -9,10 +9,10 @@ namespace LogicLayer
     //
     class User
     {
-        int userID;
-        string firstName;
-        string lastName;
-        int numOfReservations;
+        private int userID;
+        private string firstName;
+        private string lastName;
+        private int numOfReservations;
 
         public User()
         {
