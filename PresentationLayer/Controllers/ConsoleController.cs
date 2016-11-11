@@ -12,6 +12,12 @@ namespace CapstoneRoomScheduler.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public ActionResult acceptTimeslots(string inputCourseName,int firstTimeslot, int lastTimeslot, int room, string date)
+        {
+           
+         return Content("wow");
+        }
 
         public ActionResult About()
         {
