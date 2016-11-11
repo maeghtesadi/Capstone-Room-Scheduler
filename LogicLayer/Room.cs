@@ -11,6 +11,18 @@ namespace LogicLayer
         int roomID;
         string roomNum;
 
+        public Room()
+        {
+            roomID = 0;
+            roomNum = "":
+        }
+
+        public Room(int roomID, string roomNum)
+        {
+            this.roomID = roomID;
+            this.roomNum = roomNum;
+        }
+
         public void setRoomID(int id)
         {
             roomID = id;
