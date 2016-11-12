@@ -8,31 +8,41 @@ namespace LogicLayer
 {
     class Reservation
     {
+        public static int uniqueReservationCounter = 1; //want a global variable that is incremented 
+        //each time a reservation is created
+
         private User reservationUser;
         private TimeSlot reservationTimeSlot;
-        int reservationUserID;
-        int reservationTimeSlotID;
+        private int reservationUserID;
+        private int reservationTimeSlotID;
 
+        private int reservationRoomID;
         private int reservationID;
         private string reservationDescription;
         private List<int> waitList;
 
         public Reservation()
         {
-            reservationID = 0;
+            reservationID = uniqueReservationCounter;
             reservationDescription = "";
             reservationTimeSlotID = 0;
             reservationUserID = 0;
+            reservationRoomID = 0;
             waitList = new List<int>();
+
+            uniqueReservationCounter++;
         }
 
-        public Reservation(int resid, int uid, int tid, string resdes)
+        public Reservation(int roomid, int uid, int tid, string resdes)
         {
-            this.reservationID = resid;
+            this.reservationID = uniqueReservationCounter;
             this.reservationDescription = resdes;
             this.reservationTimeSlotID = tid;
             this.reservationUserID = uid;
+            reservationRoomID = roomid;
             waitList = new List<int>();
+
+            uniqueReservationCounter++; //counter goes up for every reservation created
         }
 
         public User getReservationUser()

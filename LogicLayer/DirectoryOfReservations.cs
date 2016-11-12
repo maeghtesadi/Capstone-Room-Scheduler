@@ -52,11 +52,17 @@ namespace LogicLayer
             }
         }
 
-        public string makeReservation(int rid, int uid, int timeslotid, string desc)
+        public string makeReservation(int uid, int roomid, int timeslotid, string desc)
         {
-            Reservation res = new Reservation(rid, uid, timeslotid, desc);
-            string s = "Reservation has been created at " + timeslotid + ":00 in room " + rid;
+            Reservation res = new Reservation(roomid, uid, timeslotid, desc);
+            string s = "Reservation has been created at " + timeslotid + ":00 in room " + roomid;
             return s;
+        }
+
+        public string modifyReservation(int rid)
+        {
+
+
         }
             
 

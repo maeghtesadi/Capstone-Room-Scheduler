@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace LogicLayer
 {
-    //
+  
     class User
     {
+
         private int userID;
         private string firstName;
         private string lastName;
@@ -20,6 +21,7 @@ namespace LogicLayer
             firstName = "";
             lastName = "";
             numOfReservations = 0;
+
         }
 
         public User (int idnumber, string fname, string lname, int numres)
@@ -28,6 +30,7 @@ namespace LogicLayer
             this.firstName = fname;
             this.lastName = lname;
             this.numOfReservations = numres;
+
         }
 
         public int getUserID()
