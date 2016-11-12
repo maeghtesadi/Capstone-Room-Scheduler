@@ -24,7 +24,8 @@ namespace PresentationLayer
                       "~/Scripts/respond.js",
                        "~/Scripts/calendar.js",
                        "~/Scripts/jquery-ui-1.12.1.js",
-                       "~/Scripts/jquery.unobtrusive-ajax.js"));
+                       "~/Scripts/jquery.unobtrusive-ajax.js",
+                       "~/Scripts/jquery.signalR-2.2.1.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-paper.css",
