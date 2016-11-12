@@ -44,9 +44,6 @@ namespace StorageLayer
         // Command object
         private MySqlCommand cmd;
 
-
-         
-
         public static  TDGReservation getInstance()
         {
             return instance;

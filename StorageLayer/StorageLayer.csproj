@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ReservationMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TDGRoom.cs" />
   </ItemGroup>
