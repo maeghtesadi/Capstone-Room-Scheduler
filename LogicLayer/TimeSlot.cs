@@ -9,21 +9,34 @@ namespace LogicLayer
     class TimeSlot
     {
         private int timeSlotID;
-        private int hourlyID;
+        private bool isReserved;
+        //private int hourlyID;
         private DateTime date;
 
         public TimeSlot()
         {
             timeSlotID = 0;
-            hourlyID = 0;
+            isReserved = false;
+            //hourlyID = 0;
             date = new DateTime();
         }
 
-        public TimeSlot(int timeSlotID, int hourlyID, DateTime date)
+        public TimeSlot(int timeSlotID, DateTime date, bool isReserved)
         {
             this.timeSlotID = timeSlotID;
-            this.hourlyID = hourlyID;
+            this.isReserved = isReserved;
+           // this.hourlyID = hourlyID;
             this.date = date;
+        }
+
+        public bool getIsReserved()
+        {
+            return isReserved;
+        }
+
+        public void setIsReserved(bool reserved)
+        {
+            isReserved = reserved;
         }
 
         public void setTimeSlotID(int id)
@@ -38,12 +51,13 @@ namespace LogicLayer
 
         public void setHourlyId(int id)
         {
-            hourlyID = id;
+           // hourlyID = id;
         }
 
         public int getHourlyId()
         {
-            return hourlyID;
+            //return hourlyID;
+            return 0;
         }
 
         public void setDate(DateTime newDate)

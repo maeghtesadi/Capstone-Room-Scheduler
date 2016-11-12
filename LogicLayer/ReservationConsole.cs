@@ -6,20 +6,22 @@ using System.Threading.Tasks;
  
 namespace LogicLayer
 {
-    public static class ReservationConsole
+    public class ReservationConsole
     {
+        DirectoryOfRooms directory = new DirectoryOfRooms();
+
 
         public static void viewReservations()
         {
 
         }
 
-        public static void makeReservation()
+        public void makeReservation(int userID, int roomID, DateTime date, int timeSlotID, string description)
         {
-
+            directory.makeNewTimeSlot(roomID, date, timeSlotID);
         }
 
-        public static void modifyReservation()
+        public static void modifyReservation(int userID, int roomID, int timeSlotID, string description)
         {
 
         }
