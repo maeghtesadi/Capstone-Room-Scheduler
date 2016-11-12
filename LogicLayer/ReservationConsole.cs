@@ -8,19 +8,20 @@ namespace LogicLayer
 {
     public class ReservationConsole
     {
+        DirectoryOfRooms directory = new DirectoryOfRooms();
+
 
         public static void viewReservations()
         {
 
         }
 
-        public static void makeReservation(int userID, int roomID, int timeSlotID, string description)
+        public void makeReservation(int userID, int roomID, DateTime date, int timeSlotID, string description)
         {
-            DirectoryOfRooms directory = new DirectoryOfRooms();
-
+            directory.makeNewTimeSlot(roomID, date, timeSlotID);
         }
 
-        public static void modifyReservation()
+        public static void modifyReservation(int userID, int roomID, int timeSlotID, string description)
         {
 
         }
