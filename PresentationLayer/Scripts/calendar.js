@@ -1,5 +1,10 @@
-﻿
+﻿//Get reservation info from the server to populate the timeslots
+var serverSession = $.connection.calendarHub;
+//Jquery to update the timeslots
+serverSession.client.getReservations = function () {
 
+};
+$.connection.hub.start();
 
 //Function is run when any of the timeslot li is clicked
 function timeslotClicked(event) {
