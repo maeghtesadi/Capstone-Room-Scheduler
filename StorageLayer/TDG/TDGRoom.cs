@@ -141,7 +141,7 @@ namespace StorageLayer
         /**
          * Returns a record for the room given its roomID
          */
-        public List<Object[]> fetch(int roomID)
+        public Object[] fetch(int roomID)
         {
             // Open connection
             openConnection();
@@ -151,20 +151,34 @@ namespace StorageLayer
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
 
+            // If no record is found, return null
+            if(!reader.HasRows)
+            {
+                return null;
+            }
+
+            // There is only one result since we find it by id
+            Object[] record = new Object[FIELDS.Length];
+            while (reader.Read())
+            {
+                record[0] = reader[0];
+                record[1] = reader[1];
+            }
             // Close connection
             closeConnection();
 
             // Format and return the result
-            return readerToListOfArrayOfObject(reader);
+            return record;
         }
 
         /**
-         * Select all data from the table, returns as MySqlDataReader object, but we can
-         * always format it differently to ensure that only the TDG is related to database.
-         * I.e. we can return a big 2D array instead of the object.
+         * Select all data from the table
+         * Returns it as a Dictionary<int, Object[]>
+         * Where int is the ID of the object and Object[] contains the record of the row
          */
-        public List<Object[]> fetchAll()
+        public Dictionary<int, Object[]> fetchAll()
         {
+            Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
             // Open connection
             openConnection();
 
@@ -173,11 +187,26 @@ namespace StorageLayer
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
 
+            // If no record is found, return null
+            if(!reader.HasRows)
+            {
+                return null;
+            }
+
+            // For each reader, add it to the dictionary
+            while(reader.Read())
+            {
+                Object[] attributes = new Object[FIELDS.Length];
+                attributes[0] = reader[0]; // roomID
+                attributes[1] = reader[1]; // roomNum
+                records.Add((int) reader[0], attributes);
+            }
+
             // Close connection
             closeConnection();
 
             // Format and return the result
-            return readerToListOfArrayOfObject(reader);
+            return records;
         }
 
         /**
@@ -209,35 +238,5 @@ namespace StorageLayer
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
         }
-
-        /**
-         * Formats the result of a fetch into a list of array of object
-         * Returns null if no rows are found for the given reader
-         */
-        private List<Object[]> readerToListOfArrayOfObject(MySqlDataReader reader)
-        {
-            // If the reader has no rows, return null
-            if(!reader.HasRows)
-            {
-                return null;
-            }
-
-            // Create the list to be returned
-            List<Object[]> result = new List<Object[]>();
-
-            // As long as there is a row to be read:
-            //  Create a new array of object
-            //  Assigned the attribute to the appropriate index
-            //  Add the array of object to the list
-            while (reader.Read())
-            {
-                Object[] toAdd = new Object[FIELDS.Length];
-                toAdd[0] = reader[0];
-                toAdd[1] = reader[1];
-                result.Add(toAdd);
-            }
-            
-            return result;
-        }  
     }
 }

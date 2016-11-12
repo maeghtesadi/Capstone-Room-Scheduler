@@ -48,16 +48,16 @@ namespace LogicLayer
         {
             // Try to obtain the room from the identity map
             Room room = roomIdentityMap.getInstance().find(roomID);
-            List<Object[]> result = null;
+            Object[] result = null;
             if(room == null)
             {
                 // Not found in identity map: try to retrive from DB
-                result = tdgRoom.fetchRoom(roomID);
+                result = tdgRoom.fetch(roomID);
                 if (result != null)
                 {
                     room = new Room();
-                    room.setRoomID((int) result[0][0]); // roomID
-                    room.setRoomNum((String) result[0][1]); // roomNum
+                    room.setRoomID((int) result[0]); // roomID
+                    room.setRoomNum((String) result[1]); // roomNum
                     roomIdentityMap.getInstance().addTo(room);
                 }
             }
@@ -69,44 +69,29 @@ namespace LogicLayer
         /**
          * Retrieve all rooms
          */
-        public List<Room> getAllRoom()
+        public Dictionary<int, Room> getAllRoom()
         {
             // Get all rooms from the identity map
-            List<Room> rooms = roomIdentityMap.getInstance().findAll();
+            Dictionary<int, Room> rooms = roomIdentityMap.getInstance().findAll();
 
             // Get all rooms in the database
-            List<Object[]> result = tdgRoom.fetchAll();
+            Dictionary<int, Object[]> result = tdgRoom.fetchAll();
 
             // Loop through each of the result:
-            Boolean isInRooms = false;
-            for (int i = 0; i < result.Count; i++)
+            foreach(KeyValuePair<int, Object[]> record in result)
             {
-                isInRooms = false;
-                // Look whether it is already present in the identity map
-                for (int j = 0; j < rooms.Count; j++)
+                // The room is not in the identity map. Create an instance, add it to identity map and to the return variable
+                if(!rooms.ContainsKey(record.Key))
                 {
-                    if((int) result[i][0] == rooms[j].getRoomID())
-                    {
-                        isInRooms = true;
-                        break;
-                    }
-                }
-
-                // Not found in the identity map
-                if(!isInRooms)
-                {
-                    // Create a new instance of room
                     Room room = new Room();
-                    room.setRoomID((int)result[i][0]); // roomID
-                    room.setRoomNum((String)result[i][1]); // roomNum
-
-                    // Add it to the identity map
+                    room.setRoomID((int) record.Key); // roomID
+                    room.setRoomNum((String) record.Value[1]); // roomNum
+                    
                     roomIdentityMap.getInstance().addTo(room);
-
-                    // Add it to the array to be returned
-                    rooms.Add(room);
+                    
+                    rooms.Add(room.getRoomID(), room);
                 }
-            } // end for
+            } 
 
             return rooms;
         }  
