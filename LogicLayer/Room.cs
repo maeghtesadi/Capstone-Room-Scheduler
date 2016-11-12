@@ -10,6 +10,7 @@ namespace LogicLayer
     {
         private int roomID;
         private string roomNum;
+        private List<TimeSlot> timeSlots;
 
         public Room()
         {
@@ -21,6 +22,30 @@ namespace LogicLayer
         {
             this.roomID = roomID;
             this.roomNum = roomNum;
+        }
+
+        public void makeNewTimeSlot(DateTime date, int timeSlotID)
+        {
+            for (int i = 0; i < timeSlots.Count; i ++)
+            {
+                if (timeSlotID == timeSlots[i].getTimeSlotID())
+                {
+                    if (timeSlots[i].getIsReserved())
+                    {
+                        //addToWaitList()
+                    }
+                    else
+                    {
+                        timeSlots.Add(createTimeSlot(date, timeSlotID));
+                    }
+                }     
+            }
+        }
+
+        public TimeSlot createTimeSlot(DateTime date, int timeSlotID)
+        {
+            TimeSlot timeSlot = new TimeSlot(timeSlotID, date, true);
+            return timeSlot;
         }
 
         public void setRoomID(int id)
