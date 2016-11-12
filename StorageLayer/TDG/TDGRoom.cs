@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
-// In order for MySql to be found, install the package:
-// Tools > NuGet Package Manager > Package Manager Console
-// Install-Package MySql.Data
+using LogicLayer;
 
 
 namespace StorageLayer
@@ -143,29 +141,43 @@ namespace StorageLayer
         /**
          * Returns a record for the room given its roomID
          */
-        public MySqlDataReader fetch(int roomID)
+        public List<Object[]> fetch(int roomID)
         {
+            // Open connection
             openConnection();
+
+            // Write and execute the query
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + roomID;
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
+
+            // Close connection
             closeConnection();
-            return reader;
+
+            // Format and return the result
+            return readerToListOfArrayOfObject(reader);
         }
 
         /**
-        * Select all data from the table, returns as MySqlDataReader object, but we can
-        * always format it differently to ensure that only the TDG is related to database.
-        * I.e. we can return a big 2D array instead of the object.
-        */
-        public MySqlDataReader fetchAll()
+         * Select all data from the table, returns as MySqlDataReader object, but we can
+         * always format it differently to ensure that only the TDG is related to database.
+         * I.e. we can return a big 2D array instead of the object.
+         */
+        public List<Object[]> fetchAll()
         {
+            // Open connection
             openConnection();
+
+            // Write and execute the query
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
+
+            // Close connection
             closeConnection();
-            return reader;
+
+            // Format and return the result
+            return readerToListOfArrayOfObject(reader);
         }
 
         /**
@@ -197,5 +209,35 @@ namespace StorageLayer
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
         }
+
+        /**
+         * Formats the result of a fetch into a list of array of object
+         * Returns null if no rows are found for the given reader
+         */
+        private List<Object[]> readerToListOfArrayOfObject(MySqlDataReader reader)
+        {
+            // If the reader has no rows, return null
+            if(!reader.HasRows)
+            {
+                return null;
+            }
+
+            // Create the list to be returned
+            List<Object[]> result = new List<Object[]>();
+
+            // As long as there is a row to be read:
+            //  Create a new array of object
+            //  Assigned the attribute to the appropriate index
+            //  Add the array of object to the list
+            while (reader.Read())
+            {
+                Object[] toAdd = new Object[FIELDS.Length];
+                toAdd[0] = reader[0];
+                toAdd[1] = reader[1];
+                result.Add(toAdd);
+            }
+            
+            return result;
+        }  
     }
 }
