@@ -17,7 +17,7 @@ namespace CapstoneRoomScheduler.Controllers
         [HttpPost]
         public ActionResult acceptTimeSlots(string inputCourseName,int firstTimeSlot, int lastTimeSlot, int room, string date)
         {
-            ReservationConsole.makeReservation();
+
             return Content("wow");
         }
 
@@ -29,9 +29,7 @@ namespace CapstoneRoomScheduler.Controllers
         }
 
         public ActionResult Reservations()
-        {
-           
-
+        {      
             return View();
         }
 

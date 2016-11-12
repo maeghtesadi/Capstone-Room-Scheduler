@@ -6,7 +6,7 @@ using System.Threading.Tasks;
  
 namespace LogicLayer
 {
-    public static class ReservationConsole
+    public class ReservationConsole
     {
 
         public static void viewReservations()
@@ -14,8 +14,9 @@ namespace LogicLayer
 
         }
 
-        public static void makeReservation()
+        public static void makeReservation(int userID, int roomID, int timeSlotID, string description)
         {
+            DirectoryOfRooms directory = new DirectoryOfRooms();
 
         }
 
