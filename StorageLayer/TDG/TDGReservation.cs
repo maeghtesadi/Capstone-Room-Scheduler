@@ -47,7 +47,7 @@ namespace StorageLayer
 
          
 
-        public static  TDGReservation getInstances()
+        public static  TDGReservation getInstance()
         {
             return instance;
         }
