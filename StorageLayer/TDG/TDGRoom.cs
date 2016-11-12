@@ -18,7 +18,7 @@ namespace StorageLayer
      * It allows to create, update, delete and find data from the room database table.
      */
       
-    class TDGRoom
+    public class TDGRoom
     {
         // This instance
         private static TDGRoom instance = new TDGRoom();
