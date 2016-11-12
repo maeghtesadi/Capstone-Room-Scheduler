@@ -15,15 +15,16 @@ function timeslotClicked(event) {
         funcCalled = true;
         $(event).addClass("active");
         $(".reservation-popup-test h1").html("Select another timeslot");
-        $(".reservation-popup-test").toggle(300);
+        $(".reservation-popup-test").toggle(0);
+        $(".reservation-popup-test").css('opacity','0');
         $(".reservation-popup-test").position({
             my: "left top",
             at:"right+7 top+-7",
             of: thisElement,
-           
-        
         });
-        
+        $(".reservation-popup-test").toggle(0);
+        $(".reservation-popup-test").css('opacity', '1');
+        $(".reservation-popup-test").toggle(300);
         $( ".timeslots li ul li").off("click.firstFunction");
         $(".timeslots li ul li").on("click.secondFunction",function () {
         

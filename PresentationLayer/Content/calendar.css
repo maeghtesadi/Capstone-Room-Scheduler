@@ -145,7 +145,7 @@ margin-right:100px;
     height:165px;
     background-color:white;
      box-shadow: 0px 0px 9px grey;
-    position:fixed;
+    position:absolute;
     font-size:12px;
     display:none;
    
