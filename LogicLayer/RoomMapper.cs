@@ -48,7 +48,7 @@ namespace LogicLayer
         {
             // Try to obtain the room from the identity map
             Room room = roomIdentityMap.getInstance().find(roomID);
-            Object[,] result = null;
+            List<Object[]> result = null;
             if(room == null)
             {
                 // Not found in identity map: try to retrive from DB
@@ -56,8 +56,8 @@ namespace LogicLayer
                 if (result != null)
                 {
                     room = new Room();
-                    room.setRoomID((int) result[0,0]);
-                    room.setRoomNum((String) result[0,1]);
+                    room.setRoomID((int) result[0][0]); // roomID
+                    room.setRoomNum((String) result[0][1]); // roomNum
                     roomIdentityMap.getInstance().addTo(room);
                 }
             }
@@ -69,9 +69,46 @@ namespace LogicLayer
         /**
          * Retrieve all rooms
          */
-        public Room[] getAllRoom()
+        public List<Room> getAllRoom()
         {
+            // Get all rooms from the identity map
+            List<Room> rooms = roomIdentityMap.getInstance().findAll();
 
+            // Get all rooms in the database
+            List<Object[]> result = tdgRoom.fetchAll();
+
+            // Loop through each of the result:
+            Boolean isInRooms = false;
+            for (int i = 0; i < result.Count; i++)
+            {
+                isInRooms = false;
+                // Look whether it is already present in the identity map
+                for (int j = 0; j < rooms.Count; j++)
+                {
+                    if((int) result[i][0] == rooms[j].getRoomID())
+                    {
+                        isInRooms = true;
+                        break;
+                    }
+                }
+
+                // Not found in the identity map
+                if(!isInRooms)
+                {
+                    // Create a new instance of room
+                    Room room = new Room();
+                    room.setRoomID((int)result[i][0]); // roomID
+                    room.setRoomNum((String)result[i][1]); // roomNum
+
+                    // Add it to the identity map
+                    roomIdentityMap.getInstance().addTo(room);
+
+                    // Add it to the array to be returned
+                    rooms.Add(room);
+                }
+            } // end for
+
+            return rooms;
         }  
         
         /**
