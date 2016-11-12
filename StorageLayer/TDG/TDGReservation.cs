@@ -6,188 +6,268 @@ using System.Threading.Tasks;
 using System.Collections;
 using MySql.Data.MySqlClient;
 
+
 namespace StorageLayer
 {
-    class TDGReservation
+    public class TDGReservation
     {
-
-        // This instance
+        //This instance
         private static TDGReservation instance = new TDGReservation();
 
-        // Table name
+        //Table name
         private const String TABLE_NAME = "reservation";
 
-        // Field names of the table
-        private readonly String[] FIELDS = { "reservationID", "UserID", "roomID" , "description", "date", "hour"};
+        //Fields names of the table
+        private readonly String[] FIELDS = { "reservationID", "userID", "roomID", "desc", "date", "hour" };
 
-        // Database server (localhost)
+        //Database server (localhost)
         private const String DATABASE_SERVER = "127.0.0.1";
 
-        // Database to which we will connect
+        //Database to which we will connect
         private const String DATABASE_NAME = "reservation_system";
 
-        // Credentials to connect to the database
+        //Credentials to connect to the databas
         private const String DATABASE_UID = "root";
-        private const String DATABASE_PWD = "";
+        private const String DATABASE_PWD = " ";
 
-        // The whole connection string used to connect to the database
-        // In our case, we will always connect to the same database, thus it can
-        // be defined as a constant. But we can always change it.
+        //The whole connection string used to connect to the database
+        //In our case, we will always connect to the same database, this it can
+        //be defined as a constant. But we can always change it.
         private const String DATABASE_CONNECTION_STRING = "server=" + DATABASE_SERVER + ";uid=" + DATABASE_UID + ";pwd=" + DATABASE_PWD + ";database=" + DATABASE_NAME + ";";
 
-        // Determine after how much time a command (query) should be timed out
+        //Determine after how much time a command (query) should be timed out
         private const int COMMAND_TIMEOUT = 60;
 
-        // MySQL Connection
+        //MySQL Connection
         private MySqlConnection conn;
 
-        // Command object
+        //Command object
         private MySqlCommand cmd;
 
-        public static  TDGReservation getInstance()
+        /**
+         * Returns the instance
+         * */
+
+        public static TDGReservation getInstance()
         {
             return instance;
         }
 
-        //open the connection to the DB
-        public void openConnection()
+        /**
+         * Constructor taking the name of the table 
+         */
+
+        private TDGReservation()
         {
-            Console.WriteLine("Connection to DB is opened");
+            this.cmd = new MySqlCommand();
+            this.cmd.CommandTimeout = COMMAND_TIMEOUT;
+
         }
 
-        //close the connection to the DB
+        /**
+         * Open connection to the database
+         * */
+        public Boolean openConnection()
+        {
+            try
+            {
+                this.conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
+                this.conn.Open();
+                return true;
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+
+            }
+        }
+
+
+        /**
+         * Close connection to the database
+         * */
+
         public void closeConnection()
         {
-            Console.WriteLine("Connection to DB is closed");
-
+            this.conn.Close();
         }
 
-        //Adds a list of reservations to the DB
+
+        /**
+         * Add new reservations to the database
+         * */
+
+
         public void addReservation(List<Reservation> newList)
         {
-
             openConnection();
-            for (int i = 0; i < newList.Count(); i++)
+            for (int i = 0; i < newList.Count; i++)
             {
-                Console.WriteLine("Saving new Reservation" + newList[i].getReservationID() + 
-                    newList[i].getRoomID() + newList[i].getDescription() + newList[i].getDate() + newList[i].getHour() + " to the DB.");
-
-                createNewReservation(newList[i]);
-
-
-
+                createReservation(newList[i]);
             }
             closeConnection();
+
         }
 
-        // Updates a list of reservations in the DB
+
+        /**
+         * Update reservations of the database
+         * */
+
         public void updateReservation(List<Reservation> updateList)
         {
-
             openConnection();
-
-            for (int i = 0; i < updateList.Count(); i++)
+            for (int i = 0; i < updateList.Count; i++)
             {
-                Console.WriteLine("Modifiing existing Client " + updateList[i].getReservationID() +
-                    updateList[i].getRoomID() + updateList[i].getDescription() + updateList[i].getDate() + updateList[i].getHour() + " to the DB."); 
                 updateReservation(updateList[i]);
             }
-
             closeConnection();
         }
 
 
+        /**
+         * Delete reservation(s) from the databas
+         *
+         * */
 
-        // Removes a list of reservations from the DB
         public void deleteReservation(List<Reservation> deleteList)
         {
-
             openConnection();
-
-            for (int i = 0; i < deleteList.Count(); i++)
+            for (int i = 0; i < deleteList.Count; i++)
             {
-                Console.WriteLine("Removing existing Client " + deleteList[i].getReservationID() +
-                    deleteList[i].getRoomID() + deleteList[i].getDescription() + deleteList[i].getDate() + deleteList[i].getHour() + " from the DB.");
                 removeReservation(deleteList[i]);
+
             }
-
             closeConnection();
+
         }
 
-
-
         /**
-         * Returns a record for the room given its reservationID
-         */
-        public MySqlDataReader fetch(int reservationID)
+         * Returns a record for the reservation given its reservationID
+         * */
+
+        public Object[] fetch(int reservationID)
         {
+            //Open connection
             openConnection();
 
-
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + reservationID;
-
-            closeConnection();
-        }
-        /**
-        * Select all data from the table, returns as MySqlDataReader object, but we can
-        * always format it differently to ensure that only the TDG is related to database.
-        * I.e. we can return a big 2D array instead of the object.
-        */
-        public MySqlDataReader fetchAll()
-        {
-            openConnection();
-
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
+            //Write and execute the query
+            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + "WHERE" + FIELDS[0] + " = " + reservationID;
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
-            return reader;
 
+
+            //If no record is found, return null
+            if (!reader.HasRows)
+            {
+                return null;
+            }
+
+            //There is only one result since we find it by id
+            Object[] record = new Object[FIELDS.Length];
+            while (reader.Read())
+            {
+                record[0] = reader[0];
+                record[1] = reader[1];
+
+            }
+            //Close connection
             closeConnection();
+
+            //Format and return the result
+            return record;
         }
 
 
-        // SQL Statement to create a new Reservation/Row.
-        public void createNewReservation(Reservation reservation)
+        /**
+         * Select all data from the table
+         * Returns it as a Dictionary <int, Object[]>
+         * Where int is the ID of the object and Object[] contains the record of the row
+         * */
+
+        public Dictionary<int, Object[]> fetchAll()
         {
-            
-                      
-            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + reservation.getReservationID() + "," + reservation.getUser() + ","
-                    + reservation.roomID() + "," + reservation.getDescription() + "," +  reservation.getDate() + "," + reservation.getHour() + ");";
+            Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
+            //Open Connection
+            openConnection();
+
+            //Write and execute the query
+            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + "WHERE 1;";
+            this.cmd.Connection = this.conn;
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            //If no record is found, return null
+            if (!reader.HasRows)
+            {
+                return null;
+
+            }
+
+            //For each reader, add it to the dictionary
+            while (reader.Read())
+            {
+                Object[] attributes = new Object[FIELDS.Length];
+                attributes[0] = reader[0]; //reservationID
+                attributes[1] = reader[1]; // userID
+                attributes[2] = reader[2]; //roomID
+                attributes[3] = reader[3]; //desc
+                attributes[4] = reader[4]; //date
+                attributes[5] = reader[5]; //hour
+
+                records.Add((int)reader[0], attributes);
+
+
+            }
+
+            //close connection
+            closeConnection();
+
+            //Format and return the result
+            return records;
+        }
+
+        /**
+         * Adds one reservation to the database
+         * */
+        private void createReservation(Reservation reservation)
+        {
+            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + reservation.getReservationID() + "," +
+                reservation.getUserID() + "," + reservation.getRoomID() + "," + reservation.getDescription() + "," +
+                reservation.getDate() + "," + reservation.getHour() + ");";
+
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
-
-
         }
 
+        /**
+         * Updates one reservation of the database
+         * */
 
-
-
-        // SQL Statement to update an exisiting Client/Row
-        public void updateClient(Reservation reservation)
+        private void updateReservation(Reservation reservation)
         {
-            
-            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + "=" + reservation.getReservationID() + "," + reservation.getUser() + ","
-                    + reservation.roomID() + "," + reservation.getDescription() + "," + reservation.getDate() + "," + reservation.getHour() + ";";
+
+            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET (" + FIELDS[5] + " = " + reservation.getHour() + "," +
+                FIELDS[4] + " = " + reservation.getDate() + "," + FIELDS[3] + " = " + reservation.getDescription() + "," +
+                FIELDS[2] + " = " + reservation.getRoomID() + "," + FIELDS[1] + "=" + reservation.getUserID() + " ) WHERE " +
+                FIELDS[0] + " = " + reservation.getReservationID + ";";
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
-
-
         }
 
 
-        // SQL Statement to delete an existing Client/Row.
-        public void removeClient(Reservation reservation)
+        /**
+         * Removes one reservation from the database
+         * */
+
+        private void removeReservation(Reservation reservation)
         {
-            
-            this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservation.getReservationID() + "," + reservation.getUser() + ","
-                    + reservation.roomID() + "," + reservation.getDescription() + reservation.getDate() + reservation.getHour() + ";";
+            this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservation.getReservationID() + ";";
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
-
-
         }
 
-       
+
 
 
 
