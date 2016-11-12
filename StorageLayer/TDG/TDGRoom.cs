@@ -76,7 +76,7 @@ namespace StorageLayer
         /**
          * Open the database connection to the database
          */
-        public Boolean OpenConnection()
+        public Boolean openConnection()
         {
             try
             {
@@ -94,7 +94,7 @@ namespace StorageLayer
         /**
          * Close the connection to the database
          */ 
-        public void CloseConnection()
+        public void closeConnection()
         {
             this.conn.Close();
         }
@@ -106,10 +106,12 @@ namespace StorageLayer
          */ 
         public void addRoom(List<Room> newList)
         {
+            openConnection();
             for (int i = 0; i < newList.Count; i++)
             {
-                addRoom(newList[i]);
+                createRoom(newList[i]);
             }
+            closeConnection();
         }
 
         /**
@@ -117,21 +119,25 @@ namespace StorageLayer
          */
         public void updateRoom(List<Room> updateList)
         {
+            openConnection();
             for (int i = 0; i < updateList.Count; i++)
             {
                 updateRoom(updateList[i]);
             }
+            closeConnection();
         }
 
         /**
          * Delete room(s) from the database
          */
-        public void removeRoom(List<Room> removeList)
+        public void deleteRoom(List<Room> deleteList)
         {
-            for (int i = 0; i < removeList.Count; i++)
+            openConnection();
+            for (int i = 0; i < deleteList.Count; i++)
             {
-                removeRoom(removeList[i]);
+                removeRoom(deleteList[i]);
             }
+            closeConnection();
         }
 
         /**
@@ -139,9 +145,11 @@ namespace StorageLayer
          */
         public MySqlDataReader fetch(int roomID)
         {
+            openConnection();
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + roomID;
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
+            closeConnection();
             return reader;
         }
 
@@ -152,16 +160,18 @@ namespace StorageLayer
         */
         public MySqlDataReader fetchAll()
         {
+            openConnection();
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
+            closeConnection();
             return reader;
         }
 
         /**
          * Adds one room to the database
          */ 
-        private void addRoom(Room room)
+        private void createRoom(Room room)
         {
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + room.getRoomID() + "," + room.getRoomNum() + ");";
             this.cmd.Connection = this.conn;
