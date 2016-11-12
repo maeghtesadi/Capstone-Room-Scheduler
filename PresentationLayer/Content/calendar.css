@@ -4,7 +4,7 @@ body {font-family: Verdana,sans-serif;}
 
 .calendar-header {
     
-    width: 100%;
+    width: inherit;
     background: #3193c6;
     height:115px;
     position:fixed;
@@ -49,7 +49,7 @@ margin-right:-5px;
   
     background-color: #ddd;
     padding-bottom:0px;
-    margin-top:140px;
+    margin-top:150px;
 }
 
 .timeslots li {
