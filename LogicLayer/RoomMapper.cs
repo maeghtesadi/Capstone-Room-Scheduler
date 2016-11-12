@@ -65,6 +65,14 @@ namespace LogicLayer
             // Null is returned if it is not found in the identity map nor in the DB
             return room;
         } 
+
+        /**
+         * Retrieve all rooms
+         */
+        public Room[] getAllRoom()
+        {
+
+        }  
         
         /**
          * Set room attributes
