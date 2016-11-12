@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicLayer
 {
-    static class Console
+    static class ReservationConsole
     {
 
         static void viewReservations()
