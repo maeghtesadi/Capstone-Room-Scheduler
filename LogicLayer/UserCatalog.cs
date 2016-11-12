@@ -8,11 +8,16 @@ namespace LogicLayer
 {
     class UserCatalog
     {
-        List<int> registeredUsers;
+        private List<int> registeredUsers;
 
         public UserCatalog()
         {
-            this.registeredUsers = new List<int>();
+            registeredUsers = new List<int>();
+        }
+
+        public UserCatalog(List<int> regusers)
+        {
+            this.registeredUsers = regusers;
         }
 
     }

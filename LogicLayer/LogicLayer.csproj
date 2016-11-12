@@ -40,10 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Console.cs" />
+    <Compile Include="ReservationConsole.cs" />
     <Compile Include="DirectoryOfReservations.cs" />
     <Compile Include="DirectoryOfRooms.cs" />
-    <Compile Include="DirectoryOfTimeslots.cs" />
+    <Compile Include="DirectoryOfTimeSlots.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reservation.cs" />
     <Compile Include="Room.cs" />
