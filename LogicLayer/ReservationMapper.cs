@@ -9,7 +9,6 @@ using StorageLayer.TDGReservation;
 
 
 
-
 namespace LogicLayer
 {
     class ReservationMapper
@@ -28,7 +27,7 @@ namespace LogicLayer
 
         public static ReservationMapper getInstance()
         {
-
+            return instance;
         }
 
         /**
@@ -134,7 +133,6 @@ namespace LogicLayer
                     reservationIdentityMap.getInstance().addTo(reservation);
                     reservations.Add(reservation.getReservationID(), reservation);
 
-
                 }
 
             }
@@ -200,8 +198,6 @@ namespace LogicLayer
         }
 
 
-
-
         //For Unit of Work: A list of reservations to be added to the DB is passed to the TDG. 
         public void addReservation(List<Reservation> newList)
         {
@@ -219,16 +215,6 @@ namespace LogicLayer
         {
             tdgReservation.deleteReservation(deleteList);
         }
-
-
-
-
-
-
-
-
-
-
 
     }
 }
