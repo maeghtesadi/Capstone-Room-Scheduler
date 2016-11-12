@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using LogicLayer;
 
 namespace CapstoneRoomScheduler.Controllers
 {
@@ -12,11 +13,12 @@ namespace CapstoneRoomScheduler.Controllers
         {
             return View();
         }
+
         [HttpPost]
-        public ActionResult acceptTimeslots(string inputCourseName,int firstTimeslot, int lastTimeslot, int room, string date)
+        public ActionResult acceptTimeSlots(string inputCourseName,int firstTimeSlot, int lastTimeSlot, int room, string date)
         {
-           
-         return Content("wow");
+            ReservationConsole.makeReservation();
+            return Content("wow");
         }
 
         public ActionResult About()
@@ -25,6 +27,7 @@ namespace CapstoneRoomScheduler.Controllers
 
             return View();
         }
+
         public ActionResult Reservations()
         {
            

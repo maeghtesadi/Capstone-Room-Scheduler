@@ -3,38 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+ 
 namespace LogicLayer
 {
-    static class ReservationConsole
+    public static class ReservationConsole
     {
 
-        static void viewReservations()
+        public static void viewReservations()
         {
 
         }
 
-        static void makeReservation()
+        public static void makeReservation()
         {
 
         }
 
-        static void modifyReservation()
+        public static void modifyReservation()
         {
 
         }
 
-        static void cancelReservation()
+        public static void cancelReservation()
         {
 
         }
 
-        static void viewRoomAvailabilites()
+        public static void viewRoomAvailabilites()
         {
 
         }
 
-        static void addToWaitList(int roomID, int timeSlotID, DateTime date, int userID)
+        public static void addToWaitList(int roomID, int timeSlotID, DateTime date, int userID)
         {
 
         }

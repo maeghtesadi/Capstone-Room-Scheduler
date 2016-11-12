@@ -8,9 +8,9 @@ namespace LogicLayer
 {
     class TimeSlot
     {
-        int timeSlotID;
-        int hourlyID;
-        DateTime date;
+        private int timeSlotID;
+        private int hourlyID;
+        private DateTime date;
 
         public TimeSlot()
         {
