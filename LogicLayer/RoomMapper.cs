@@ -33,7 +33,7 @@ namespace LogicLayer
             room.setRoomNum(roomNum);
 
             // Add it to the identity map
-            roomIdentityMap.add(room);
+            roomIdentityMap.addTo(room);
 
             // Register as a new room
             UnitOfWork.getInstance().registerNew(room);
@@ -47,7 +47,7 @@ namespace LogicLayer
         public Room getRoom (int roomID)
         {
             // Try to obtain the room from the identity map
-            Room room = roomIdentityMap.getInstance().find(roomID);
+            Room room = roomIdentityMap.find(roomID);
             Object[] result = null;
             if(room == null)
             {
@@ -58,7 +58,7 @@ namespace LogicLayer
                     room = new Room();
                     room.setRoomID((int) result[0]); // roomID
                     room.setRoomNum((String) result[1]); // roomNum
-                    roomIdentityMap.getInstance().addTo(room);
+                    roomIdentityMap.addTo(room);
                 }
             }
 
@@ -69,10 +69,10 @@ namespace LogicLayer
         /**
          * Retrieve all rooms
          */
-        public Dictionary<int, Room> getAllRoom()
+        public Dictionary<int, Room> getAllRooms()
         {
             // Get all rooms from the identity map
-            Dictionary<int, Room> rooms = roomIdentityMap.getInstance().findAll();
+            Dictionary<int, Room> rooms = roomIdentityMap.findAll();
 
             // Get all rooms in the database
             Dictionary<int, Object[]> result = tdgRoom.fetchAll();
@@ -87,7 +87,7 @@ namespace LogicLayer
                     room.setRoomID((int) record.Key); // roomID
                     room.setRoomNum((String) record.Value[1]); // roomNum
                     
-                    roomIdentityMap.getInstance().addTo(room);
+                    roomIdentityMap.addTo(room);
                     
                     rooms.Add(room.getRoomID(), room);
                 }
@@ -122,7 +122,7 @@ namespace LogicLayer
             // If found, remove it from identity map
             if(room != null)
             {
-                roomIdentityMap.getInstance().removeFrom(room);
+                roomIdentityMap.removeFrom(room);
             }
 
             // Register as deleted
