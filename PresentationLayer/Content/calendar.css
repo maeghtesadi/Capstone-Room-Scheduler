@@ -91,15 +91,21 @@ padding-left:0px;
   color:white;
   border-style:none;
   font-size:12px;
+  text-align:left;
+  padding-left:7px;
+  line-height:200%;
 }
 .timeslots .active.reserved{
 background-color:#ec644b;
 content:"WaitList";
+
 }
 .timeslots li ul li.reserved-header{
   background-color:#5c8194;
   color:white;
-  
+  text-align:center;
+  padding-left:0px;
+  line-height:300%;
 }
 .calendar-buttons {
     font-size: 20px;

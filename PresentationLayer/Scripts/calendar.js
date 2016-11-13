@@ -120,8 +120,11 @@ serverSession.client.getReservations = function (reservationInfo) {
     }
         //First timeslot classtoggle=reservedHeader
     $("li[data-timeslot='" + (reservationInfo.initialTimeslot) + "']li[data-room='" + reservationInfo.roomId + "']").toggleClass("reserved-header").html(reservationInfo.studentName);
-        //Second timeslot classtoggle=reservedd;
-        $("li[data-timeslot='" + (reservationInfo.initialTimeslot + 1) + "']li[data-room='" + reservationInfo.roomId + "']").html("From " + reservationInfo.initialTimeslot + " to " + (parseInt(reservationInfo.finalTimeslot) + 1));
-    
+    //Second timeslot classtoggle=reservedd;
+    var time = "<u>Time</u>: From " + reservationInfo.initialTimeslot + " to " + (parseInt(reservationInfo.finalTimeslot) + 1);
+    var courseName = "<u>Course Name</u>: " + reservationInfo.courseName;
+    var waitingList = "<u>Waiting List:</u>:";
+    $("li[data-timeslot='" + (reservationInfo.initialTimeslot + 1) + "']li[data-room='" + reservationInfo.roomId + "']").html(time+"</br>"+courseName+"</br>"+waitingList)
+    $(".glyphicon-remove").click();
     
 };

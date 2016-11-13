@@ -18,7 +18,7 @@ namespace CapstoneRoomScheduler.Controllers
         public ActionResult acceptTimeslots(string inputCourseName,int firstTimeslot, int lastTimeslot, int room, string date)
         {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-            hubContext.Clients.All.getreservations(new ReservationTest(firstTimeslot, lastTimeslot, room, inputCourseName, "Soen 343"));
+            hubContext.Clients.All.getreservations(new ReservationTest(firstTimeslot, lastTimeslot, room, "Haram B.", inputCourseName));
             return View("~Views/Console/Calendar.cshtml");
         }
 
