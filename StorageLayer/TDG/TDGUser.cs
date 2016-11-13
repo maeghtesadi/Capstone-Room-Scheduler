@@ -1,53 +1,75 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using LogicLayer;
 
-public class TDGUser {
-    private static TDGUser instance = new TDGUser();
+namespace StorageLayer
+{
+    /**
+  * Class: TDGUser
+  * 
+  * Table data gateway of User table
+  * 
+  * This class acts as a bridge from the software application to the database.
+  * It allows to create, update, delete and find data from the user database table.
+  */
+    public class TDGUser
+    {
+        // This instance
+        private const String TABLE_NAME = "user";
 
-    private static readonly string[] fields = {'userID','username','password','name','numOfReservations'};
-    // Database server (localhost)
-    private const String DATABASE_SERVER = "127.0.0.1";
+        // Table name
+        private static TDGUser instance = new TDGUser();
 
-    // Database to which we will connect
-    private const String DATABASE_NAME = "harambedb";
+        // Field names of the table
+        private static readonly string[] FIELDS = { "userID", "username", "password", "name", "numOfReservations" };
+        
+        // Database server (localhost)
+        private const String DATABASE_SERVER = "127.0.0.1";
 
-    // Credentials to connect to the database
-    private const String DATABASE_UID = "root";
-    private const String DATABASE_PWD = "";
+        // Database to which we will connect
+        private const String DATABASE_NAME = "reservation_system";
 
-    // The whole connection string used to connect to the database
-    // In our case, we will always connect to the same database, thus it can
-    // be defined as a constant. But we can always change it.
-    private const String DATABASE_CONNECTION_STRING = "server=" + DATABASE_SERVER + ";uid=" + DATABASE_UID + ";pwd=" + DATABASE_PWD + ";database=" + DATABASE_NAME + ";";
+        // Credentials to connect to the database
+        private const String DATABASE_UID = "root";
+        private const String DATABASE_PWD = "";
 
-    // Determine after how much time a command (query) should be timed out
-    private const int COMMAND_TIMEOUT = 60;
+        // The whole connection string used to connect to the database
+        // In our case, we will always connect to the same database, thus it can
+        // be defined as a constant. But we can always change it.
+        private const String DATABASE_CONNECTION_STRING = "server=" + DATABASE_SERVER + ";uid=" + DATABASE_UID + ";pwd=" + DATABASE_PWD + ";database=" + DATABASE_NAME + ";";
 
-    // MySQL Connection
-    private MySqlConnection conn;
+        // Determine after how much time a command (query) should be timed out
+        private const int COMMAND_TIMEOUT = 60;
 
-    // Name of the table to which we will connect
-    private const String tableName;
+        // MySQL Connection
+        private MySqlConnection conn;
 
-    // Command object
-    private MySqlCommand cmd;
+        // Command object
+        private MySqlCommand cmd;
 
-    // Constructor
-    public TDGUser(String tableName){
-        this.tableName = tableName;
-        this.cmd = new MySqlCommand();
-        this.cmd.CommandTimeout = COMMAND_TIMEOUT;
-    }
+        // Constructor
+        public TDGUser()
+        {
+            this.cmd = new MySqlCommand();
+            this.cmd.CommandTimeout = COMMAND_TIMEOUT;
+        }
 
-    public static TDGUser getInstance (){
-        return instance;
-    }
+        public static TDGUser getInstance()
+        {
+            return instance;
+        }
 
-    //Open the connection to the DB
-    public bool openConnection (){
-         try
+        // Open the database connection to the database
+        public bool openConnection()
+        {
+            try
             {
-                conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
-                conn.Open();
+                this.conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
+                this.conn.Open();
                 return true;
             }
             catch (MySqlException ex)
@@ -55,105 +77,152 @@ public class TDGUser {
                 Console.WriteLine(ex.Message);
                 return false;
             }
-    }
-
-    //Close the connection to the DB
-    public void closeConnection (){
-        Console.WriteLine("Connection to DB is closed");
-    }
-
-    // Adds a list of users to the DB
-    public void addUser(ArrayList<User> newList){
-
-        openConnection();
-        // You have a list of users and you add all the users in the list to the DB
-        for(int i = 0 ; i < newList.Count() ; i++){
-            Console.WriteLine("Saving new User " + newList[i].getName() + " to the DB.");
-            createNewUser(newList[i]);
         }
 
-        closeConnection();
-    }
-
-    // Updates a list of users in the DB
-    public void updateUser(ArrayList<User> updateList){
-
-        openConnection();
-
-        for(int i = 0 ; i < updateList.Count() ; i++){
-            Console.WriteLine("Modifying existing User " + updateList[i].getFirstName() + " in the DB.");
-            updateUser(updateList[i]);
-        }
-
-        closeConnection();
-    }
-
-    // Removes a list of users from the DB
-    public void deleteUser(ArrayList<User> deleteList){
-
-        openConnection();
-
-        for(int i = 0 ; i < deleteList.Count() ; i++){
-            Console.WriteLine("Removing existing user " + deleteList[i].getFirstName() + " from the DB.");
-            removeUser(deleteList[i]);
-        }
-
-        closeConnection();
-    }
-
-    // SQL Statement to create a new User/Row.
-    public void createNewUser(User user){
-        //ex. INSERT INTO `user` VALUES ('1','h_ortiz',password('hortiz'),'Hannah Ortiz','0');
-        this.cmd.CommandText = "INSERT INTO " + tableName + " \n" +
-                "VALUES (" + user.getUserID() + "," + user.getUsername() + ","
-                + user.getPassword() + "," + user.getName() + "," + user.getNumOfReservations() + ");";
-        this.cmd.Connection = this.conn;
-        MySqlDataReader reader = cmd.ExecuteReader();
-    }
-
-    // SQL Statement to update an existing User/Row
-    public void updateUser(User user) {
-        this.cmd.CommandText = "UPDATE " + tableName + " \n" +
-                "SET " + fields[1] + "=" + user.getUsername() + "," + fields[2] + "=" + user.getPassword() + "," +
-                fields[3] + "=" + user.getName() + "," + fields[4] + "=" + user.getNumOfReservations() + ";\n" 
-                "WHERE " + fields[0] + "=" + user.getUserID() + ";";
-        this.cmd.Connection = this.conn;
-        MySqlDataReader reader = cmd.ExecuteReader();
-    }
-
-    // SQL Statement to delete an existing User/Row.
-    public void removeUser(User user) {
-        this.cmd.CommandText = "DELETE FROM " + tableName + " \n" +
-                "WHERE " + fields[0] + "=" + user.getUserID() + ";";
-        this.cmd.Connection = this.conn;
-        MySqlDataReader reader = cmd.ExecuteReader();
-    }
-
-    // SQL Statement to fetch an existing User/Row
-    public MySqlDataReader fetchUser(int id){
-        this.cmd.CommandText = "SELECT FROM " + tableName + " \n" +
-                "WHERE " + fields[0] + "=" + user.getUserID() + ";";
-        this.cmd.Connection = this.conn;
-        MySqlDataReader reader = cmd.ExecuteReader();
-    }
-
-    /**
-     * Select all data from the table, returns as MySqlDataReader object, but we can
-     * always format it differently to ensure that only the TDG is related to database.
-     * I.e. we can return a big 2D array instead of the object.
-     */ 
-    public MySqlDataReader fetchAll()
-    {
-        this.cmd.CommandText = "SELECT * FROM " + this.tableName + " WHERE 1;";
-        this.cmd.Connection = this.conn;
-        MySqlDataReader reader = cmd.ExecuteReader();
-
-
-        // Print the 2nd element of each object found (for testing purposes)
-        while (reader.Read())
+        // Close the connection to the DB
+        public void closeConnection()
         {
-            Console.WriteLine(reader[1]);
+            this.conn.Close();
         }
-        return reader;
+
+        // Adds new users to the database by passing a list
+        public void addUser(List<User> newList)
+        {
+
+            openConnection();
+            for (int i = 0; i < newList.Count(); i++)
+            {
+                createNewUser(newList[i]);
+            }
+
+            closeConnection();
+        }
+
+        // Updates the list of users in the DB
+        public void updateUser(List<User> updateList)
+        {
+
+            openConnection();
+            for (int i = 0; i < updateList.Count(); i++)
+            {
+                updateUser(updateList[i]);
+            }
+            closeConnection();
+        }
+
+        // Removes users from the DB
+        public void deleteUser(List<User> deleteList)
+        {
+
+            openConnection();
+            for (int i = 0; i < deleteList.Count(); i++)
+            {
+                removeUser(deleteList[i]);
+            }
+            closeConnection();
+        }
+
+        // SQL Statement to create a new User/Row.
+        public void createUser(User user)
+        {
+            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " \n" +
+                    "VALUES (" + user.getUserID() + "," + user.getUserName() + ","
+                    + user.getPassword() + "," + user.getName() + "," + user.getNumOfReservations() + ");";
+            this.cmd.Connection = this.conn;
+            cmd.ExecuteReader();
+        }
+
+        // SQL Statement to update an existing User/Row
+        public void updateUser(User user) {
+           this.cmd.CommandText = "UPDATE " + TABLE_NAME + " \n" +
+                   "SET " + FIELDS[1] + "=" + user.getUserName() + "," + FIELDS[2] + "=" + user.getPassword() + "," +
+                   FIELDS[3] + "=" + user.getName() + "," + fields[4] + "=" + user.getNumOfReservations() + ";\n" +
+                   "WHERE" + FIELDS[0] + "=" + user.getUserID() + ";";
+           this.cmd.Connection = this.conn;
+           cmd.ExecuteReader();
+       }
+
+        // SQL Statement to delete an existing User/Row.
+        public void removeUser(User user)
+        {
+            this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " \n" +
+                    "WHERE " + FIELDS[0] + "=" + user.getUserID() + ";";
+            this.cmd.Connection = this.conn;
+            cmd.ExecuteReader();
+        }
+
+        /**
+       * Returns a record for the user given its userID
+       */
+        public Object[] fetch(int userID)
+        {
+            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " \n" +
+                    "WHERE " + FIELDS[0] + "=" + userID + ";";
+            this.cmd.Connection = this.conn;
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            // If no record is found, return null
+            if (!reader.HasRows)
+            {
+                return null;
+            }
+            // There is only one result since we find it by id
+            Object[] record = new Object[FIELDS.Length];
+            while (reader.Read())
+            {
+                record[0] = reader[0];
+                record[1] = reader[1];
+                record[2] = reader[2];
+                record[3] = reader[3];
+                record[4] = reader[4];
+            }
+            // Close connection
+            closeConnection();
+
+            // Format and return the result
+            return record;
+        }
+
+        /**
+         * Select all data from the table
+         * Returns it as a Dictionary<int, Object[]>
+         * Where int is the ID of the object and Object[] contains the record of the row
+         */
+        public Dictionary<int, Object[]> fetchAll()
+        {
+            Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
+
+            // Open connection
+            openConnection();
+
+            // Write and execute the query
+            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
+            this.cmd.Connection = this.conn;
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            // If no record is found, return null
+            if (!reader.HasRows)
+            {
+                return null;
+            }
+
+            // For each reader, add it to the dictionary
+            while (reader.Read())
+            {
+                Object[] attributes = new Object[FIELDS.Length];
+                attributes[0] = reader[0]; // userID
+                attributes[1] = reader[1]; // userName
+                attributes[2] = reader[2]; // password
+                attributes[3] = reader[3]; // name
+                attributes[4] = reader[4]; // numOfReservations
+                records.Add((int)reader[0], attributes);
+            }
+
+            // Close connection
+            closeConnection();
+
+            // Format and return the result
+            return records;
+        }
     }
 }
