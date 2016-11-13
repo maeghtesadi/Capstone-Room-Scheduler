@@ -247,9 +247,9 @@ namespace StorageLayer
         private void updateReservation(Reservation reservation)
         {
 
-            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET (" + FIELDS[5] + " = " + reservation.getHour() + "," +
+            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + FIELDS[5] + " = " + reservation.getHour() + "," +
                 FIELDS[4] + " = " + reservation.getDate() + "," + FIELDS[3] + " = " + reservation.getDescription() + "," +
-                FIELDS[2] + " = " + reservation.getRoomID() + "," + FIELDS[1] + "=" + reservation.getUserID() + " ) WHERE " +
+                FIELDS[2] + " = " + reservation.getRoomID() + "," + FIELDS[1] + "=" + reservation.getUserID() + " WHERE " +
                 FIELDS[0] + " = " + reservation.getReservationID + ";";
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
