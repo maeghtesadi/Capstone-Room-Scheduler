@@ -6,19 +6,23 @@ using System.Threading.Tasks;
 
 namespace LogicLayer
 {
-    class DirectoryOfReservations
+    public class DirectoryOfReservations
     {
-        private List<Reservation> reservations;
+        private static List<Reservation> reservations { get; set; }
 
         public DirectoryOfReservations()
         {
             reservations = new List<Reservation>();
+            reservations.Add(new Reservation(1, 1, 1, "Reservation 1", new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 2, 0 ,0)));
+            reservations.Add(new Reservation(2, 2, 2, "Reservation 2", new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 4, 0, 0)));
+            reservations.Add(new Reservation(2, 2, 2, "Reservation 3", new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 7, 0, 0)));
         }
+       
 
-        public DirectoryOfReservations(List<Reservation> reslist)
-        {
-            this.reservations = reslist;
-        }
+        /* public DirectoryOfReservations(List<Reservation> reslist)
+         {
+             this.reservations = reslist;
+         } */
 
         public int getReservationSize()
         {
