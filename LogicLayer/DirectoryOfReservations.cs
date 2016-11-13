@@ -60,7 +60,7 @@ namespace LogicLayer
             return s;
         }
 
-        public void modifyReservation(int resid, int roomid, int timeslotid, DateTime dt)
+        public void modifyReservation(int resid, int roomid, int timeslotid, DateTime dt, string des)
         {
             for (int i = 0; i < reservations.Count; i++)
             {
@@ -69,14 +69,21 @@ namespace LogicLayer
                     reservations[i].setReservationRoomID(roomid);
                     reservations[i].setReservationTimeSlotID(timeslotid);
                     reservations[i].setReservationDateTime(dt.Year, dt.Month, dt.Day, dt.Hour);
+                    reservations[i].setReservationDescription(des);
                 }
             }
-
-
-
         }
             
-
+        public void cancelReservation(int resid)
+        {
+            for (int i=0; i < reservations.Count; i++)
+            {
+                if (reservations[i].getReservationID() == resid)
+                {
+                    reservations.Remove(reservations[i]); //remove reservation from list of reservations
+                }
+            }
+        }
 
     }
 }
