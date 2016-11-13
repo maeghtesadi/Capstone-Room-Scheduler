@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+<<<<<<< HEAD
 using LogicLayer;
+=======
 using Microsoft.AspNet.SignalR;
 using PresentationLayer.Hubs;
-
+>>>>>>> presentation/calendar
 
 namespace CapstoneRoomScheduler.Controllers
 {
@@ -18,13 +20,16 @@ namespace CapstoneRoomScheduler.Controllers
         }
 
         [HttpPost]
-        public void acceptTimeSlots(string inputCourseName,int firstTimeSlot, int lastTimeSlot, int room, string date)
+        public ActionResult acceptTimeSlots(string inputCourseName,int firstTimeSlot, int lastTimeSlot, int room, string date)
         {
+<<<<<<< HEAD
 
+            return Content("wow");
+=======
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-            hubContext.Clients.All.getreservations(new ReservationTest(firstTimeSlot, lastTimeSlot, room, "Haram B.", inputCourseName));
-            
-
+            hubContext.Clients.All.getreservations(new ReservationTest(firstTimeslot, lastTimeslot, room, "Haram B.", inputCourseName));
+            return View("~Views/Console/Calendar.cshtml");
+>>>>>>> presentation/calendar
         }
 
         public void updateView()
