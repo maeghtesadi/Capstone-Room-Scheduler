@@ -32,7 +32,7 @@ namespace LogicLayer
         public void makeNewTimeSlot(int roomID, DateTime date, int timeSlotID)
         {
             Room room = findRoom(roomID);
-            room.makeNewTimeSlot(date, timeSlotID);
+            //room.makeNewTimeSlot(date, timeSlotID);
         }
     }
 }
