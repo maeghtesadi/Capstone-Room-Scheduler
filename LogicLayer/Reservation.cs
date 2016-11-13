@@ -21,7 +21,7 @@ namespace LogicLayer
 
         private int reservationID;
         private string reservationDescription;
-        private List<int> waitList;
+        private Queue<int> waitList;
 
         public Reservation()
         {
@@ -31,7 +31,7 @@ namespace LogicLayer
             reservationUserID = 0;
             reservationRoomID = 0;
             date = new DateTime(); //default constructor will set the date of the reservation as the current day
-            waitList = new List<int>();
+            waitList = new Queue<int>();
 
             uniqueReservationCounter++;
         }
@@ -44,7 +44,7 @@ namespace LogicLayer
             this.reservationUserID = uid;
             this.reservationRoomID = roomid;
             this.date = dt;
-            waitList = new List<int>();
+            waitList = new Queue<int>();
 
             uniqueReservationCounter++; //counter goes up for every reservation created
         }
@@ -154,7 +154,12 @@ namespace LogicLayer
         public void addToWaitList(int uid)
         {
             //add to wait list
-            this.waitList.Add(uid);
+            waitList.Enqueue(uid);
+        }
+        
+        public void removeFromWaitList()
+        {
+            waitList.Dequeue();
         }
 
     }
