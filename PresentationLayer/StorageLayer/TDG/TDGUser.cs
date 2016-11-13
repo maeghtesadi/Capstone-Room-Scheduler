@@ -6,29 +6,27 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using LogicLayer;
 
-
 namespace StorageLayer
 {
     /**
-     * Class: TDGRoom
-     * 
-     * Table data gateway of Room table
-     * 
-     * This class acts as a bridge from the software application to the database.
-     * It allows to create, update, delete and find data from the room database table.
-     */
-      
-    public class TDGRoom
+  * Class: TDGUser
+  * 
+  * Table data gateway of User table
+  * 
+  * This class acts as a bridge from the software application to the database.
+  * It allows to create, update, delete and find data from the user database table.
+  */
+    public class TDGUser
     {
         // This instance
-        private static TDGRoom instance = new TDGRoom();
+        private const String TABLE_NAME = "user";
 
         // Table name
-        private const String TABLE_NAME = "room";
+        private static TDGUser instance = new TDGUser();
 
         // Field names of the table
-        private readonly String[] FIELDS = { "RoomID", "RoomNum" };
-
+        private static readonly string[] FIELDS = { "userID", "username", "password", "name", "numOfReservations" };
+        
         // Database server (localhost)
         private const String DATABASE_SERVER = "127.0.0.1";
 
@@ -53,28 +51,20 @@ namespace StorageLayer
         // Command object
         private MySqlCommand cmd;
 
-
-        /**
-         * Returns the instance
-         */
-        public static TDGRoom getInstance()
-        {
-            return instance;
-        } 
-
-        /**
-         * Constructor taking the name of the table
-         */
-        private TDGRoom()
+        // Constructor
+        public TDGUser()
         {
             this.cmd = new MySqlCommand();
             this.cmd.CommandTimeout = COMMAND_TIMEOUT;
         }
 
-        /**
-         * Open the database connection to the database
-         */
-        public Boolean openConnection()
+        public static TDGUser getInstance()
+        {
+            return instance;
+        }
+
+        // Open the database connection to the database
+        public bool openConnection()
         {
             try
             {
@@ -89,80 +79,36 @@ namespace StorageLayer
             }
         }
 
-        /**
-         * Close the connection to the database
-         */ 
+        // Close the connection to the DB
         public void closeConnection()
         {
             this.conn.Close();
         }
 
-
-
         /**
-         * Add new rooms to the database
-         */ 
-        public void addRoom(List<Room> newList)
+       * Returns a record for the user given its userID
+       */
+        public Object[] fetch(int userID)
         {
-            openConnection();
-            for (int i = 0; i < newList.Count; i++)
-            {
-                createRoom(newList[i]);
-            }
-            closeConnection();
-        }
-
-        /**
-         * Update rooms of the database
-         */
-        public void updateRoom(List<Room> updateList)
-        {
-            openConnection();
-            for (int i = 0; i < updateList.Count; i++)
-            {
-                updateRoom(updateList[i]);
-            }
-            closeConnection();
-        }
-
-        /**
-         * Delete room(s) from the database
-         */
-        public void deleteRoom(List<Room> deleteList)
-        {
-            openConnection();
-            for (int i = 0; i < deleteList.Count; i++)
-            {
-                removeRoom(deleteList[i]);
-            }
-            closeConnection();
-        }
-
-        /**
-         * Returns a record for the room given its roomID
-         */
-        public Object[] fetch(int roomID)
-        {
-            // Open connection
-            openConnection();
-
-            // Write and execute the query
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + roomID;
+            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " \n" +
+                    "WHERE " + FIELDS[0] + "=" + userID + ";";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
 
             // If no record is found, return null
-            if(!reader.HasRows)
+            if (!reader.HasRows)
             {
                 return null;
             }
-
             // There is only one result since we find it by id
             Object[] record = new Object[FIELDS.Length];
             while (reader.Read())
             {
                 record[0] = reader[0];
                 record[1] = reader[1];
+                record[2] = reader[2];
+                record[3] = reader[3];
+                record[4] = reader[4];
             }
             // Close connection
             closeConnection();
@@ -179,6 +125,7 @@ namespace StorageLayer
         public Dictionary<int, Object[]> fetchAll()
         {
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
+
             // Open connection
             openConnection();
 
@@ -188,18 +135,21 @@ namespace StorageLayer
             MySqlDataReader reader = cmd.ExecuteReader();
 
             // If no record is found, return null
-            if(!reader.HasRows)
+            if (!reader.HasRows)
             {
                 return null;
             }
 
             // For each reader, add it to the dictionary
-            while(reader.Read())
+            while (reader.Read())
             {
                 Object[] attributes = new Object[FIELDS.Length];
-                attributes[0] = reader[0]; // roomID
-                attributes[1] = reader[1]; // roomNum
-                records.Add((int) reader[0], attributes);
+                attributes[0] = reader[0]; // userID
+                attributes[1] = reader[1]; // userName
+                attributes[2] = reader[2]; // password
+                attributes[3] = reader[3]; // name
+                attributes[4] = reader[4]; // numOfReservations
+                records.Add((int)reader[0], attributes);
             }
 
             // Close connection
@@ -207,36 +157,6 @@ namespace StorageLayer
 
             // Format and return the result
             return records;
-        }
-
-        /**
-         * Adds one room to the database
-         */ 
-        private void createRoom(Room room)
-        {
-            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + room.getRoomID() + "," + room.getRoomNum() + ");";
-            this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
-        }
-
-        /**
-         * Updates one room of the database
-         */
-        private void updateRoom(Room room)
-        {
-            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + "=" + room.getRoomNum() + " WHERE " + FIELDS[0] + " = " + room.getRoomID() + ";";
-            this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
-        }
-
-        /**
-         * Removes one room from the database
-         */
-        private void removeRoom(Room room)
-        {
-            this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + room.getRoomID() + ";";
-            this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
         }
     }
 }

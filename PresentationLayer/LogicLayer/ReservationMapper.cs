@@ -4,9 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StorageLayer;
-using StorageLayer.TDGReservation;
-
-
 
 
 namespace LogicLayer
@@ -18,7 +15,7 @@ namespace LogicLayer
         private static ReservationMapper instance = new ReservationMapper();
 
         private TDGReservation tdgReservation = TDGReservation.getInstance();
-        private ReservationIdentityMaper reservationIdentityMap = ReservationIdentityMap.getInstance();
+        private ReservationIdentityMap reservationIdentityMap = ReservationIdentityMap.getInstance();
 
 
         //default constructor
@@ -68,7 +65,7 @@ namespace LogicLayer
         {
 
             //Try to obtain the reservation from the Reservation indentity map
-            Reservation reservation = reservationIdentityMap.getInstance().find(reservationID);
+            Reservation reservation = reservationIdentityMap.find(reservationID);
             Object[] result = null;
 
 
@@ -92,7 +89,7 @@ namespace LogicLayer
                     reservation.setDescription((String)result[3]); //desc
                     reservation.setDate((DateTime)result[4]); //date
                     reservation.setHour((int)result[5]);//hour
-                    reservationIdentityMap.getInstance().addTo(reservation);
+                    reservationIdentityMap.addTo(reservation);
 
                 }
             }
@@ -108,7 +105,7 @@ namespace LogicLayer
         public Dictionary<int, Reservation> getAllReservation()
         {
             //Get all reservations from the reservation Identity Map.
-            Dictionary<int, Reservation> reservations = reservationIdentityMap.getInstance().findAll();
+            Dictionary<int, Reservation> reservations = reservationIdentityMap.findAll();
 
             //Get all reservations in the DB
             Dictionary<int, Object[]> result = tdgReservation.fetchAll();
@@ -130,7 +127,7 @@ namespace LogicLayer
                     reservation.setDate((DateTime)record.Value[4]); //date
                     reservation.setHour((int)record.Value[5]);//hour
 
-                    reservationIdentityMap.getInstance().addTo(reservation);
+                    reservationIdentityMap.addTo(reservation);
                     reservations.Add(reservation.getReservationID(), reservation);
 
                 }
@@ -159,7 +156,7 @@ namespace LogicLayer
             reservation.setHour(hour); //mutator function to set the NEW hour
 
             //Register instances as Dirty in the Unit Of Work since the object has been modified.
-            UnitOfWork.getInsstance().registerDirty(reservation);
+            UnitOfWork.getInstance().registerDirty(reservation);
         }
 
         /**
@@ -174,7 +171,7 @@ namespace LogicLayer
             //If resrvation IdentityMap returned the object, remove it from identity map
             if (reservation != null)
             {
-                reservationIdentityMap.getInstance().removeFrom(reservation);
+                reservationIdentityMap.removeFrom(reservation);
             }
 
             //Register as deleted in the Unit Of Work. 

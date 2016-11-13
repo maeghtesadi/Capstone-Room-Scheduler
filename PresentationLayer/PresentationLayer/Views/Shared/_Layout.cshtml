@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/PresentationLayer/Content/css")
+    @Scripts.Render("~/PresentationLayer/bundles/modernizr")
+    @Scripts.Render("~/PresentationLayer/bundles/jquery")
+    @Scripts.Render("~/PresentationLayer/bundles/bootstrap")
     <script src="~/signalr/hubs/"></script>
 
 </head>
@@ -37,7 +37,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav"></ul>
-                @Html.Partial("_LoginPartial")
+               
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
 
             
         </div>
-    <script src="~/Scripts/calendar.js"></script>
+    <script src="~/PresentationLayer/Scripts/calendar.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>
