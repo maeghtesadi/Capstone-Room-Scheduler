@@ -52,6 +52,7 @@
     <Compile Include="TimeSlot.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserCatalog.cs" />
+    <Compile Include="UserMapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StorageLayer\StorageLayer.csproj">
