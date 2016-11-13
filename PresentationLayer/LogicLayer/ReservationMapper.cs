@@ -72,7 +72,7 @@ namespace LogicLayer
             if (reservation == null)
             {
                 //If not found in Reservation identity map then, it uses TDG to try to retrieve from DB.
-                result = tdgReservation.fetch(reservationID);
+                result = tdgReservation.get(reservationID);
 
 
                 if (result != null)
@@ -108,7 +108,7 @@ namespace LogicLayer
             Dictionary<int, Reservation> reservations = reservationIdentityMap.findAll();
 
             //Get all reservations in the DB
-            Dictionary<int, Object[]> result = tdgReservation.fetchAll();
+            Dictionary<int, Object[]> result = tdgReservation.getAll();
 
             //Loop trhough each of the result:
             foreach (KeyValuePair<int, Object[]> record in result)
