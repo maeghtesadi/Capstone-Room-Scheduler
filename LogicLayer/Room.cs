@@ -50,6 +50,11 @@ namespace LogicLayer
 
         //These two functions above should not be in Room class, should be in TimeSlotList
 
+        public TimeSlotList getTimeSlotList()
+        {
+            return listOfTimeSlots;
+        }
+
         public void setRoomID(int id)
         {
             roomID = id;
