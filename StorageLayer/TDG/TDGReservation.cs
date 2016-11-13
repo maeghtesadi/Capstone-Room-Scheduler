@@ -4,14 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
+using Reservation;
+
 using MySql.Data.MySqlClient;
 
 
 namespace StorageLayer
 {
+
     public class TDGReservation
     {
         //This instance
+
         private static TDGReservation instance = new TDGReservation();
 
         //Table name
@@ -54,7 +58,7 @@ namespace StorageLayer
         }
 
         /**
-         * Constructor taking the name of the table 
+         * Default Constructor
          */
 
         private TDGReservation()
