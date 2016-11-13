@@ -10,7 +10,7 @@ namespace LogicLayer
     {
         private int roomID;
         private string roomNum;
-        private List<TimeSlot> timeSlots;
+        private TimeSlotList listOfTimeSlots;
 
         public Room()
         {
@@ -26,17 +26,17 @@ namespace LogicLayer
 
         public void makeNewTimeSlot(DateTime date, int timeSlotID)
         {
-            for (int i = 0; i < timeSlots.Count; i ++)
+            for (int i = 0; i < listOfTimeSlots.getTimeSlotList().Count; i ++)
             {
-                if (timeSlotID == timeSlots[i].getTimeSlotID())
+                if (timeSlotID == listOfTimeSlots.getTimeSlotList()[i].getTimeSlotID())
                 {
-                    if (timeSlots[i].getIsReserved())
+                    if (listOfTimeSlots.getTimeSlotList()[i].getIsReserved())
                     {
                         //addToWaitList()
                     }
                     else
                     {
-                        timeSlots.Add(createTimeSlot(date, timeSlotID));
+                        listOfTimeSlots.getTimeSlotList().Add(createTimeSlot(date, timeSlotID));
                     }
                 }     
             }

@@ -22,28 +22,6 @@ namespace LogicLayer
             return instance;
         }
 
-        // Handles the Creation of a new object of type User
-        public User makeNew(string userName, string password, string name, int numOfReservations)
-        {
-
-            // Make a new user object
-            User user = new User();
-            user.setUserID(user.GetHashCode());
-            user.setUserName(userName);
-            user.setUserPassword(password);
-            user.setName(name);
-            user.setNumOfReservations(numOfReservations);
-
-            // Add the new User to the list of existing objects in Live memory
-            userIdentityMap.addTo(user);
-
-            // Register as a new room
-            UnitOfWork.getInstance().registerNew(user);
-
-            return user;
-        }
-
-
         /**
          * Retrieve a user given its ID
          */
@@ -100,79 +78,6 @@ namespace LogicLayer
             }
 
             return users;
-        }
-        /**
-         * Set user attributes
-         */
-        public void setUser(int userID, string name, int numOfReservations)
-        {
-
-            // First we fetch the User || We could have passed the User as a Param. But this assumes you might not have
-            // access to the instance of the desired object.
-            User user = getUser(userID);
-
-            // Mutator function to SET the new name.
-            user.setName(name);
-
-            // Mutator function to SET the new numOfReservations.
-            user.setNumOfReservations(numOfReservations);
-
-            // We've modified something in the object so we Register the instance as Dirty in the UoW.
-            UnitOfWork.getInstance().registerDirty(user);
-        }
-
-        /**
-         * Delete user
-         */
-        public void delete(int userID)
-        {
-            // Get the user to be deleted
-            User user = userIdentityMap.find(userID);
-
-            // If found, remove it from identity map
-            if (user != null)
-            {
-                userIdentityMap.getInstance().removeFrom(user);
-            }
-
-            // // Register as deleted
-            UnitOfWork.getInstance().registerDeleted(user);
-
-        }
-
-        /**
-        * Done: commit
-        */
-        public void done()
-        {
-            UnitOfWork.getInstance().commit();
-        }
-
-        /**
-         * For unit of work:
-         * Add a list of users to DB
-         */
-        public void addUser(List<User> newList)
-        {
-            tdgUser.addUser(newList);
-        }
-
-        /**
-         * For unit of work:
-         * Update list of users on DB
-         */
-        public void updateUser(List<User> updateList)
-        {
-            tdgUser.updateUser(updateList);
-        }
-
-        /**
-        * For unit of work:
-        * Remove list of users from DB
-        */
-        public void deleteUser(List<User> deleteList)
-        {
-            tdgUser.deleteUser(deleteList);
         }
 
     }

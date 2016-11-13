@@ -50,6 +50,7 @@
     <Compile Include="Room.cs" />
     <Compile Include="RoomMapper.cs" />
     <Compile Include="TimeSlot.cs" />
+    <Compile Include="TimeSlotList.cs" />
     <Compile Include="UnitOfWork.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserCatalog.cs" />
