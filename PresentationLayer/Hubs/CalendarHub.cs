@@ -8,9 +8,11 @@ namespace PresentationLayer.Hubs
 {
     public class CalendarHub : Hub
     {
-        public void updateCalendar(string name, string message)
+        public void updateCalendar()
         {
-            Clients.All.getReservations(name, message);
+            ReservationTest wow= new ReservationTest(10,15,3,"Harambe Tremblay","Soen 343");
+
+            Clients.All.getReservations(wow);
         }
     }
 }

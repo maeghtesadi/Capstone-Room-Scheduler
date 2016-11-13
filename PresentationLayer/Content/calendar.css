@@ -86,6 +86,21 @@ padding-left:0px;
   background-color:#3193c6;
   color:white;
 }
+.timeslots li ul li.reserved{
+  background-color:#3f4350;
+  color:white;
+  border-style:none;
+  font-size:12px;
+}
+.timeslots .active.reserved{
+background-color:#ec644b;
+content:"WaitList";
+}
+.timeslots li ul li.reserved-header{
+  background-color:#5c8194;
+  color:white;
+  
+}
 .calendar-buttons {
     font-size: 20px;
     color: white;

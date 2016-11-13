@@ -107,9 +107,21 @@ $(".reservation-popup-test .header span").click(function () {
 });
 
 //Get reservation info from the server to populate the timeslots
-var serverSession = $.connection.calendarhub;
+$.connection.hub.start().done(function () {
+    serverSession.server.updateCalendar();
+});
+var serverSession = $.connection.calendarHub;
 //Jquery to update the timeslots
-serverSession.client.getReservations = function () {
-
+serverSession.client.getReservations = function (reservationInfo) {
+    
+    for (var reservation = reservationInfo.initialTimeslot; reservation <= reservationInfo.finalTimeslot;reservation++){
+        $("li[data-timeslot='" + reservation + "']li[data-room='" + reservationInfo.roomId + "']").toggleClass("reserved");
+        $("li[data-timeslot='" + reservation + "']li[data-room='" + reservationInfo.roomId + "']").html("");
+    }
+        //First timeslot classtoggle=reservedHeader
+    $("li[data-timeslot='" + (reservationInfo.initialTimeslot) + "']li[data-room='" + reservationInfo.roomId + "']").toggleClass("reserved-header").html(reservationInfo.studentName);
+        //Second timeslot classtoggle=reservedd;
+        $("li[data-timeslot='" + (reservationInfo.initialTimeslot + 1) + "']li[data-room='" + reservationInfo.roomId + "']").html("From " + reservationInfo.initialTimeslot + " to " + (parseInt(reservationInfo.finalTimeslot) + 1));
+    
+    
 };
-$.connection.hub.start();
