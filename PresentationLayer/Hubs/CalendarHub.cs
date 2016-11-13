@@ -8,10 +8,11 @@ namespace PresentationLayer.Hubs
 {
     public class CalendarHub : Hub
     {
+        //This method is only called from the js file
         public void updateCalendar()
         {
             ReservationTest wow= new ReservationTest(10,15,3,"Harambe Tremblay","Soen 343");
-
+            //This calls a method inside js 
             Clients.All.getReservations(wow);
         }
     }

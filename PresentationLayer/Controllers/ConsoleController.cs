@@ -17,14 +17,15 @@ namespace CapstoneRoomScheduler.Controllers
         [HttpPost]
         public ActionResult acceptTimeslots(string inputCourseName,int firstTimeslot, int lastTimeslot, int room, string date)
         {
-           
-         return View("~Views/Console/Calendar.cshtml");
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
+            hubContext.Clients.All.getreservations(new ReservationTest(firstTimeslot, lastTimeslot, room, inputCourseName, "Soen 343"));
+            return View("~Views/Console/Calendar.cshtml");
         }
 
         public void updateView()
         {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-            hubContext.Clients.All.getreservations();
+            hubContext.Clients.All.getreservations(new ReservationTest(10, 15, 3, "Harambe Tremblay", "Soen 343"));
 
         }
         public ActionResult About()

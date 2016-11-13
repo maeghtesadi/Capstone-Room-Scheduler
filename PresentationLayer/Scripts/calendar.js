@@ -108,7 +108,7 @@ $(".reservation-popup-test .header span").click(function () {
 
 //Get reservation info from the server to populate the timeslots
 $.connection.hub.start().done(function () {
-    serverSession.server.updateCalendar();
+   // serverSession.server.updateCalendar();
 });
 var serverSession = $.connection.calendarHub;
 //Jquery to update the timeslots
