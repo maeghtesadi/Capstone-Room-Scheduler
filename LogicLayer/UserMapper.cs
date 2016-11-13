@@ -104,18 +104,12 @@ namespace LogicLayer
         /**
          * Set user attributes
          */
-        public void setUser(int userID, string userName, string password, string name, int numOfReservations)
+        public void setUser(int userID, string name, int numOfReservations)
         {
 
             // First we fetch the User || We could have passed the User as a Param. But this assumes you might not have
             // access to the instance of the desired object.
             User user = getUser(userID);
-
-            // Mutator function to SET the new username.
-            user.setUserName(userName);
-
-            // Mutator function to SET the new password.
-            user.setPassword(password);
 
             // Mutator function to SET the new name.
             user.setName(name);
