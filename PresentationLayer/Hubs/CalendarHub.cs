@@ -11,9 +11,15 @@ namespace PresentationLayer.Hubs
         //This method is only called from the js file
         public void updateCalendar()
         {
-            ReservationTest wow= new ReservationTest(10,15,3,"Harambe Tremblay","Soen 343");
+            //ReservationTest wow= new ReservationTest(10,15,3,"Harambe Tremblay","Soen 343");
+
+            List<ReservationTest> reservationList = new List<ReservationTest>();
+            reservationList.Add(new ReservationTest(9, 11, 1, "Nassim", "343"));
+            reservationList.Add(new ReservationTest(11, 14, 2, "Nassim", "343"));
+            reservationList.Add(new ReservationTest(13, 15, 3, "Nassim", "343"));
+
             //This calls a method inside js 
-            Clients.All.getReservations(wow);
+            Clients.All.getReservations(reservationList);
         }
     }
 }
