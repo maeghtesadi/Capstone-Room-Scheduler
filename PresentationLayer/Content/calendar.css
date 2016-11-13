@@ -4,7 +4,7 @@ body {font-family: Verdana,sans-serif;}
 
 .calendar-header {
     
-    width: 100%;
+    width: inherit;
     background: #3193c6;
     height:115px;
     position:fixed;
@@ -49,7 +49,7 @@ margin-right:-5px;
   
     background-color: #ddd;
     padding-bottom:0px;
-    margin-top:140px;
+    margin-top:150px;
 }
 
 .timeslots li {
@@ -85,6 +85,27 @@ padding-left:0px;
 .timeslots li ul li.active{
   background-color:#3193c6;
   color:white;
+}
+.timeslots li ul li.reserved{
+  background-color:#3f4350;
+  color:white;
+  border-style:none;
+  font-size:12px;
+  text-align:left;
+  padding-left:7px;
+  line-height:200%;
+}
+.timeslots .active.reserved{
+background-color:#ec644b;
+content:"WaitList";
+
+}
+.timeslots li ul li.reserved-header{
+  background-color:#5c8194;
+  color:white;
+  text-align:center;
+  padding-left:0px;
+  line-height:300%;
 }
 .calendar-buttons {
     font-size: 20px;
@@ -145,7 +166,7 @@ margin-right:100px;
     height:165px;
     background-color:white;
      box-shadow: 0px 0px 9px grey;
-    position:fixed;
+    position:absolute;
     font-size:12px;
     display:none;
    

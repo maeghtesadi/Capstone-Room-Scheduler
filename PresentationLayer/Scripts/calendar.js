@@ -1,6 +1,5 @@
 ﻿
 
-
 //Function is run when any of the timeslot li is clicked
 function timeslotClicked(event) {
         var seconfuncCalled = false;
@@ -15,15 +14,16 @@ function timeslotClicked(event) {
         funcCalled = true;
         $(event).addClass("active");
         $(".reservation-popup-test h1").html("Select another timeslot");
-        $(".reservation-popup-test").toggle(300);
+        $(".reservation-popup-test").toggle(0);
+        $(".reservation-popup-test").css('opacity','0');
         $(".reservation-popup-test").position({
             my: "left top",
             at:"right+7 top+-7",
             of: thisElement,
-           
-        
         });
-        
+        $(".reservation-popup-test").toggle(0);
+        $(".reservation-popup-test").css('opacity', '1');
+        $(".reservation-popup-test").toggle(300);
         $( ".timeslots li ul li").off("click.firstFunction");
         $(".timeslots li ul li").on("click.secondFunction",function () {
         
@@ -105,3 +105,28 @@ $(".reservation-popup-test .header span").click(function () {
     $(".timeslots .active").toggleClass("active");
     
 });
+
+//Get reservation info from the server to populate the timeslots
+$.connection.hub.start().done(function () {
+    serverSession.server.updateCalendar();
+});
+var serverSession = $.connection.calendarHub;
+//Jquery to update the timeslots
+serverSession.client.getReservations = function (reservationList) {
+        for (j=0;j<reservationList.length;j++) {
+        for (var i = reservationList[j].initialTimeslot; i <= reservationList[j].finalTimeslot;i++){
+                $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").toggleClass("reserved");
+                $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").html("");
+            }
+                //First timeslot classtoggle=reservedHeader
+            $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").toggleClass("reserved-header").html(reservationList[j].studentName);
+            //Second timeslot classtoggle=reservedd;
+            var time = "<u>Time</u>: From " + reservationList[j].initialTimeslot + " to " + (parseInt(reservationList[j].finalTimeslot) + 1);
+            var courseName = "<u>Course Name</u>: " + reservationList[j].courseName;
+            var waitingList = "<u>Waiting List:</u>:";
+            $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time+"</br>"+courseName+"</br>"+waitingList)
+            $(".glyphicon-remove").click();
+    }
+    
+    
+};

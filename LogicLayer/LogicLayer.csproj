@@ -49,10 +49,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reservation.cs" />
     <Compile Include="Room.cs" />
+    <Compile Include="RoomIdentityMap.cs" />
     <Compile Include="RoomMapper.cs" />
     <Compile Include="TimeSlot.cs" />
+    <Compile Include="TimeSlotList.cs" />
+    <Compile Include="UnitOfWork.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserCatalog.cs" />
+    <Compile Include="UserMapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StorageLayer\StorageLayer.csproj">

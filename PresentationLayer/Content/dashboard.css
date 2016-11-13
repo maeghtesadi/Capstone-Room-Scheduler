@@ -45,7 +45,7 @@ body {
     overflow-x: hidden;
     overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
     background-color: #2B303E;
-   
+   width:200px;
   }
 }
 

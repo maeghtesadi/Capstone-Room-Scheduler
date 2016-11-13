@@ -63,7 +63,7 @@ namespace StorageLayer
         } 
 
         /**
-         * Constructor taking the name of the table
+         * Default constructor
          */
         private TDGRoom()
         {
