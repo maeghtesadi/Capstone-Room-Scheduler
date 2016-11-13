@@ -19,6 +19,7 @@ namespace LogicLayer
             isReserved = false;
             //hourlyID = 0;
             date = new DateTime();
+            //03012016
         }
 
         public TimeSlot(int timeSlotID, DateTime date, bool isReserved)

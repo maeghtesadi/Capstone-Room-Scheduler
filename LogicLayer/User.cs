@@ -11,24 +11,21 @@ namespace LogicLayer
     {
 
         private int userID;
-        private string firstName;
-        private string lastName;
+        private string name;
         private int numOfReservations;
 
         public User()
         {
             userID = 0;
-            firstName = "";
-            lastName = "";
+            name = "";
             numOfReservations = 0;
 
         }
 
-        public User (int idnumber, string fname, string lname, int numres)
+        public User (int idnumber, string n, int numres)
         {
             this.userID = idnumber;
-            this.firstName = fname;
-            this.lastName = lname;
+            this.name = n;
             this.numOfReservations = numres;
 
         }
@@ -43,24 +40,14 @@ namespace LogicLayer
             this.userID = idnumber;
         }
 
-        public string getFirstName()
+        public string getName()
         {
-            return firstName;
+            return name;
         }
 
-        public void setFirstName(string fname)
+        public void setName(string n)
         {
-            this.firstName = lastName; 
-        }
-
-        public string getLastName()
-        {
-            return lastName;
-        }
-
-        public void setLastName(string lname)
-        {
-            this.lastName = lname;
+            this.name = n; 
         }
 
         public int getNumOfReservations ()
