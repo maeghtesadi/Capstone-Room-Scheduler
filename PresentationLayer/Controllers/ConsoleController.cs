@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.SignalR;
+using PresentationLayer.Hubs;
 
 namespace CapstoneRoomScheduler.Controllers
 {
@@ -16,9 +18,15 @@ namespace CapstoneRoomScheduler.Controllers
         public ActionResult acceptTimeslots(string inputCourseName,int firstTimeslot, int lastTimeslot, int room, string date)
         {
            
-         return Content("wow");
+         return View("~Views/Console/Calendar.cshtml");
         }
 
+        public void updateView()
+        {
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
+            hubContext.Clients.All.getreservations();
+
+        }
         public ActionResult About()
         {
             ViewBag.Message = "This is Harambook";
