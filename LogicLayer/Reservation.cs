@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicLayer
 {
-    class Reservation
+    public class Reservation
     {
         public static int uniqueReservationCounter = 1; //want a global variable that is incremented 
         //each time a reservation is created

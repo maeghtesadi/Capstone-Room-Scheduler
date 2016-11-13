@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
- 
+
 namespace LogicLayer
 {
     public class ReservationConsole
     {
-        DirectoryOfRooms directory = new DirectoryOfRooms();
+        DirectoryOfReservations directory = new DirectoryOfReservations();
 
 
         public static void viewReservations()
@@ -18,7 +18,7 @@ namespace LogicLayer
 
         public void makeReservation(int userID, int roomID, DateTime date, int timeSlotID, string description)
         {
-            directory.makeNewTimeSlot(roomID, date, timeSlotID);
+           // directory.makeNewTimeSlot(roomID, date, timeSlotID);
         }
 
         public static void modifyReservation(int userID, int roomID, int timeSlotID, string description)
