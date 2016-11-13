@@ -1,10 +1,4 @@
-﻿//Get reservation info from the server to populate the timeslots
-var serverSession = $.connection.calendarHub;
-//Jquery to update the timeslots
-serverSession.client.getReservations = function () {
-
-};
-$.connection.hub.start();
+﻿
 
 //Function is run when any of the timeslot li is clicked
 function timeslotClicked(event) {
@@ -111,3 +105,11 @@ $(".reservation-popup-test .header span").click(function () {
     $(".timeslots .active").toggleClass("active");
     
 });
+
+//Get reservation info from the server to populate the timeslots
+var serverSession = $.connection.calendarhub;
+//Jquery to update the timeslots
+serverSession.client.getReservations = function () {
+
+};
+$.connection.hub.start();
