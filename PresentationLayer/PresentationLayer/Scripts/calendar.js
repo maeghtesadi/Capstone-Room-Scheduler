@@ -115,15 +115,15 @@ var serverSession = $.connection.calendarHub;
 serverSession.client.getReservations = function (reservationList) {
     var initialIndex = 0;
     for (j = 0; j < reservationList.length; j++) {
-        var currentUser= reservationList[j].reservationUserId;
+        var currentUser= reservationList[j].reservationUserID;
         var i = 0;
         
         do{
-            $("li[data-timeslot='" + reservationList[j].reservationTimeSlotId + "']li[data-room='" + reservationList[j].reservationRoomId + "']").toggleClass("reserved");
-            $("li[data-timeslot='" + reservationList[j].reservationTimeSlotId + "']li[data-room='" + reservationList[j].reservationRoomId + "']").html("");
+            $("li[data-timeslot='" + reservationList[j].reservationTimeSlotID + "']li[data-room='" + reservationList[j].reservationRoomID + "']").toggleClass("reserved");
+            $("li[data-timeslot='" + reservationList[j].reservationTimeSlotID + "']li[data-room='" + reservationList[j].reservationRoomID + "']").html("");
             i++;
             initialIndex++;
-        } while ((parseInt(reservationList[j].reservationUserId) == parseInt(reservationList[j].reservationUserId) + 1));
+        } while ((parseInt(reservationList[j].reservationUserID) == parseInt(reservationList[j].reservationUserID) + 1));
         j=j+i;
        
             //    //First timeslot classtoggle=reservedHeader
