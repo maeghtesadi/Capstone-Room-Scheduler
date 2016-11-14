@@ -14,14 +14,14 @@ namespace LogicLayer
 
         //private User reservationUser;
         //private TimeSlot reservationTimeSlot;
-        private int reservationUserID;
-        private int reservationTimeSlotID;
-        private int reservationRoomID;
-        private DateTime date;
-
-        private int reservationID;
-        private string reservationDescription;
-        private Queue<int> waitList;
+        public int reservationUserID { get; set; }
+        public int reservationTimeSlotID { get; set; }
+        public int reservationRoomID { get; set; }
+        public DateTime date { get; set; }
+        
+        public int reservationID { get; set; }
+        public  string reservationDescription { get; set; }
+        public Queue<int> waitList { get; set; }
 
         public Reservation()
         {

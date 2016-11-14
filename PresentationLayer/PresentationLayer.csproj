@@ -198,7 +198,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="PresentationLayer\Hubs\CalendarHub.cs" />
-    <Compile Include="PresentationLayer\Hubs\ReservationTest.cs" />
     <Compile Include="PresentationLayer\Models\AccountViewModels.cs" />
     <Compile Include="PresentationLayer\Models\IdentityModels.cs" />
     <Compile Include="PresentationLayer\Models\ManageViewModels.cs" />

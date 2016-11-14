@@ -10,15 +10,7 @@ namespace LogicLayer
 {
     public class ReservationConsole
     {
-        DirectoryOfReservations directory = new DirectoryOfReservations();
-
-        //ReservationConsole.updateview() can be called to push new reservaiton data to the client
-        public static void updateView(DateTime date)
-        {
-            DirectoryOfReservations directory = new DirectoryOfReservations();
-            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-            hubContext.Clients.All.getreservations(directory.findByDate(date));
-        }
+        //DirectoryOfReservations directory = new DirectoryOfReservations();
 
         public void makeReservation(int userID, int roomID, DateTime date, int timeSlotID, string description)
         {
