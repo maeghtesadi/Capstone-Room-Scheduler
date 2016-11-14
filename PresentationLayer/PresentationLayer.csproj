@@ -211,6 +211,9 @@
     <Compile Include="StorageLayer\TDGReservation.cs" />
     <Compile Include="StorageLayer\TDGRoom.cs" />
     <Compile Include="StorageLayer\TDGUser.cs" />
+	<Compile Include="StorageLayer\TDG\TDGReservation.cs" />
+    <Compile Include="StorageLayer\TDG\TDGRoom.cs" />
+    <Compile Include="StorageLayer\TDG\TDGUser.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="PresentationLayer\Content\bootstrap-paper.css" />
