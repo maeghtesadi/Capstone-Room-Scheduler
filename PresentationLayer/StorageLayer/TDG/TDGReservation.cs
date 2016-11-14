@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
-using Reservation;
-
+using LogicLayer;
 using MySql.Data.MySqlClient;
 
 
@@ -151,7 +150,7 @@ namespace StorageLayer
          * Returns a record for the reservation given its reservationID
          * */
 
-        public Object[] fetch(int reservationID)
+        public Object[] get(int reservationID)
         {
             //Open connection
             openConnection();
@@ -190,7 +189,7 @@ namespace StorageLayer
          * Where int is the ID of the object and Object[] contains the record of the row
          * */
 
-        public Dictionary<int, Object[]> fetchAll()
+        public Dictionary<int, Object[]> getAll()
         {
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
             //Open Connection

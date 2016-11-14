@@ -17,7 +17,7 @@ namespace StorageLayer
      * This class acts as a bridge from the software application to the database.
      * It allows to create, update, delete and find data from the room database table.
      */
-      
+
     public class TDGRoom
     {
         // This instance
@@ -60,7 +60,7 @@ namespace StorageLayer
         public static TDGRoom getInstance()
         {
             return instance;
-        } 
+        }
 
         /**
          * Default constructor
@@ -91,7 +91,7 @@ namespace StorageLayer
 
         /**
          * Close the connection to the database
-         */ 
+         */
         public void closeConnection()
         {
             this.conn.Close();
@@ -101,7 +101,7 @@ namespace StorageLayer
 
         /**
          * Add new rooms to the database
-         */ 
+         */
         public void addRoom(List<Room> newList)
         {
             openConnection();
@@ -141,7 +141,7 @@ namespace StorageLayer
         /**
          * Returns a record for the room given its roomID
          */
-        public Object[] fetch(int roomID)
+        public Object[] get(int roomID)
         {
             // Open connection
             openConnection();
@@ -152,7 +152,7 @@ namespace StorageLayer
             MySqlDataReader reader = cmd.ExecuteReader();
 
             // If no record is found, return null
-            if(!reader.HasRows)
+            if (!reader.HasRows)
             {
                 return null;
             }
@@ -176,7 +176,7 @@ namespace StorageLayer
          * Returns it as a Dictionary<int, Object[]>
          * Where int is the ID of the object and Object[] contains the record of the row
          */
-        public Dictionary<int, Object[]> fetchAll()
+        public Dictionary<int, Object[]> getAll()
         {
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
             // Open connection
@@ -188,18 +188,18 @@ namespace StorageLayer
             MySqlDataReader reader = cmd.ExecuteReader();
 
             // If no record is found, return null
-            if(!reader.HasRows)
+            if (!reader.HasRows)
             {
                 return null;
             }
 
             // For each reader, add it to the dictionary
-            while(reader.Read())
+            while (reader.Read())
             {
                 Object[] attributes = new Object[FIELDS.Length];
                 attributes[0] = reader[0]; // roomID
                 attributes[1] = reader[1]; // roomNum
-                records.Add((int) reader[0], attributes);
+                records.Add((int)reader[0], attributes);
             }
 
             // Close connection
@@ -211,7 +211,7 @@ namespace StorageLayer
 
         /**
          * Adds one room to the database
-         */ 
+         */
         private void createRoom(Room room)
         {
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + room.getRoomID() + "," + room.getRoomNum() + ");";
