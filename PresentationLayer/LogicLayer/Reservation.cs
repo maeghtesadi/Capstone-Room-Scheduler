@@ -162,5 +162,10 @@ namespace LogicLayer
             waitList.Dequeue();
         }
 
+        public Queue<int> getWaitList()
+        {
+            return waitList;
+        }
+
     }
 }

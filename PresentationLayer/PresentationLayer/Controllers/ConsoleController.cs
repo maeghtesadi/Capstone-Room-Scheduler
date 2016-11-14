@@ -20,15 +20,6 @@ namespace CapstoneRoomScheduler.Controllers
         [HttpPost]
         public void acceptTimeSlots(string inputCourseName,int firstTimeSlot, int lastTimeSlot, int room, string date)
         {
-            List<ReservationTest> reservationList = new List<ReservationTest>();
-            reservationList.Add(new ReservationTest(9, 11, 1, "Nassim", "343"));
-            reservationList.Add(new ReservationTest(11, 14, 2, "Nassim", "343"));
-            reservationList.Add(new ReservationTest(13, 15,3, "Nassim", "343"));
-           
-            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-            hubContext.Clients.All.getreservations(reservationList);
-            
-
         }
 
         public void updateView()
