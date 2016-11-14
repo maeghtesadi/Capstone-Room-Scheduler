@@ -115,11 +115,11 @@ var serverSession = $.connection.calendarHub;
 serverSession.client.getReservations = function (reservationList) {
     for (j = 0; j < reservationList.length; j++) {
         for (var i = reservationList[j].initialTimeslot; i <= reservationList[j].finalTimeslot; i++) {
-            $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").toggleClass("reserved");
+            $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").addClass("reserved");
             $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").html("");
         }
         //First timeslot classtoggle=reservedHeader
-        $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").toggleClass("reserved-header").html(reservationList[j].studentName);
+        $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").addClass("reserved-header").html(reservationList[j].studentName);
         //Second timeslot classtoggle=reservedd;
         var time = "<u>Time</u>: From " + reservationList[j].initialTimeslot + " to " + (parseInt(reservationList[j].finalTimeslot) + 1);
         var courseName = "<u>Course Name</u>: " + reservationList[j].courseName;
