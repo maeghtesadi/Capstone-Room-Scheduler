@@ -113,20 +113,28 @@ $.connection.hub.start().done(function () {
 var serverSession = $.connection.calendarHub;
 //Jquery to update the timeslots
 serverSession.client.getReservations = function (reservationList) {
-        for (j=0;j<reservationList.length;j++) {
-        for (var i = reservationList[j].initialTimeslot; i <= reservationList[j].finalTimeslot;i++){
-                $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").toggleClass("reserved");
-                $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").html("");
-            }
-                //First timeslot classtoggle=reservedHeader
-            $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").toggleClass("reserved-header").html(reservationList[j].studentName);
-            //Second timeslot classtoggle=reservedd;
-            var time = "<u>Time</u>: From " + reservationList[j].initialTimeslot + " to " + (parseInt(reservationList[j].finalTimeslot) + 1);
-            var courseName = "<u>Course Name</u>: " + reservationList[j].courseName;
-            var waitingList = "<u>Waiting List:</u>:";
-            $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time+"</br>"+courseName+"</br>"+waitingList)
-            $(".glyphicon-remove").click();
+    var initialIndex = 0;
+    for (j = 0; j < reservationList.length; j++) {
+        var currentUser= reservationList[j].reservationUserId;
+        var i = 0;
+        
+        do{
+            $("li[data-timeslot='" + reservationList[j].reservationTimeSlotId + "']li[data-room='" + reservationList[j].reservationRoomId + "']").toggleClass("reserved");
+            $("li[data-timeslot='" + reservationList[j].reservationTimeSlotId + "']li[data-room='" + reservationList[j].reservationRoomId + "']").html("");
+            i++;
+            initialIndex++;
+        } while ((parseInt(reservationList[j].reservationUserId) == parseInt(reservationList[j].reservationUserId) + 1));
+        j=j+i;
+       
+            //    //First timeslot classtoggle=reservedHeader
+            //$("li[data-timeslot='" + (reservationList[i].reservationTimeSlotId) + "']li[data-room='" + reservationList[i].reservationRoomId + "']").toggleClass("reserved-header").html(reservationList[j].reservationUserId);
+            ////Second timeslot classtoggle=reservedd;
+            //var time = "<u>Time</u>: From " + reservationList[j].initialTimeslot + " to " + (parseInt(reservationList[j].finalTimeslot) + 1);
+            //var courseName = "<u>Course Name</u>: " + reservationList[j].courseName;
+            //var waitingList = "<u>Waiting List:</u>:";
+            //$("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time+"</br>"+courseName+"</br>"+waitingList)
+           
     }
-    
+    $(".glyphicon-remove").click();
     
 };
