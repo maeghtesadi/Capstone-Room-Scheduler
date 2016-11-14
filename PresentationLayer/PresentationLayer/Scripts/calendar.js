@@ -1,4 +1,16 @@
-﻿
+﻿//reservedTimeslots color pallette
+var colorPallette = [
+    ['#16a085', '#1abc9c'],
+    ['#27ae60', '#2ecc71'],
+    ['#2980b9', '#3498db'],
+    ['#8e44ad', '#9b59b6'],
+    ['#2c3e50', '#34495e'],
+    ['#f39c12', '#f1c40f'],
+    ['#d35400', '#e67e22'],
+    ['#c0392b', '#e74c3c'],
+    ['#7f8c8d', '#95a5a6']
+
+];
 
 //Function is run when any of the timeslot li is clicked
 function timeslotClicked(event) {
@@ -112,14 +124,18 @@ $.connection.hub.start().done(function () {
 });
 var serverSession = $.connection.calendarHub;
 //Jquery to update the timeslots
+
 serverSession.client.getReservations = function (reservationList) {
     for (j = 0; j < reservationList.length; j++) {
+        var color = colorPallette[Math.floor(Math.random() * colorPallette.length)];
         for (var i = reservationList[j].initialTimeslot; i <= reservationList[j].finalTimeslot; i++) {
             $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").addClass("reserved");
             $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").html("");
+            $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").css('background-color',color[1]);
         }
         //First timeslot classtoggle=reservedHeader
         $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").addClass("reserved-header").html(reservationList[j].studentName);
+        $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").css('background-color', color[0]);
         //Second timeslot classtoggle=reservedd;
         var time = "<u>Time</u>: From " + reservationList[j].initialTimeslot + " to " + (parseInt(reservationList[j].finalTimeslot) + 1);
         var courseName = "<u>Course Name</u>: " + reservationList[j].courseName;
