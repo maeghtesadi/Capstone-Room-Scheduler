@@ -23,7 +23,7 @@ namespace CapstoneRoomScheduler.Controllers
             DirectoryOfReservations directory = new LogicLayer.DirectoryOfReservations();
             for (int i = firstTimeSlot; i < lastTimeSlot; i ++)
             {
-                directory.makeReservation(123, room, i, date, DateTime.Today);
+                directory.makeReservation(123, room, i, date, new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, i, 0, 0));
             }
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
             hubContext.Clients.All.getReservations(directory.findByDate(DateTime.Today));
