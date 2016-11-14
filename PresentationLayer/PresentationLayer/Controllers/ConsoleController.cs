@@ -21,12 +21,12 @@ namespace CapstoneRoomScheduler.Controllers
         public void acceptTimeSlots(string inputCourseName,int firstTimeSlot, int lastTimeSlot, int room, string date)
         {
             DirectoryOfReservations directory = new LogicLayer.DirectoryOfReservations();
-            for (int i = firstTimeSlot; i < lastTimeSlot; i ++)
+            for (int i = firstTimeSlot; i <= lastTimeSlot; i ++)
             {
                 directory.makeReservation(123, room, i, date, new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, i, 0, 0));
             }
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-            hubContext.Clients.All.getReservations(directory.findByDate(DateTime.Today));
+            hubContext.Clients.All.getReservations(convertToJsonObject(directory.findByDate(DateTime.Today)));
             //updateView();
         }
 
@@ -36,6 +36,42 @@ namespace CapstoneRoomScheduler.Controllers
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
             hubContext.Clients.All.getreservations(directory.findByDate(date));
         }
+        public List<object> convertToJsonObject(List<Reservation> reservationList)
+        {
+            int firstTimeSlot;
+            int lastTimeSlot;
+            List<object> list = new List<object>();
+            for (int i = 0; i < (reservationList.Count<Reservation>() - 1); i++)
+            {
+               firstTimeSlot = reservationList[i].getReservationTimeSlotID();
+                while ((reservationList[i].getReservationUserID() == reservationList[i + 1].getReservationUserID()) && ((reservationList[i].getReservationTimeSlotID() + 1) == reservationList[i + 1].getReservationTimeSlotID()))
+                {
+                    i++;
+                    if (i == reservationList.Count() - 1)
+                    {
+                        break;
+                    }
+                }
+                lastTimeSlot = reservationList[i].getReservationTimeSlotID();
+                list.Add(new
+                {
+                    initialTimeslot = firstTimeSlot,
+                    finalTimeslot = lastTimeSlot,
+                    roomId = reservationList[i - 1].getReservationRoomID(),
+                    courseName = reservationList[i - 1].getReservationDescription(),
+                    userName = reservationList[i - 1].getReservationUserID()
+                });
+               
+            }
+            return list;
+        }
+
+
+
+
+    
+
+
 
         public void updateView()
         {

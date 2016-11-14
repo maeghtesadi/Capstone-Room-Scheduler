@@ -22,7 +22,7 @@ namespace LogicLayer
         {
             List<Reservation> listByDate = new List<Reservation>();
             foreach(Reservation reservation in reservations ) {
-                if(reservation.getReservationDateTime()==date) {
+                if(reservation.getReservationDateTime().Date==date.Date) {
                     listByDate.Add(reservation);
                 }
             }
