@@ -20,9 +20,14 @@ namespace CapstoneRoomScheduler.Controllers
         [HttpPost]
         public void acceptTimeSlots(string inputCourseName,int firstTimeSlot, int lastTimeSlot, int room, string date)
         {
+            DirectoryOfReservations directory = new LogicLayer.DirectoryOfReservations();
+            for (int i = firstTimeSlot; i < lastTimeSlot; i ++)
+            {
+                directory.makeReservation(123, room, i, date, DateTime.Today);
+            }
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-            hubContext.Clients.All.getReservations(new Reservation(1, 1, 1, "Reservation 1", new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 2, 0, 0)));
-            updateView();
+            hubContext.Clients.All.getReservations(directory.findByDate(DateTime.Today));
+            //updateView();
         }
 
         public void updateView(DateTime date)

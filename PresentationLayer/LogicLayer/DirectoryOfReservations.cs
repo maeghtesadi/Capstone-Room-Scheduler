@@ -8,14 +8,14 @@ namespace LogicLayer
 {
     public class DirectoryOfReservations
     {
-        private static List<Reservation> reservations;
+        private static List<Reservation> reservations = new List<Reservation>();
 
         public DirectoryOfReservations()
         {
-            reservations = new List<Reservation>();
-            reservations.Add(new Reservation(1, 1, 1, "Reservation 1", new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 2, 0 ,0)));
-            reservations.Add(new Reservation(2, 2, 2, "Reservation 2", new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 4, 0, 0)));
-            reservations.Add(new Reservation(2, 2, 2, "Reservation 3", new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 7, 0, 0)));
+           // reservations = new List<Reservation>();
+         //   reservations.Add(new Reservation(1, 1, 1, "Reservation 1", new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 2, 0 ,0)));
+         //   reservations.Add(new Reservation(2, 2, 2, "Reservation 2", new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 4, 0, 0)));
+         //   reservations.Add(new Reservation(2, 2, 2, "Reservation 3", new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 7, 0, 0)));
         }
        
         public List<Reservation> findByDate(DateTime date)
@@ -41,6 +41,21 @@ namespace LogicLayer
             }
             return listByuserId;
         }
+
+        public List<Reservation> filterByBlock(DateTime date) //for front end, in progress
+        {
+            List<Reservation> listByDate = new List<Reservation>();
+            foreach (Reservation reservation in reservations)
+            {
+                if (reservation.getReservationDateTime() == date)
+                {
+                    listByDate.Add(reservation);
+                }
+            }
+            return listByDate;
+        }
+
+
         /* public DirectoryOfReservations(List<Reservation> reslist)
          {
              this.reservations = reslist;
@@ -79,11 +94,12 @@ namespace LogicLayer
         //    }
         //}
 
-        public string makeReservation(int uid, int roomid, int timeslotid, string desc, DateTime dt)
+        public void makeReservation(int uid, int roomid, int timeslotid, string desc, DateTime dt)
         {
-            Reservation res = new Reservation(roomid, uid, timeslotid, desc, dt);
-            string s = "Reservation has been created at " + timeslotid + ":00 in room " + roomid;
-            return s;
+            //  Reservation res = new Reservation(roomid, uid, timeslotid, desc, dt);
+            //  string s = "Reservation has been created at " + timeslotid + ":00 in room " + roomid;
+            //  return s;
+            reservations.Add(new Reservation(roomid, uid, timeslotid, desc, dt));
         }
 
         public void modifyReservation(int resid, int roomid, int timeslotid, DateTime dt, string des)
@@ -110,6 +126,9 @@ namespace LogicLayer
                 }
             }
         }
+
+        
+
 
     }
 }
