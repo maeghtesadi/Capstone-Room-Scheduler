@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using StorageLayer;
 
 
-namespace Mapper
+namespace Mappers
 {
     class ReservationMapper
     {

@@ -8,7 +8,7 @@ using LogicLayer;
 using MySql.Data.MySqlClient;
 
 
-namespace StorageLayer
+namespace TDG
 {
 
     public class TDGReservation

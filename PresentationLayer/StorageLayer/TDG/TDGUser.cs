@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using LogicLayer;
 
-namespace StorageLayer
+namespace TDG
 {
     /**
   * Class: TDGUser
