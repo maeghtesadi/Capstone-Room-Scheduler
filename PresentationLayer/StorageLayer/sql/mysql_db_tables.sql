@@ -69,8 +69,8 @@ CREATE TABLE `user` (
 --
 
 CREATE TABLE `waitsfor` (
+ `reservationID` int(11) NOT NULL,
   `userID` int(11) NOT NULL,
-  `reservationID` int(11) NOT NULL,
   `dateTime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -102,7 +102,7 @@ ALTER TABLE `user`
 -- Indexes for table `waitsfor`
 --
 ALTER TABLE `waitsfor`
-  ADD PRIMARY KEY (`userID`,`reservationID`),
+  ADD PRIMARY KEY (`reservationID`,`userID`),
   ADD KEY `reservationID` (`reservationID`);
 
 --
