@@ -8,7 +8,7 @@ namespace LogicLayer
 {
     public class DirectoryOfReservations
     {
-        private static List<Reservation> reservations { get; set; }
+        private static List<Reservation> reservations;
 
         public DirectoryOfReservations()
         {
@@ -18,7 +18,28 @@ namespace LogicLayer
             reservations.Add(new Reservation(2, 2, 2, "Reservation 3", new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 7, 0, 0)));
         }
        
-
+        public List<Reservation> findByDate(DateTime date)
+        {
+            List<Reservation> listByDate = new List<Reservation>();
+            foreach(Reservation reservation in reservations ) {
+                if(reservation.getReservationDateTime()==date) {
+                    listByDate.Add(reservation);
+                }
+            }
+            return listByDate;
+        }
+        public List<Reservation> findByUser(int userId)
+        {
+            List<Reservation> listByuserId = new List<Reservation>();
+            foreach (Reservation reservation in reservations)
+            {
+                if (reservation.getReservationUserID() == userId)
+                {
+                    listByuserId.Add(reservation);
+                }
+            }
+            return listByuserId;
+        }
         /* public DirectoryOfReservations(List<Reservation> reslist)
          {
              this.reservations = reslist;

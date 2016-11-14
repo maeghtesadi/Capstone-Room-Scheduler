@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNet.SignalR;
+using PresentationLayer.Hubs;
 
 namespace LogicLayer
 {
@@ -10,10 +12,12 @@ namespace LogicLayer
     {
         DirectoryOfReservations directory = new DirectoryOfReservations();
 
-
-        public static void viewReservations()
+        //ReservationConsole.updateview() can be called to push new reservaiton data to the client
+        public static void updateView(DateTime date)
         {
-
+            DirectoryOfReservations directory = new DirectoryOfReservations();
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
+            hubContext.Clients.All.getreservations(directory.findByDate(date));
         }
 
         public void makeReservation(int userID, int roomID, DateTime date, int timeSlotID, string description)
