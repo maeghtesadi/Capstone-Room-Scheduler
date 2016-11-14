@@ -41,6 +41,21 @@ namespace LogicLayer
             }
             return listByuserId;
         }
+
+        public List<Reservation> filterByBlock(DateTime date) //for front end, in progress
+        {
+            List<Reservation> listByDate = new List<Reservation>();
+            foreach (Reservation reservation in reservations)
+            {
+                if (reservation.getReservationDateTime() == date)
+                {
+                    listByDate.Add(reservation);
+                }
+            }
+            return listByDate;
+        }
+
+
         /* public DirectoryOfReservations(List<Reservation> reslist)
          {
              this.reservations = reslist;
@@ -111,6 +126,9 @@ namespace LogicLayer
                 }
             }
         }
+
+        
+
 
     }
 }
