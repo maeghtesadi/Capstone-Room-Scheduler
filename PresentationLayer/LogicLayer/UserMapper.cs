@@ -28,19 +28,19 @@ namespace LogicLayer
         public User getUser(int userID)
         {
             User user = userIdentityMap.getInstance().find(userID);
-            Object result[] = null;
+            Object[] result = null;
 
             // If not found in user identity map, try to retrieve from the DB
             if (user == null)
             {
-                result = tdgUser.fetch(userID);
+                result = tdgUser.get(userID);
                 // If the TDG doesn't have it, then it doesn't exist
                 if (result == null){
                 return null;
                 }
                 else {
                 // We got the user from the TDG who got it from the DB and now the mapper must add it to the UserIdentityMap
-                User = new User((int)result[0], (String)result[1], (String)result[2], (String)result[3]), (int)result[4];
+                User = new User((int)result[0], (String)result[1], (String)result[2], (String)result[3],(int)result[4]);
                 userIdentityMap.getInstance().addTo(user);
                 return user;
                 }
@@ -56,7 +56,7 @@ namespace LogicLayer
             Dictionary<int, User> users = userIdentityMap.getInstance().findAll();
 
             // Get all users in the database
-            Dictionary<int, Object[]> result = tdgUser.fetchAll();
+            Dictionary<int, Object[]> result = tdgUser.getAll();
 
             // Loop through each of the result:
             foreach (KeyValuePair<int, Object[]> record in result)
@@ -79,6 +79,43 @@ namespace LogicLayer
 
             return users;
         }
+        /**
+         * Set user attributes
+         */
+        public void setUser(int userID, string name, int numOfReservations)
+        {
+
+            // First we fetch the User || We could have passed the User as a Param. But this assumes you might not have
+            // access to the instance of the desired object.
+            User user = getUser(userID);
+
+            // Mutator function to SET the new name.
+            user.setName(name);
+
+            // Mutator function to SET the new numOfReservations.
+            user.setNumOfReservations(numOfReservations);
+
+            // We've modified something in the object so we Register the instance as Dirty in the UoW.
+            UnitOfWork.getInstance().registerDirty(user);
+        }
+
+        /**
+        * Done: commit
+        */
+        public void done()
+        {
+            UnitOfWork.getInstance().commit();
+        }
+
+        /**
+         * For unit of work:
+         * Update list of users on DB
+         */
+        public void updateUser(List<User> updateList)
+        {
+            tdgUser.updateUser(updateList);
+        }
+
 
     }
 }
