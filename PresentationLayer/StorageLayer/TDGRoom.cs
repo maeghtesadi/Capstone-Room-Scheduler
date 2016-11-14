@@ -141,7 +141,7 @@ namespace StorageLayer
         /**
          * Returns a record for the room given its roomID
          */
-        public Object[] fetch(int roomID)
+        public Object[] get(int roomID)
         {
             // Open connection
             openConnection();
@@ -176,7 +176,7 @@ namespace StorageLayer
          * Returns it as a Dictionary<int, Object[]>
          * Where int is the ID of the object and Object[] contains the record of the row
          */
-        public Dictionary<int, Object[]> fetchAll()
+        public Dictionary<int, Object[]> getAll()
         {
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
             // Open connection

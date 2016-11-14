@@ -52,7 +52,7 @@ namespace LogicLayer
             if(room == null)
             {
                 // Not found in identity map: try to retrive from DB
-                result = tdgRoom.fetch(roomID);
+                result = tdgRoom.get(roomID);
                 if (result != null)
                 {
                     room = new Room();
@@ -75,7 +75,7 @@ namespace LogicLayer
             Dictionary<int, Room> rooms = roomIdentityMap.findAll();
 
             // Get all rooms in the database
-            Dictionary<int, Object[]> result = tdgRoom.fetchAll();
+            Dictionary<int, Object[]> result = tdgRoom.getAll();
 
             // Loop through each of the result:
             foreach(KeyValuePair<int, Object[]> record in result)
