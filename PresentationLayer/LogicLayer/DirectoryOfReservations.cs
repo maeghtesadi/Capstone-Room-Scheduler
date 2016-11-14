@@ -28,6 +28,7 @@ namespace LogicLayer
             }
             return listByDate;
         }
+
         public List<Reservation> findByUser(int userId)
         {
             List<Reservation> listByuserId = new List<Reservation>();
