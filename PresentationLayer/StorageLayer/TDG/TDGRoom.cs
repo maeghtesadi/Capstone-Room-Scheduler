@@ -214,7 +214,7 @@ namespace TDG
          */
         private void createRoom(Room room)
         {
-            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + room.getRoomID() + "," + room.getRoomNum() + ");";
+            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + room.roomID + "," + room.roomNum + ");";
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
         }
@@ -224,7 +224,7 @@ namespace TDG
          */
         private void updateRoom(Room room)
         {
-            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + "=" + room.getRoomNum() + " WHERE " + FIELDS[0] + " = " + room.getRoomID() + ";";
+            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + "=" + room.roomNum + " WHERE " + FIELDS[0] + " = " + room.roomID + ";";
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
         }
@@ -234,7 +234,7 @@ namespace TDG
          */
         private void removeRoom(Room room)
         {
-            this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + room.getRoomID() + ";";
+            this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + room.roomID + ";";
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
         }

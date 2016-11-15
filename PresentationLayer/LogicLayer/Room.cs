@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicLayer
 {
-    class Room
+    public class Room
     {
         public int roomID { get; set; }
         public string roomNum { get; set; }
