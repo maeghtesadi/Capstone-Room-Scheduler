@@ -43,8 +43,8 @@ namespace CapstoneRoomScheduler.Controllers
             List<object> list = new List<object>();
             for (int i = 0; i < (reservationList.Count<Reservation>() - 1); i++)
             {
-               firstTimeSlot = reservationList[i].getReservationTimeSlotID();
-                while ((reservationList[i].getReservationUserID() == reservationList[i + 1].getReservationUserID()) && ((reservationList[i].getReservationTimeSlotID() + 1) == reservationList[i + 1].getReservationTimeSlotID()))
+               firstTimeSlot = reservationList[i].reservationTimeSlotID;
+                while ((reservationList[i].reservationUserID == reservationList[i + 1].reservationUserID) && ((reservationList[i].reservationTimeSlotID + 1) == reservationList[i + 1].reservationTimeSlotID))
                 {
                     i++;
                     if (i == reservationList.Count() - 1)
@@ -52,14 +52,14 @@ namespace CapstoneRoomScheduler.Controllers
                         break;
                     }
                 }
-                lastTimeSlot = reservationList[i].getReservationTimeSlotID();
+                lastTimeSlot = reservationList[i].reservationTimeSlotID;
                 list.Add(new
                 {
                     initialTimeslot = firstTimeSlot,
                     finalTimeslot = lastTimeSlot,
-                    roomId = reservationList[i - 1].getReservationRoomID(),
-                    courseName = reservationList[i - 1].getReservationDescription(),
-                    userName = reservationList[i - 1].getReservationUserID()
+                    roomId = reservationList[i - 1].reservationRoomID,
+                    courseName = reservationList[i - 1].reservationDescription,
+                    userName = reservationList[i - 1].reservationUserID
                 });
                
             }
