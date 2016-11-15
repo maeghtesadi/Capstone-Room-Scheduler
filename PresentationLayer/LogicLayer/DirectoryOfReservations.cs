@@ -22,7 +22,7 @@ namespace LogicLayer
         {
             List<Reservation> listByDate = new List<Reservation>();
             foreach(Reservation reservation in reservations ) {
-                if(reservation.date.Date == date.Date) {
+                if(reservation.reservationDate.Date == date.Date) {
                     listByDate.Add(reservation);
                 }
             }
@@ -47,7 +47,7 @@ namespace LogicLayer
             List<Reservation> listByDate = new List<Reservation>();
             foreach (Reservation reservation in reservations)
             {
-                if (reservation.date == date)
+                if (reservation.reservationDate == date)
                 {
                     listByDate.Add(reservation);
                 }
@@ -110,7 +110,7 @@ namespace LogicLayer
                 {
                     reservations[i].reservationID = roomid;
                     reservations[i].reservationTimeSlotID = timeslotid;
-                    reservations[i].date = dt;
+                    reservations[i].reservationDate = dt;
                     reservations[i].reservationDescription = des;
                 }
             }

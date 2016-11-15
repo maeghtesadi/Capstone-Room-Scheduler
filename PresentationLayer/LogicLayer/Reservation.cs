@@ -17,7 +17,7 @@ namespace LogicLayer
         public int reservationUserID { get; set; }
         public int reservationTimeSlotID { get; set; }
         public int reservationRoomID { get; set; }
-        public DateTime date { get; set; }
+        public DateTime reservationDate { get; set; }
         
         public int reservationID { get; set; }
         public  string reservationDescription { get; set; }
@@ -30,7 +30,7 @@ namespace LogicLayer
             reservationTimeSlotID = 0;
             reservationUserID = 0;
             reservationRoomID = 0;
-            date = new DateTime(); //default constructor will set the date of the reservation as the current day
+            reservationDate = new DateTime(); //default constructor will set the date of the reservation as the current day
             waitList = new Queue<int>();
 
             uniqueReservationCounter++;
@@ -43,7 +43,7 @@ namespace LogicLayer
             this.reservationTimeSlotID = tid;
             this.reservationUserID = uid;
             this.reservationRoomID = roomid;
-            this.date = dt;
+            this.reservationDate = dt;
             waitList = new Queue<int>();
 
             uniqueReservationCounter++; //counter goes up for every reservation created
@@ -71,7 +71,7 @@ namespace LogicLayer
 
         public void setReservationDateTime(int year, int month, int day, int hour)
         {
-            date = new DateTime(year, month, day, hour, 0, 0);
+            reservationDate = new DateTime(year, month, day, hour, 0, 0);
         }
 
         //can't set each field seperately

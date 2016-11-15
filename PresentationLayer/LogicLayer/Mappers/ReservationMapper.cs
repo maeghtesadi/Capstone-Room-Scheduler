@@ -37,12 +37,12 @@ namespace Mappers
 
             //Make a new reservation object
             Reservation reservation = new Reservation();
-            reservation.setReservationID(reservation.GetHashCode());
-            reservation.setUserID(userID);
-            reservation.setRoomID(roomID);
-            reservation.setDescription(desc);
-            reservation.setDate(date);
-            reservation.setHour(hour);
+            reservation.reservationID = (reservation.GetHashCode());
+            reservation.reservationUserID = (userID);
+            reservation.reservationRoomID = (roomID);
+            reservation.reservationDescription = (desc);
+            reservation.reservationDate = (date);
+            reservation.reservationDate = new DateTime(date.Year, date.Month, date.Day, hour, 0, 0);
 
             //Add new reservation object to the identity map, in Live memory.
             reservationIdentityMap.addTo(reservation);
@@ -50,11 +50,9 @@ namespace Mappers
             //Add reservation object to UoW registry (register as a new RESERVATION).
             //It will be  created in the DB once the user is ready to commit everything.
 
-            UnitOfWork.getInsance().registerNew(reservation);
+            UnitOfWork.getInstance().registerNew(reservation);
 
             return reservation;
-
-
 
         }
 
@@ -75,7 +73,6 @@ namespace Mappers
                 //If not found in Reservation identity map then, it uses TDG to try to retrieve from DB.
                 result = tdgReservation.fetch(reservationID);
 
-
                 if (result != null)
                 {
                     /**The reservation was obtained from the TDG.
@@ -84,12 +81,13 @@ namespace Mappers
 
                     //mapper must add reservation to the ReservationIdentityMap
                     reservation = new Reservation();
-                    reservation.setReservationID((int)result[0]); //reservationID
-                    reservation.setUserID((int)result[1]); //userID
-                    reservation.setRoomID((int)result[2]); //roomID
-                    reservation.setDescription((String)result[3]); //desc
-                    reservation.setDate((DateTime)result[4]); //date
-                    reservation.setHour((int)result[5]);//hour
+                    reservation.reservationID = ((int)result[0]); //reservationID
+                    reservation.reservationUserID = ((int)result[1]); //userID
+                    reservation.reservationRoomID = ((int)result[2]); //roomID
+                    reservation.reservationDescription = ((String)result[3]); //desc
+                    reservation.reservationDate = ((DateTime)result[4]); //date
+                    //reservation.setHour((int)result[5]);//hour
+                    reservation.reservationDate = new DateTime(reservation.reservationDate.Year, reservation.reservationDate.Month, reservation.reservationDate.Day, (int)result[5], 0, 0);
                     reservationIdentityMap.addTo(reservation);
 
                 }
@@ -121,15 +119,15 @@ namespace Mappers
                 {
 
                     Reservation reservation = new Reservation();
-                    reservation.setReservationID((int)record.Key); //reservationID
-                    reservation.setUserID((int)record.Value[1]); //userID
-                    reservation.setRoomID((int)record.Value[2]); //roomID
-                    reservation.setDescription((string)record.Value[3]); //desc
-                    reservation.setDate((DateTime)record.Value[4]); //date
-                    reservation.setHour((int)record.Value[5]);//hour
+                    reservation.reservationID = ((int)record.Key); //reservationID
+                    reservation.reservationUserID = ((int)record.Value[1]); //userID
+                    reservation.reservationRoomID = ((int)record.Value[2]); //roomID
+                    reservation.reservationDescription = ((string)record.Value[3]); //desc
+                    reservation.reservationDate = ((DateTime)record.Value[4]); //date
+                    reservation.reservationDate = new DateTime(reservation.reservationDate.Year, reservation.reservationDate.Month, reservation.reservationDate.Day, (int)record.Value[5], 0, 0);//hour
 
                     reservationIdentityMap.addTo(reservation);
-                    reservations.Add(reservation.getReservationID(), reservation);
+                    reservations.Add(reservation.reservationID, reservation);
 
                 }
 
@@ -158,11 +156,11 @@ namespace Mappers
 
             //Update the reservation
 
-            reservation.setUserID(userID); //mutator function to set the NEW userID
-            reservation.setRoomID(roomID); //mutator function to set the NEW roomID
-            reservation.setDescription(desc); //mutator function to set the NEW description
-            reservation.setDate(date); //mutator function to set the NEW date
-            reservation.setHour(hour); //mutator function to set the NEW hour
+            reservation.reservationUserID = (userID); //mutator function to set the NEW userID
+            reservation.reservationRoomID = (roomID); //mutator function to set the NEW roomID
+            reservation.reservationDescription = (desc); //mutator function to set the NEW description
+            reservation.reservationDate = (date); //mutator function to set the NEW date
+            reservation.reservationDate = new DateTime (reservation.reservationDate.Year, reservation.reservationDate.Month, reservation.reservationDate.Day, hour, 0, 0); //mutator function to set the NEW hour
 
             //Register instances as Dirty in the Unit Of Work since the object has been modified.
             UnitOfWork.getInstance().registerDirty(reservation);
