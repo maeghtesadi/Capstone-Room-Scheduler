@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicLayer
 {
-    class UserCatalog
+    public class UserCatalog
     {
         public List<int> registeredUsers { get; set; }
 

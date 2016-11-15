@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicLayer
 {
-    class TimeSlotList
+    public class TimeSlotList
     {
         public List<TimeSlot> timeSlots { get; set; }
 

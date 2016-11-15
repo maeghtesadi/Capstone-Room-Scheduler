@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicLayer
 {
-    class DirectoryOfTimeSlots
+    public class DirectoryOfTimeSlots
     {
 
         public DirectoryOfTimeSlots()

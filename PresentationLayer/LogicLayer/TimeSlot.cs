@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicLayer
 {
-    class TimeSlot
+    public class TimeSlot
     {
         public int timeSlotID { get; set; }
         public bool isReserved { get; set; }
