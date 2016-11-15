@@ -10,9 +10,9 @@ namespace LogicLayer
     class User
     {
 
-        private int userID;
-        private string name;
-        private int numOfReservations;
+        public int userID { get; set; }
+        public string name { get; set; }
+        public int numOfReservations { get; set; }
 
         public User()
         {
@@ -28,36 +28,6 @@ namespace LogicLayer
             this.name = n;
             this.numOfReservations = numres;
 
-        }
-
-        public int getUserID()
-        {
-            return userID;
-        }
-
-        public void setUserID(int idnumber)
-        {
-            this.userID = idnumber;
-        }
-
-        public string getName()
-        {
-            return name;
-        }
-
-        public void setName(string n)
-        {
-            this.name = n; 
-        }
-
-        public int getNumOfReservations ()
-        {
-            return numOfReservations;
-        }
-
-        public void setNumOfReservations (int numres)
-        {
-            this.numOfReservations = numres;
         }
 
     }

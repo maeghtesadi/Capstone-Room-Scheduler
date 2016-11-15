@@ -36,7 +36,7 @@ namespace LogicLayer
          */ 
         public void addTo(Room room)
         {
-            roomList_ActiveMemory.Add(room.getRoomID(), room);
+            roomList_ActiveMemory.Add(room.roomID, room);
         }
 
         /**
@@ -44,7 +44,7 @@ namespace LogicLayer
          */ 
         public void removeFrom(Room room)
         {
-            roomList_ActiveMemory.Remove(room.getRoomID());
+            roomList_ActiveMemory.Remove(room.roomID);
         }
 
         /**

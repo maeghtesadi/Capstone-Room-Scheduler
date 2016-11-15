@@ -22,7 +22,7 @@ namespace LogicLayer
         {
             List<Reservation> listByDate = new List<Reservation>();
             foreach(Reservation reservation in reservations ) {
-                if(reservation.getReservationDateTime().Date==date.Date) {
+                if(reservation.date == date) {
                     listByDate.Add(reservation);
                 }
             }
@@ -34,7 +34,7 @@ namespace LogicLayer
             List<Reservation> listByuserId = new List<Reservation>();
             foreach (Reservation reservation in reservations)
             {
-                if (reservation.getReservationUserID() == userId)
+                if (reservation.reservationID == userId)
                 {
                     listByuserId.Add(reservation);
                 }
@@ -47,7 +47,7 @@ namespace LogicLayer
             List<Reservation> listByDate = new List<Reservation>();
             foreach (Reservation reservation in reservations)
             {
-                if (reservation.getReservationDateTime() == date)
+                if (reservation.date == date)
                 {
                     listByDate.Add(reservation);
                 }
@@ -70,7 +70,7 @@ namespace LogicLayer
         {
             for (int i = 0; i < reservations.Count; i++)
             {
-                if (reservations[i].getReservationID() == resid)
+                if (reservations[i].reservationID == resid)
                 {
                     return reservations[i];
                 }
@@ -106,12 +106,12 @@ namespace LogicLayer
         {
             for (int i = 0; i < reservations.Count; i++)
             {
-                if (reservations[i].getReservationID() == resid)
+                if (reservations[i].reservationID == resid)
                 {
-                    reservations[i].setReservationRoomID(roomid);
-                    reservations[i].setReservationTimeSlotID(timeslotid);
-                    reservations[i].setReservationDateTime(dt.Year, dt.Month, dt.Day, dt.Hour);
-                    reservations[i].setReservationDescription(des);
+                    reservations[i].reservationID = roomid;
+                    reservations[i].reservationTimeSlotID = timeslotid;
+                    reservations[i].date = dt;
+                    reservations[i].reservationDescription = des;
                 }
             }
         }
@@ -120,7 +120,7 @@ namespace LogicLayer
         {
             for (int i=0; i < reservations.Count; i++)
             {
-                if (reservations[i].getReservationID() == resid)
+                if (reservations[i].reservationID == resid)
                 {
                     reservations.Remove(reservations[i]); //remove reservation from list of reservations
                 }

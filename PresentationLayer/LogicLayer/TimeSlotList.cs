@@ -8,7 +8,7 @@ namespace LogicLayer
 {
     class TimeSlotList
     {
-        private List<TimeSlot> timeSlots;
+        public List<TimeSlot> timeSlots { get; set; }
 
         public TimeSlotList()
         {
@@ -29,18 +29,12 @@ namespace LogicLayer
         {
             for (int i = 0; i < timeSlots.Count; i++)
             {
-                if (timeSlots[i].getTimeSlotID() == timeslotid)
+                if (timeSlots[i].timeSlotID == timeslotid)
                 {
                     return timeSlots[i];
                 }
             }
             return null;
         }
-
-
-
-
-
-
     }
 }

@@ -69,87 +69,13 @@ namespace LogicLayer
         //    this.reservationTimeSlot = t;
         //}
 
-        public int getReservationUserID()
-        {
-            return reservationUserID;
-        }
-
-        public void setReservationUserID(int uid)
-        {
-            this.reservationUserID = uid;
-        }
-
-        public int getReservationTimeSlotID()
-        {
-            return reservationTimeSlotID;
-        }
-
-        public void setReservationTimeSlotID(int tid)
-        {
-            this.reservationTimeSlotID = tid;
-        }
-
-        public DateTime getReservationDateTime()
-        {
-            return date;
-        }
-
         public void setReservationDateTime(int year, int month, int day, int hour)
         {
             date = new DateTime(year, month, day, hour, 0, 0);
         }
 
-        public int getReservationRoomID()
-        {
-            return reservationRoomID;
-        }
-
-        public void setReservationRoomID(int roomid)
-        {
-            this.reservationRoomID = roomid;
-        }
-
         //can't set each field seperately
 
-        public int getReservationYear()
-        {
-            return date.Year;
-        }
-
-        public int getReservationMonth()
-        {
-            return date.Month;
-        }
-
-        public int getReservationDay()
-        {
-            return date.Day;
-        }
-
-        public int getReservationHour()
-        {
-            return date.Hour;
-        }
-
-        public int getReservationID()
-        {
-            return reservationID;
-        }
-
-        public void setReservationID(int resid)
-        {
-            this.reservationID = resid;
-        }
-        
-        public string getReservationDescription()
-        {
-            return reservationDescription;
-        }
-
-        public void setReservationDescription(string desc)
-        {
-            this.reservationDescription = desc;
-        }
 
         public void addToWaitList(int uid)
         {
@@ -160,11 +86,6 @@ namespace LogicLayer
         public void removeFromWaitList()
         {
             waitList.Dequeue();
-        }
-
-        public Queue<int> getWaitList()
-        {
-            return waitList;
         }
 
     }

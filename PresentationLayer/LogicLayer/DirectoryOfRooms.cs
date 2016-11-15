@@ -8,17 +8,18 @@ namespace LogicLayer
 {
     class DirectoryOfRooms
     {
-        List<Room> roomList;
+        public List<Room> roomList { get; set; }
 
         public DirectoryOfRooms()
         {
+            roomList = new List<Room>();
         }
 
         public Room findRoom(int roomID)
         {
             Room room = new Room();
             for (int i = 0; i < roomList.Count(); i++)
-                if (roomList[i].getRoomID() == roomID)
+                if (roomList[i].roomID == roomID)
                      room = roomList[i];
             return room;
         }

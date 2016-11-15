@@ -8,14 +8,15 @@ namespace LogicLayer
 {
     class Room
     {
-        private int roomID;
-        private string roomNum;
-        private TimeSlotList listOfTimeSlots;
+        public int roomID { get; set; }
+        public string roomNum { get; set; }
+        public TimeSlotList listOfTimeSlots { get; set; }
 
         public Room()
         {
             roomID = 0;
             roomNum = "";
+            listOfTimeSlots = new TimeSlotList();
         }
 
         public Room(int roomID, string roomNum)
@@ -53,26 +54,6 @@ namespace LogicLayer
         public TimeSlotList getTimeSlotList()
         {
             return listOfTimeSlots;
-        }
-
-        public void setRoomID(int id)
-        {
-            roomID = id;
-        }
-
-        public int getRoomID()
-        {
-            return roomID;
-        }
-
-        public void setRoomNum(string num)
-        {
-            roomNum = num;
-        }
-
-        public string getRoomNum()
-        {
-            return roomNum;
         }
 
         public bool find(TimeSlot timeSlot)

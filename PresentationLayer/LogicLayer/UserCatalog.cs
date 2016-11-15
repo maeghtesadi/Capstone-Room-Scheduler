@@ -8,7 +8,7 @@ namespace LogicLayer
 {
     class UserCatalog
     {
-        private List<int> registeredUsers;
+        public List<int> registeredUsers { get; set; }
 
         public UserCatalog()
         {
