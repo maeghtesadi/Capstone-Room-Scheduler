@@ -30,8 +30,8 @@ namespace Mappers
         {
             // Make a new room object
             Room room = new Room();
-            room.setRoomID(room.GetHashCode());
-            room.setRoomNum(roomNum);
+            room.roomID = room.GetHashCode();
+            room.roomNum = roomNum;
 
             // Add it to the identity map
             roomIdentityMap.addTo(room);
@@ -57,8 +57,8 @@ namespace Mappers
                 if (result != null)
                 {
                     room = new Room();
-                    room.setRoomID((int) result[0]); // roomID
-                    room.setRoomNum((String) result[1]); // roomNum
+                    room.roomID = ((int) result[0]); // roomID
+                    room.roomNum = ((String) result[1]); // roomNum
                     roomIdentityMap.addTo(room);
                 }
             }
@@ -85,12 +85,12 @@ namespace Mappers
                 if(!rooms.ContainsKey(record.Key))
                 {
                     Room room = new Room();
-                    room.setRoomID((int) record.Key); // roomID
-                    room.setRoomNum((String) record.Value[1]); // roomNum
+                    room.roomID = ((int) record.Key); // roomID
+                    room.roomNum = ((String) record.Value[1]); // roomNum
                     
                     roomIdentityMap.addTo(room);
                     
-                    rooms.Add(room.getRoomID(), room);
+                    rooms.Add(room.roomID, room);
                 }
             } 
 
@@ -106,7 +106,7 @@ namespace Mappers
             Room room = getRoom(roomID);
 
             // Update the room
-            room.setRoomNum(RoomNum);
+            room.roomNum = (RoomNum);
 
             // Register it to the unit of work
             UnitOfWork.getInstance().registerDirty(room);

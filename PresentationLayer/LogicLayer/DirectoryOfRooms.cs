@@ -24,11 +24,6 @@ namespace LogicLayer
             return room;
         }
 
-        public void getAll()
-        {
-
-        }
-
         //public void makeNewTimeSlot(int roomID, DateTime date, int timeSlotID)
         //{
         //    Room room = findRoom(roomID);
@@ -36,10 +31,10 @@ namespace LogicLayer
         //}
         //Why is this function in DirectoryOfRooms?
 
-        public List<Room> getAllRooms()
-        {
-            return roomList;
-        }
+        //public List<Room> getAllRooms()
+        //{
+        //    return roomList;
+        //}
 
 
     }
