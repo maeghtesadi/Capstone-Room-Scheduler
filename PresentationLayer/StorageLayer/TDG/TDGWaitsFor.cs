@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LogicalLayer;
+using LogicLayer;
 
 namespace TDG
 {
@@ -98,7 +98,7 @@ namespace TDG
             // For each reader, add it to the dictionary
             while (reader.Read())
             {
-               listOfUsers.Add(reader[0]); // Selecting only the userID
+                listOfUsers.Add(reader[0]); // Selecting only the userID
             }
 
             // Close connection
@@ -111,14 +111,16 @@ namespace TDG
         /**
          * 
          */
-        public void refreshWaitsFor(List<Reservation> listOfReservations) {
-            
+        public void refreshWaitsFor(List<Reservation> listOfReservations)
+        {
+
             // Open connection
             openConnection();
-            
+
             Queue<int> waitList;
             List<int> results;
-            foreach(Reservation reservation in listOfReservations) {
+            foreach (Reservation reservation in listOfReservations)
+            {
 
                 // Obtain all queuer for that reservation from the database
                 this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservation.getReservationID();
@@ -129,42 +131,48 @@ namespace TDG
                 results = new List<int>();
                 while (reader.Read())
                 {
-                   results.Add(reader[0]); // Selecting only the userID
+                    results.Add(reader[0]); // Selecting only the userID
                 }
 
                 // Get the waitlist of the reservation that is refreshed
-                waitList = reservation.getWaitList();
+                waitList = reservation.waitList;
 
                 // If a userID is found in the DB but not in the waitlist: remove from the DB
-                foreach(int userID in results) {
-                    if (!waitList.Contains(userID)) {
-                        deleteWaitsFor(reservation.getReservationID(), userID);
+                foreach (int userID in results)
+                {
+                    if (!waitList.Contains(userID))
+                    {
+                        deleteWaitsFor(reservation.reservationID, userID);
                     }
                 }
 
                 // If a userID is found in the waitlist but not in the DB: add it to the DB
-                foreach(int userID in waitList) {
-                    if(!results.Contains(userID)) {
+                foreach (int userID in waitList)
+                {
+                    if (!results.Contains(userID))
+                    {
                         DateTime now = new DateTime();
                         String currentDateTime = now.ToString("yyyy-MM-dd HH:mm:ss");
-                        createWaitsFor(reservation.getReservationID(), userID, currentDateTime);
+                        createWaitsFor(reservation.reservationID, userID, currentDateTime);
                     }
                 }
 
             }
         }
 
-        public void createWaitsFor(int reservationID, int userID, String currentDateTime) {
+        public void createWaitsFor(int reservationID, int userID, String currentDateTime)
+        {
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES ( " + reservationID + "," + userID + "," + currentDateTime + ");";
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
         }
-        public void deleteWaitsFor(int reservationID, int userID) {
+        public void deleteWaitsFor(int reservationID, int userID)
+        {
             this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservationID + " AND " + FIELDS[1] + " = " + userID;
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
         }
 
     }
-    }
+}
 }
