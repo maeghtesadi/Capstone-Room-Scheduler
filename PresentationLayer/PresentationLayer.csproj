@@ -184,8 +184,8 @@
     <Compile Include="LogicLayer\DirectoryOfTimeslots.cs" />
     <Compile Include="LogicLayer\Reservation.cs" />
     <Compile Include="LogicLayer\ReservationConsole.cs" />
-    <Compile Include="LogicLayer\ReservationIdentityMap.cs" />
     <Compile Include="LogicLayer\Mappers\ReservationMapper.cs" />
+    <Compile Include="LogicLayer\ReservationIdentityMap.cs" />
     <Compile Include="LogicLayer\Room.cs" />
     <Compile Include="LogicLayer\RoomIdentityMap.cs" />
     <Compile Include="LogicLayer\Mappers\RoomMapper.cs" />
