@@ -140,9 +140,9 @@ serverSession.client.getReservations = function (reservationList) {
         var time = "<u>Time</u>: From " + reservationList[j].initialTimeslot + " to " + (parseInt(reservationList[j].finalTimeslot) + 1);
         var courseName = "<u>Course Name</u>: " + reservationList[j].courseName;
         var waitingList = "<u>Waiting List:</u>:";
-        $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time + "</br>" + courseName + "</br>" + waitingList)
-        $(".glyphicon-remove").click();
+        $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time + "</br>" + courseName + "</br>" + waitingList);
+        
     }
-
+    $(".glyphicon-remove").click();
 
 };
