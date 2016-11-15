@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using StorageLayer;
+using TDG;
+using LogicLayer;
 
 
-namespace LogicLayer
+namespace Mappers
 {
     class ReservationMapper
     {
@@ -16,7 +17,7 @@ namespace LogicLayer
 
         private TDGReservation tdgReservation = TDGReservation.getInstance();
         private ReservationIdentityMap reservationIdentityMap = ReservationIdentityMap.getInstance();
-
+        private WaitsForMapper waitsForMapper = WaitsForMapper.getInstance();
 
         //default constructor
         private ReservationMapper() { }
@@ -137,6 +138,14 @@ namespace LogicLayer
 
         }
 
+        /**
+         * Return all users waiting for a reservation given the
+         * reservation ID.
+         */
+        public List<int> getAllUsers(int reservationID)
+        {
+            return waitsForMapper.getAllUsers(reservationID);
+        }
 
         /**
          * Set reservation attributes
@@ -199,12 +208,14 @@ namespace LogicLayer
         public void addReservation(List<Reservation> newList)
         {
             tdgReservation.addReservation(newList);
+            waitsForMapper.refreshWaitsFor(newList);
         }
 
         //For Unit of Work: A list of reservations to be updated in the DB is passed to the TDG.
         public void updateReservation(List<Reservation> updateList)
         {
             tdgReservation.updateReservation(updateList);
+            waitsForMapper.refreshWaitsFor(updateList);
         }
 
         //For Unit of Work : A list of reservation to be deleted in the DB is passes to the TDG.

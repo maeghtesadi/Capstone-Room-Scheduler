@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using LogicLayer;
 
-namespace StorageLayer
+namespace TDG
 {
     /**
   * Class: TDGUser
@@ -25,7 +25,7 @@ namespace StorageLayer
         private static TDGUser instance = new TDGUser();
 
         // Field names of the table
-        private static readonly string[] FIELDS = { "userID", "username", "password", "name", "numOfReservations" };
+        private static readonly String[] FIELDS = { "userID", "username", "password", "name", "numOfReservations" };
         
         // Database server (localhost)
         private const String DATABASE_SERVER = "127.0.0.1";
@@ -85,10 +85,32 @@ namespace StorageLayer
             this.conn.Close();
         }
 
+        // Updates the list of users in the DB
+        public void updateUser(List<User> updateList)
+        {
+
+            openConnection();
+            for (int i = 0; i < updateList.Count(); i++)
+            {
+                updateUser(updateList[i]);
+            }
+            closeConnection();
+        }
+
+        // SQL Statement to update an existing User/Row
+        public void updateUser(User user) {
+           this.cmd.CommandText = "UPDATE " + TABLE_NAME + " \n" +
+                   "SET " + FIELDS[1] + "=" + user.getUserName() + "," + FIELDS[2] + "=" + user.getPassword() + "," +
+                   FIELDS[3] + "=" + user.getName() + "," + FIELDS[4] + "=" + user.getNumOfReservations() + ";\n" +
+                   "WHERE" + FIELDS[0] + "=" + user.getUserID() + ";";
+           this.cmd.Connection = this.conn;
+           cmd.ExecuteReader();
+       }
+
         /**
        * Returns a record for the user given its userID
        */
-        public Object[] fetch(int userID)
+        public Object[] get(int userID)
         {
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " \n" +
                     "WHERE " + FIELDS[0] + "=" + userID + ";";
@@ -122,7 +144,7 @@ namespace StorageLayer
          * Returns it as a Dictionary<int, Object[]>
          * Where int is the ID of the object and Object[] contains the record of the row
          */
-        public Dictionary<int, Object[]> fetchAll()
+        public Dictionary<int, Object[]> getAll()
         {
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
 
