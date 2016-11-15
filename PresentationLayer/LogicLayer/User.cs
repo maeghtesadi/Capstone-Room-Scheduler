@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace LogicLayer
 {
   
-    class User
+   public class User
     {
 
         public int userID { get; set; }

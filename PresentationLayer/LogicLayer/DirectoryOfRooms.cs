@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicLayer
 {
-    class DirectoryOfRooms
+    public class DirectoryOfRooms
     {
         public List<Room> roomList { get; set; }
 

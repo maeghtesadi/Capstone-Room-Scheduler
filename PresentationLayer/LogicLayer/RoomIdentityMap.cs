@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicLayer
 {
-    class RoomIdentityMap
+    public class RoomIdentityMap
     {
         /**
          * Room Identity Map instance (Singleton)
