@@ -56,7 +56,7 @@
 //                if (result != null)
 //                {
 //                    room = new Room();
-//                    room.setRoomID((int) result[0]); // roomID
+//                    room.setRoomID((int) result[0]); // roomID, ALL OF THESE METHODS MUST BE MODIFIED WITH THE UPDATED CLASS DEFINITIONS
 //                    room.setRoomNum((String) result[1]); // roomNum
 //                    roomIdentityMap.addTo(room);
 //                }
