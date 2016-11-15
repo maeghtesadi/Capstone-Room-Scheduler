@@ -10,19 +10,20 @@ namespace LogicLayer
     {
         public int roomID { get; set; }
         public string roomNum { get; set; }
-        public TimeSlotList listOfTimeSlots { get; set; }
+        public TimeSlotList timeSlotList { get; set; }
 
         public Room()
         {
             roomID = 0;
             roomNum = "";
-            listOfTimeSlots = new TimeSlotList();
+            timeSlotList = new TimeSlotList();
         }
 
-        public Room(int roomID, string roomNum)
+        public Room(int roomID, string roomNum, TimeSlotList timeSlotList)
         {
             this.roomID = roomID;
             this.roomNum = roomNum;
+            this.timeSlotList = timeSlotList;
         }
 
         //public void makeNewTimeSlot(DateTime date, int timeSlotID)
@@ -50,20 +51,5 @@ namespace LogicLayer
         //}
 
         //These two functions above should not be in Room class, should be in TimeSlotList
-
-        public TimeSlotList getTimeSlotList()
-        {
-            return listOfTimeSlots;
-        }
-
-        public bool find(TimeSlot timeSlot)
-        {
-            return true;
-        }
-
-        public bool checkAvailability()
-        {
-            return true;
-        }
     }
 }

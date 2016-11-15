@@ -25,11 +25,11 @@ namespace LogicLayer
             timeSlots.Add(ts);
         }
 
-        public TimeSlot findTimeSlot(int timeslotid)
+        public TimeSlot findTimeSlot(int timeSlotId)
         {
             for (int i = 0; i < timeSlots.Count; i++)
             {
-                if (timeSlots[i].timeSlotID == timeslotid)
+                if (timeSlots[i].timeSlotID == timeSlotId)
                 {
                     return timeSlots[i];
                 }

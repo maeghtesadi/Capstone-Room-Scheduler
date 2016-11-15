@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
 using PresentationLayer.Hubs;
+using Mappers;
 
 namespace LogicLayer
 {
     public class ReservationConsole
     {
-        //DirectoryOfReservations directory = new DirectoryOfReservations();
 
         public void makeReservation(int userID, int roomID, DateTime date, int timeSlotID, string description)
         {
@@ -27,9 +27,14 @@ namespace LogicLayer
 
         }
 
-        public static void viewRoomAvailabilites()
+        public static DirectoryOfRooms getAllRooms()
         {
-
+            DirectoryOfRooms directory = new DirectoryOfRooms();
+            foreach(KeyValuePair<int, Room> room in RoomMapper.getInstance().getAllRooms())
+            {
+                directory.roomList.Add(room.Value);
+            }
+            return directory;
         }
 
         public static void addToWaitList(int roomID, int timeSlotID, DateTime date, int userID)
