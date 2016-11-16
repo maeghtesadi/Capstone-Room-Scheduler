@@ -41,7 +41,7 @@ namespace Mappers
                 }
                 else {
                 // We got the user from the TDG who got it from the DB and now the mapper must add it to the UserIdentityMap
-                User = new User((int)result[0], (String)result[1], (String)result[2], (String)result[3],(int)result[4]);
+                user = new User((int)result[0], (String)result[1], (String)result[2], (String)result[3],(int)result[4]);
                 userIdentityMap.getInstance().addTo(user);
                 return user;
                 }
