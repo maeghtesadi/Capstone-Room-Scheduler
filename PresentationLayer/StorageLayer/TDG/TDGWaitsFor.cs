@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 using LogicLayer;
 
 namespace TDG
@@ -98,7 +99,7 @@ namespace TDG
             // For each reader, add it to the dictionary
             while (reader.Read())
             {
-                listOfUsers.Add(reader[0]); // Selecting only the userID
+                listOfUsers.Add((int)reader[0]); // Selecting only the userID
             }
 
             // Close connection
@@ -123,7 +124,7 @@ namespace TDG
             {
 
                 // Obtain all queuer for that reservation from the database
-                this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservation.getReservationID();
+                this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservation.reservationID;
                 this.cmd.Connection = this.conn;
                 MySqlDataReader reader = cmd.ExecuteReader();
 

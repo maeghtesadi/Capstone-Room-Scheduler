@@ -212,6 +212,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="StorageLayer\TDG\TDGReservation.cs" />
     <Compile Include="StorageLayer\TDG\TDGRoom.cs" />
+    <Compile Include="StorageLayer\TDG\TDGTimeSlot.cs" />
     <Compile Include="StorageLayer\TDG\TDGUser.cs" />
     <Compile Include="StorageLayer\TDG\TDGWaitsFor.cs" />
   </ItemGroup>

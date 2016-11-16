@@ -11,17 +11,17 @@ using MySql.Data.MySqlClient;
 namespace TDG
 {
 
-    public class TDGReservation
+    public class TDGTimeSlot
     {
         //This instance
 
-        private static TDGReservation instance = new TDGReservation();
+        private static TDGTimeSlot instance = new TDGTimeSlot();
 
         //Table name
-        private const String TABLE_NAME = "reservation";
+        private const String TABLE_NAME = "timeslot";
 
         //Fields names of the table
-        private readonly String[] FIELDS = { "reservationID", "userID", "roomID", "desc", "date" }; 
+        private readonly String[] FIELDS = { "timeslotID", "reservationID", "hour" };
 
         //Database server (localhost)
         private const String DATABASE_SERVER = "127.0.0.1";
@@ -31,7 +31,7 @@ namespace TDG
 
         //Credentials to connect to the databas
         private const String DATABASE_UID = "root";
-        private const String DATABASE_PWD = " ";
+        private const String DATABASE_PWD = "";
 
         //The whole connection string used to connect to the database
         //In our case, we will always connect to the same database, this it can
@@ -51,7 +51,7 @@ namespace TDG
          * Returns the instance
          * */
 
-        public static TDGReservation getInstance()
+        public static TDGTimeSlot getInstance()
         {
             return instance;
         }
@@ -60,7 +60,7 @@ namespace TDG
          * Default Constructor
          */
 
-        private TDGReservation()
+        private TDGTimeSlot()
         {
             this.cmd = new MySqlCommand();
             this.cmd.CommandTimeout = COMMAND_TIMEOUT;
@@ -98,16 +98,14 @@ namespace TDG
 
 
         /**
-         * Add new reservations to the database
-         * */
-
-
-        public void addReservation(List<Reservation> newList)
+         * Add new timeslot(s) to the database
+         */
+        public void addTimeSlot(List<TimeSlot> newList)
         {
             openConnection();
             for (int i = 0; i < newList.Count; i++)
             {
-                createReservation(newList[i]);
+                createTimeSlot(newList[i]);
             }
             closeConnection();
 
@@ -115,48 +113,32 @@ namespace TDG
 
 
         /**
-         * Update reservations of the database
-         * */
-
-        public void updateReservation(List<Reservation> updateList)
-        {
-            openConnection();
-            for (int i = 0; i < updateList.Count; i++)
-            {
-                updateReservation(updateList[i]);
-            }
-            closeConnection();
-        }
-
-
-        /**
-         * Delete reservation(s) from the databas
+         * Delete timeSlot(s) from the databas
          *
          * */
 
-        public void deleteReservation(List<Reservation> deleteList)
+        public void deleteTimeSlot(List<TimeSlot> deleteList)
         {
             openConnection();
             for (int i = 0; i < deleteList.Count; i++)
             {
-                removeReservation(deleteList[i]);
-
+                removeTimeSlot(deleteList[i]);
             }
             closeConnection();
 
         }
 
         /**
-         * Returns a record for the reservation given its reservationID
-         * */
+         * Returns a record for the timeslot given its timeslotID
+         */
 
-        public Object[] get(int reservationID)
+        public Object[] get(int timeslotID)
         {
             //Open connection
             openConnection();
 
             //Write and execute the query
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + "WHERE" + FIELDS[0] + " = " + reservationID;
+            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + "WHERE" + FIELDS[0] + " = " + timeslotID;
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
 
@@ -171,8 +153,9 @@ namespace TDG
             Object[] record = new Object[FIELDS.Length];
             while (reader.Read())
             {
-                record[0] = reader[0];
-                record[1] = reader[1];
+                record[0] = reader[0]; // timeslotID
+                record[1] = reader[1]; // reservationID
+                record[2] = reader[2]; // dateTime
 
             }
             //Close connection
@@ -189,7 +172,7 @@ namespace TDG
          * Where int is the ID of the object and Object[] contains the record of the row
          * */
 
-        public Dictionary<int, Object[]> getAll()
+        public Dictionary<int, Object[]> getAllTimeSlot()
         {
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
             //Open Connection
@@ -211,16 +194,11 @@ namespace TDG
             while (reader.Read())
             {
                 Object[] attributes = new Object[FIELDS.Length];
-                attributes[0] = reader[0]; //reservationID
-                attributes[1] = reader[1]; // userID
-                attributes[2] = reader[2]; //roomID
-                attributes[3] = reader[3]; //desc
-                attributes[4] = reader[4]; //date
-             
+                attributes[0] = reader[0]; // timeslotID
+                attributes[1] = reader[1]; // reservationID
+                attributes[2] = reader[2]; // hour
 
                 records.Add((int)reader[0], attributes);
-
-
             }
 
             //close connection
@@ -231,44 +209,83 @@ namespace TDG
         }
 
         /**
-         * Adds one reservation to the database
+         * Select all data from the table
+         * Returns it as a Dictionary <int, Object[]>
+         * Where int is the ID of the object and Object[] contains the record of the row
+         * For a given reservation ID
          * */
-        private void createReservation(Reservation reservation)
+
+        public Dictionary<int, Object[]> getAllTimeSlot(int reservationID)
         {
-            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + reservation.reservationID + "," +
-                reservation.reservationUserID + "," + reservation.reservationRoomID + "," + reservation.reservationDescription + "," +
-                reservation.reservationDate +");";
+            Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
+            //Open Connection
+            openConnection();
+
+            //Write and execute the query
+            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[1] + " = " + reservationID;
+            this.cmd.Connection = this.conn;
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            //If no record is found, return null
+            if (!reader.HasRows)
+            {
+                return null;
+
+            }
+
+            //For each reader, add it to the dictionary
+            while (reader.Read())
+            {
+                Object[] attributes = new Object[FIELDS.Length];
+                attributes[0] = reader[0]; // timeslotID
+                attributes[1] = reader[1]; // reservationID
+                attributes[2] = reader[2]; // hour
+
+                records.Add((int)reader[0], attributes);
+            }
+
+            //close connection
+            closeConnection();
+
+            //Format and return the result
+            return records;
+        }
+
+        /**
+         * Adds one timeslot to the database
+         * */
+        private void createTimeSlot(TimeSlot timeslot)
+        {
+            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + timeslot.timeSlotID + "," +
+                timeslot.reservationID + "," + timeslot.hour + ");";
 
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
         }
 
         /**
-         * Updates one reservation of the database
+         * Removes one timeslot from the database
          * */
 
-        private void updateReservation(Reservation reservation)
+        private void removeTimeSlot(TimeSlot timeslot)
         {
-
-            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + 
-                FIELDS[4] + " = " + reservation.reservationDate + "," + FIELDS[3] + " = " + reservation.reservationDescription + "," +
-                FIELDS[2] + " = " + reservation.reservationRoomID + "," + FIELDS[1] + "=" + reservation.reservationUserID + " WHERE " +
-                FIELDS[0] + " = " + reservation.reservationID + ";";
+            this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeslot.timeSlotID + ";";
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
         }
 
 
-        /**
-         * Removes one reservation from the database
-         * */
 
-        private void removeReservation(Reservation reservation)
-        {
-            this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservation.reservationID + ";";
-            this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
-        }
+
+
+
+
+
+
+
+
+
+
 
 
 
