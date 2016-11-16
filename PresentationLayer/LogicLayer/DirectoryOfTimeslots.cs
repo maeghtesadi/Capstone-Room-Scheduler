@@ -9,18 +9,18 @@ namespace LogicLayer
     public class DirectoryOfTimeSlots
     {
 
+        List<TimeSlot> timeslots;
+
         public DirectoryOfTimeSlots()
         {
+            timeslots = new List<TimeSlot>();
         }
 
-        public void addToWaitList(int timeSlotID, DateTime date, int userID)
-        {
-
-        }
 
         public void findTimeSlot()
         {
 
         }
+
     }
 }
