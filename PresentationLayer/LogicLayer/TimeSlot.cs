@@ -11,6 +11,7 @@ namespace LogicLayer
         public int timeSlotID { get; set; }
         public bool isReserved { get; set; }
         public DateTime date { get; set; }
+        Queue<int> waitlist = new Queue<int>();
 
         public TimeSlot()
         {
