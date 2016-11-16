@@ -100,9 +100,9 @@ namespace TDG
         // SQL Statement to update an existing User/Row
         public void updateUser(User user) {
            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " \n" +
-                   "SET " + FIELDS[1] + "=" + user.getUserName() + "," + FIELDS[2] + "=" + user.getPassword() + "," +
-                   FIELDS[3] + "=" + user.getName() + "," + FIELDS[4] + "=" + user.getNumOfReservations() + ";\n" +
-                   "WHERE" + FIELDS[0] + "=" + user.getUserID() + ";";
+                   "SET " + FIELDS[1] + "=" + user.username + "," + FIELDS[2] + "=" + user.password + "," +
+                   FIELDS[3] + "=" + user.name + "," + FIELDS[4] + "=" + user.numOfReservations + ";\n" +
+                   "WHERE" + FIELDS[0] + "=" + user.userID + ";";
            this.cmd.Connection = this.conn;
            cmd.ExecuteReader();
        }

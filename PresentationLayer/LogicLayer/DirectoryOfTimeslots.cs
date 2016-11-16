@@ -9,11 +9,11 @@ namespace LogicLayer
     public class DirectoryOfTimeSlots
     {
 
-        List<TimeSlot> timeslots;
+        public List<TimeSlot> timeSlotList { get; set; }
 
         public DirectoryOfTimeSlots()
         {
-            timeslots = new List<TimeSlot>();
+            timeSlotList = new List<TimeSlot>();
         }
 
 

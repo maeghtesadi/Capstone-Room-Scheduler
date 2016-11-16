@@ -25,10 +25,13 @@ namespace LogicLayer
         private List<Room> roomChangedList = new List<Room>();
         private List<Room> roomDeletedList = new List<Room>();
 
+        private List<TimeSlot> timeSlotNewList = new List<TimeSlot>();
+        private List<TimeSlot> timeSlotDeletedList = new List<TimeSlot>();
+
         UserMapper userMapper = UserMapper.getInstance();
         RoomMapper roomMapper = RoomMapper.getInstance();
         ReservationMapper reservationMapper = ReservationMapper.getInstance();
-
+        TimeSlotMapper timeSlotMapper = TimeSlotMapper.getInstance();
         private UnitOfWork() { }
 
         public static UnitOfWork getInstance()
@@ -70,13 +73,24 @@ namespace LogicLayer
         {
             roomDeletedList.Add(room);
         }
+
+        public void registerNew(TimeSlot timeslot)
+        {
+            timeSlotNewList.Add(timeslot);
+        }
+
+        public void registerDeleted(TimeSlot timeslot)
+        {
+            timeSlotDeletedList.Add(timeslot);
+        }
+
         public void commit()
         {
 
             // To be verified with respective mappers
             //if (userNewList.Count() != 0)
-                //userMapper.AddUser(userNewList); 
-                //prof doesn't want add users in our case
+            //userMapper.AddUser(userNewList); 
+            //prof doesn't want add users in our case
             //if (userChangedList.Count() != 0)
             //    userMapper.updateUser(userChangedList);
             //if (userDeletedList.Count() != 0)
@@ -96,6 +110,11 @@ namespace LogicLayer
             if (roomDeletedList.Count() != 0)
                 roomMapper.deleteRoom(roomDeletedList);
 
+            if (timeSlotNewList.Count() != 0)
+                timeSlotMapper.addTimeSlot(timeSlotNewList);
+            if (timeSlotDeletedList.Count() != 0)
+                timeSlotMapper.deleteRoom(timeSlotDeletedList);
+
             //Empty the lists after the Commit.
             userDeletedList.Clear();
             userChangedList.Clear();
@@ -106,6 +125,8 @@ namespace LogicLayer
             roomDeletedList.Clear();
             roomChangedList.Clear();
             roomNewList.Clear();
+            timeSlotNewList.Clear();
+            timeSlotDeletedList.Clear();
         }
     }
 }

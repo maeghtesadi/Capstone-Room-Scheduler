@@ -12,36 +12,25 @@ namespace LogicLayer
     public class ReservationConsole
     {
 
-        public void makeReservation(int resid, int uid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
+        public void makeReservation(int uid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
         {
-            List<Reservation> newReservation = new List<Reservation>();
+            Reservation res = ReservationMapper.getInstance().makeNew(uid, roomid, resdes, dt);
+
             for (int i = firstHour; i < lastHour; i++)
             {
-                //Reservation res = new Reservation(resid, uid, roomid, resdes, dt, i);
-                Reservation res = ReservationMapper.getInstance().makeNew(uid, roomid, resdes, dt, i);
-                newReservation.Add(res);
+                TimeSlot ts = TimeSlotMapper.getInstance().makeNew(res.reservationUserID, i); //update Later
             }
+
             UnitOfWork.getInstance().commit();
         }
 
         public static void modifyReservation(int resid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
         {
-            List<Reservation> reservationBlock = new List<Reservation>();
-            reservationBlock = ReservationMapper.getInstance().getReservationBlock(blockID);
-
-            if (lastHour - firstHour > reservationBlock.Count)
+            Reservation res = ReservationMapper.getInstance().modifyReservation(resid, roomid, resdes, dt);
+            for (int i = firstHour; i < lastHour; i++)
             {
-                for (int i = lastHour - firstHour; i > 0; i--)
-                    reservationBlock.Add(new Reservation());
+                TimeSlot ts = TimeSlotMapper.getInstance().makeNew(res.reservationUserID, i); //update Later
             }
-
-            if (lastHour - firstHour < reservationBlock.Count)
-            {
-                for (int i = 0; i < lastHour - firstHour - reservationBlock.Count; i++)
-                    reservationBlock.RemoveAt(i);
-            }
-
-            ReservationMapper.getInstance().modifyReservation(resid, roomid, resdes, dt, hour); //blockid later
         }
 
         public static void cancelReservation()
@@ -49,23 +38,59 @@ namespace LogicLayer
 
         }
 
+        public static DirectoryOfTimeSlots getAllTimeSlots()
+        {
+            DirectoryOfTimeSlots directory = new DirectoryOfTimeSlots();
+            foreach (KeyValuePair<int, TimeSlot> timeSlot in TimeSlotMapper.getInstance().getAllTimeSlot())
+            {
+                directory.timeSlotList.Add(timeSlot.Value);
+            }
+            return directory;
+        }
+
         public static DirectoryOfReservations getAllReservations()
         {
-            DirectoryOfReservations directory = new DirectoryOfReservations();
-            foreach (KeyValuePair<int, Reservation> reservation in RoomMapper.getInstance().getAllRooms())
+            DirectoryOfReservations reservationDirectory = new DirectoryOfReservations();
+            DirectoryOfTimeSlots timeSlotsDirectory = getAllTimeSlots();
+
+            foreach (KeyValuePair<int, Reservation> reservation in ReservationMapper.getInstance().getAllReservation())
             {
-                directory.reservationList.Add();
+                reservationDirectory.reservationList.Add(reservation.Value);
             }
+
+            for (int i = 0; i < reservationDirectory.reservationList.Count; i++)
+            {
+                for (int j = 0; j < timeSlotsDirectory.timeSlotList.Count; j++)
+                {
+                    if (reservationDirectory.reservationList[i].reservationID == timeSlotsDirectory.timeSlotList[j].reservationID)
+                        reservationDirectory.reservationList[i].timeSlots.Add(timeSlotsDirectory.timeSlotList[j]);
+                }
+            }
+
+            return reservationDirectory;
         }
 
         public static DirectoryOfRooms getAllRooms()
         {
-            DirectoryOfRooms directory = new DirectoryOfRooms();
-            foreach(KeyValuePair<int, Room> room in RoomMapper.getInstance().getAllRooms())
+            DirectoryOfRooms roomDirectory = new DirectoryOfRooms();
+            DirectoryOfReservations reservationDirectory = getAllReservations();
+
+            foreach (KeyValuePair<int, Room> room in RoomMapper.getInstance().getAllRooms())
             {
-                directory.roomList.Add(room.Value);
+                roomDirectory.roomList.Add(room.Value);
             }
-            return directory;
+
+            for (int i = 0; i < roomDirectory.roomList.Count; i++)
+            {
+                for (int j = 0; j < reservationDirectory.reservationList.Count; j++)
+                {
+                    if (reservationDirectory.reservationList[j].reservationRoomID == roomDirectory.roomList[i].roomID)
+                        roomDirectory.roomList[i].roomReservations.Add(reservationDirectory.reservationList[j]);
+                }
+            }
+
+
+            return roomDirectory;
         }
 
         public static void addToWaitList(int roomID, int timeSlotID, DateTime date, int userID)

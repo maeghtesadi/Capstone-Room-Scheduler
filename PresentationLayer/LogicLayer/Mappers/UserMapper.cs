@@ -73,7 +73,7 @@ namespace Mappers
                     user.name = ((String)record.Value[3]); // name
                     user.numOfReservations = ((int)record.Value[4]); // numOfReservations
 
-                    userIdentityMap.getInstance().addTo(user);
+                    UserIdentityMap.getInstance().addTo(user);
 
                     users.Add(user.userID, user);
                 }

@@ -181,9 +181,10 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="LogicLayer\DirectoryOfReservations.cs" />
     <Compile Include="LogicLayer\DirectoryOfRooms.cs" />
-    <Compile Include="LogicLayer\DirectoryOfTimeslots.cs" />
+    <Compile Include="LogicLayer\DirectoryOfTimeSlots.cs" />
     <Compile Include="LogicLayer\IdentityMaps\UserIdentityMap.cs" />
     <Compile Include="LogicLayer\IdentityMaps\WaitsForIdentityMap.cs" />
+    <Compile Include="LogicLayer\Mappers\TimeSlotMapper.cs" />
     <Compile Include="LogicLayer\Reservation.cs" />
     <Compile Include="LogicLayer\ReservationConsole.cs" />
     <Compile Include="LogicLayer\Mappers\ReservationMapper.cs" />
@@ -212,6 +213,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="StorageLayer\TDG\TDGReservation.cs" />
     <Compile Include="StorageLayer\TDG\TDGRoom.cs" />
+    <Compile Include="StorageLayer\TDG\TDGTimeSlot.cs" />
     <Compile Include="StorageLayer\TDG\TDGUser.cs" />
     <Compile Include="StorageLayer\TDG\TDGWaitsFor.cs" />
   </ItemGroup>

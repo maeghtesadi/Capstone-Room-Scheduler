@@ -13,7 +13,7 @@ namespace LogicLayer
         public DateTime reservationDate { get; set; }
         public int reservationID { get; set; }
         public string reservationDescription { get; set; }
-        List<TimeSlot> timeSlots { get; set; }
+        public List<TimeSlot> timeSlots { get; set; }
 
         public Reservation()
         {
