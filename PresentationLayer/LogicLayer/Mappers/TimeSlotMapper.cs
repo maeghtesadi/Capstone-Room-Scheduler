@@ -190,21 +190,14 @@ namespace Mappers
         //For Unit of Work: A list of timeslots to be added to the DB is passed to the TDG. 
         public void addTimeSlot(List<TimeSlot> newList)
         {
-            tdgTimeSlot.addTimeSlot(newList);
+            tdgTimeSlot.createTimeSlot(newList);
             waitsForMapper.refreshWaitsFor(newList);
-        }
-
-        //For Unit of Work: A list of timeslots to be updated in the DB is passed to the TDG.
-        public void updateReservation(List<TimeSlot> updateList)
-        {
-            tdgTimeSlot.updateTimeSlot(updateList);
-            waitsForMapper.refreshWaitsFor(updateList);
         }
 
         //For Unit of Work : A list of timeslots to be deleted in the DB is passes to the TDG.
         public void deleteTimeSlot(List<TimeSlot> deleteList)
         {
-            tdgTimeSlot.deleteTimeSlot(deleteList);
+            tdgTimeSlot.removeTimeSlot(deleteList);
         }
 
 
