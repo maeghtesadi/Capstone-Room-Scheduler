@@ -9,19 +9,22 @@ namespace LogicLayer
     public class Reservation
     {
         public static int uniqueReservationCounter = 1; //want a global variable that is incremented 
-        //each time a reservation is created
-        //THIS MUST BE CHANGED WHEN MERGED WITH MAPPER CODE, we need to hash for reservation id
+                                                        //each time a reservation is created
+                                                        //THIS MUST BE CHANGED WHEN MERGED WITH MAPPER CODE, we need to hash for reservation id
 
         //private User reservationUser;
         //private TimeSlot reservationTimeSlot;
-        public int reservationUserID { get; set; }
+        //public int reservationHour { get; set; }
         //public int reservationTimeSlotID { get; set; }
+
+        public int reservationUserID { get; set; }
         public int reservationRoomID { get; set; }
         public DateTime reservationDate { get; set; }
-        public int reservationHour { get; set; }
         public int reservationID { get; set; }
         public string reservationDescription { get; set; }
-        public Queue<int> waitList { get; set; }
+        List<TimeSlot> timeSlots;
+    
+       // public Queue<int> waitList { get; set; }
 
         public Reservation()
         {
@@ -31,8 +34,6 @@ namespace LogicLayer
             reservationUserID = 0;
             reservationRoomID = 0;
             reservationDate = new DateTime(); //default constructor will set the date of the reservation as the current day
-            waitList = new Queue<int>();
-
             uniqueReservationCounter++;
         }
 
@@ -40,8 +41,6 @@ namespace LogicLayer
         {
             this.reservationID = resid;
             this.reservationDescription = resdes;
-            //this.reservationTimeSlotID = tid;
-            this.reservationHour = hour;
             this.reservationUserID = uid;
             this.reservationRoomID = roomid;
             this.reservationDate = dt;

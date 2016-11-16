@@ -9,22 +9,22 @@ namespace LogicLayer
     public class TimeSlot
     {
         public int timeSlotID { get; set; }
-        public bool isReserved { get; set; }
-        public DateTime date { get; set; }
+        public int reservationID { get; set; }
+        public int hour { get; set; }
+        //public bool isReserved { get; set; }
+        //public DateTime date { get; set; }
         Queue<int> waitlist = new Queue<int>();
 
         public TimeSlot()
         {
             timeSlotID = 0;
-            isReserved = false;
-            date = new DateTime();
+            hour = 0;
         }
 
-        public TimeSlot(int timeSlotID, DateTime date, bool isReserved)
+        public TimeSlot(int timeSlotID, DateTime date, bool isReserved, int hour)
         {
             this.timeSlotID = timeSlotID;
-            this.isReserved = isReserved;
-            this.date = date;
+            this.hour = hour;
         }
     }
 }
