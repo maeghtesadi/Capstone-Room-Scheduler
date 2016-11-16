@@ -10,20 +10,20 @@ namespace LogicLayer
     {
         public int roomID { get; set; }
         public string roomNum { get; set; }
-        public TimeSlotList timeSlotList { get; set; }
+       // public TimeSlotList timeSlotList { get; set; }
 
         public Room()
         {
             roomID = 0;
             roomNum = "";
-            timeSlotList = new TimeSlotList();
+         //   timeSlotList = new TimeSlotList();
         }
 
-        public Room(int roomID, string roomNum, TimeSlotList timeSlotList)
+        public Room(int roomID, string roomNum)
         {
             this.roomID = roomID;
             this.roomNum = roomNum;
-            this.timeSlotList = timeSlotList;
+         //   this.timeSlotList = timeSlotList;
         }
 
         //public void makeNewTimeSlot(DateTime date, int timeSlotID)

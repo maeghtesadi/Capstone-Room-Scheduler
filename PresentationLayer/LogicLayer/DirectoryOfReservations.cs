@@ -8,20 +8,17 @@ namespace LogicLayer
 {
     public class DirectoryOfReservations
     {
-        private static List<Reservation> reservations = new List<Reservation>();
+        public List<Reservation> reservationList { get; set; }
 
         public DirectoryOfReservations()
         {
-           // reservations = new List<Reservation>();
-         //   reservations.Add(new Reservation(1, 1, 1, "Reservation 1", new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 2, 0 ,0)));
-         //   reservations.Add(new Reservation(2, 2, 2, "Reservation 2", new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 4, 0, 0)));
-         //   reservations.Add(new Reservation(2, 2, 2, "Reservation 3", new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 7, 0, 0)));
+            reservationList = new List<Reservation>();
         }
        
         public List<Reservation> findByDate(DateTime date)
         {
             List<Reservation> listByDate = new List<Reservation>();
-            foreach(Reservation reservation in reservations ) {
+            foreach(Reservation reservation in reservationList ) {
                 if(reservation.reservationDate.Date == date.Date) {
                     listByDate.Add(reservation);
                 }
@@ -32,7 +29,7 @@ namespace LogicLayer
         public List<Reservation> findByUser(int userId)
         {
             List<Reservation> listByuserId = new List<Reservation>();
-            foreach (Reservation reservation in reservations)
+            foreach (Reservation reservation in reservationList)
             {
                 if (reservation.reservationID == userId)
                 {
@@ -45,7 +42,7 @@ namespace LogicLayer
         public List<Reservation> filterByBlock(DateTime date) //for front end, in progress
         {
             List<Reservation> listByDate = new List<Reservation>();
-            foreach (Reservation reservation in reservations)
+            foreach (Reservation reservation in reservationList)
             {
                 if (reservation.reservationDate == date)
                 {
@@ -63,16 +60,16 @@ namespace LogicLayer
 
         public int getReservationSize()
         {
-            return reservations.Count;
+            return reservationList.Count;
         }
 
         public Reservation getReservation(int resid)
         {
-            for (int i = 0; i < reservations.Count; i++)
+            for (int i = 0; i < reservationList.Count; i++)
             {
-                if (reservations[i].reservationID == resid)
+                if (reservationList[i].reservationID == resid)
                 {
-                    return reservations[i];
+                    return reservationList[i];
                 }
             }
             return null;
@@ -106,25 +103,25 @@ namespace LogicLayer
 
         public void modifyReservation(int resid, int roomid, int timeslotid, DateTime dt, string des)
         {
-            for (int i = 0; i < reservations.Count; i++)
+            for (int i = 0; i < reservationList.Count; i++)
             {
-                if (reservations[i].reservationID == resid)
+                if (reservationList[i].reservationID == resid)
                 {
-                    reservations[i].reservationID = roomid;
-                    reservations[i].reservationTimeSlotID = timeslotid;
-                    reservations[i].reservationDate = dt;
-                    reservations[i].reservationDescription = des;
+                    reservationList[i].reservationID = roomid;
+                    reservationList[i].reservationTimeSlotID = timeslotid;
+                    reservationList[i].reservationDate = dt;
+                    reservationList[i].reservationDescription = des;
                 }
             }
         }
             
         public void cancelReservation(int resid)
         {
-            for (int i=0; i < reservations.Count; i++)
+            for (int i=0; i < reservationList.Count; i++)
             {
-                if (reservations[i].reservationID == resid)
+                if (reservationList[i].reservationID == resid)
                 {
-                    reservations.Remove(reservations[i]); //remove reservation from list of reservations
+                    reservationList.Remove(reservationList[i]); //remove reservation from list of reservations
                 }
             }
         }

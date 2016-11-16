@@ -15,10 +15,10 @@ namespace LogicLayer
         //private User reservationUser;
         //private TimeSlot reservationTimeSlot;
         public int reservationUserID { get; set; }
-        public int reservationTimeSlotID { get; set; }
+        //public int reservationTimeSlotID { get; set; }
         public int reservationRoomID { get; set; }
         public DateTime reservationDate { get; set; }
-
+        public int reservationHour { get; set; }
         public int reservationID { get; set; }
         public  string reservationDescription { get; set; }
         public Queue<int> waitList { get; set; }
@@ -27,7 +27,7 @@ namespace LogicLayer
         {
             reservationID = uniqueReservationCounter;
             reservationDescription = "";
-            reservationTimeSlotID = 0;
+            //reservationTimeSlotID = 0;
             reservationUserID = 0;
             reservationRoomID = 0;
             reservationDate = new DateTime(); //default constructor will set the date of the reservation as the current day
@@ -36,11 +36,12 @@ namespace LogicLayer
             uniqueReservationCounter++;
         }
 
-        public Reservation(int roomid, int uid, int tid, string resdes, DateTime dt)
+        public Reservation(int resid, int uid, int roomid, string resdes, DateTime dt, int hour)
         {
-            this.reservationID = uniqueReservationCounter;
+            this.reservationID = resid;
             this.reservationDescription = resdes;
-            this.reservationTimeSlotID = tid;
+            //this.reservationTimeSlotID = tid;
+            this.reservationHour = hour;
             this.reservationUserID = uid;
             this.reservationRoomID = roomid;
             this.reservationDate = dt;
