@@ -91,26 +91,26 @@ namespace LogicLayer
         //    }
         //}
 
-        public void makeReservation(int uid, int roomid, int timeslotid, string desc, DateTime dt)
+        public void makeReservation(int resid, int uid, int roomid, string resdes, DateTime dt, int hour)
         {
             //  Reservation res = new Reservation(roomid, uid, timeslotid, desc, dt);
             //  string s = "Reservation has been created at " + timeslotid + ":00 in room " + roomid;
             //  return s;
-            reservations.Add(new Reservation(roomid, uid, timeslotid, desc, dt));
-
-
+            reservationList.Add(new Reservation(resid, uid, roomid, resdes, dt, hour));
         }
 
-        public void modifyReservation(int resid, int roomid, int timeslotid, DateTime dt, string des)
+        public void modifyReservation(int resid, int uid, int roomid, string resdes, DateTime dt, int hour)
         {
             for (int i = 0; i < reservationList.Count; i++)
             {
                 if (reservationList[i].reservationID == resid)
                 {
                     reservationList[i].reservationID = roomid;
-                    reservationList[i].reservationTimeSlotID = timeslotid;
+                   // reservationList[i].reservationTimeSlotID = timeslotid;
                     reservationList[i].reservationDate = dt;
-                    reservationList[i].reservationDescription = des;
+                    reservationList[i].reservationDescription = resdes;
+                    reservationList[i].reservationHour = hour;
+                    reservationList[i].reservationUserID = uid;
                 }
             }
         }
