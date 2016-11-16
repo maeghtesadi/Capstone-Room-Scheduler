@@ -181,7 +181,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="LogicLayer\DirectoryOfReservations.cs" />
     <Compile Include="LogicLayer\DirectoryOfRooms.cs" />
-    <Compile Include="LogicLayer\DirectoryOfTimeslots.cs" />
+    <Compile Include="LogicLayer\DirectoryOfTimeSlots.cs" />
     <Compile Include="LogicLayer\IdentityMaps\UserIdentityMap.cs" />
     <Compile Include="LogicLayer\IdentityMaps\WaitsForIdentityMap.cs" />
     <Compile Include="LogicLayer\Reservation.cs" />
