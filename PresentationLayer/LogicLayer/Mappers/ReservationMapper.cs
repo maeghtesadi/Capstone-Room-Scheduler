@@ -149,14 +149,14 @@ namespace Mappers
          * Set reservation attributes
          **/
 
-        public void setReservation(int reservationID, int userID, int roomID, string desc, DateTime date, int hour)
+        public void modifyReservation(int reservationID, int roomID, string desc, DateTime date, int hour)
         {
             //Get the reservation that needs to be updated
             Reservation reservation = getReservation(reservationID);
 
             //Update the reservation
 
-            reservation.reservationUserID = (userID); //mutator function to set the NEW userID
+            //reservation.reservationUserID = (userID); //mutator function to set the NEW userID
             reservation.reservationRoomID = (roomID); //mutator function to set the NEW roomID
             reservation.reservationDescription = (desc); //mutator function to set the NEW description
             reservation.reservationDate = (date); //mutator function to set the NEW date
@@ -185,11 +185,7 @@ namespace Mappers
             //Object will be deleted from the DB
             UnitOfWork.getInstance().registerDeleted(reservation);
 
-
         }
-
-
-
         /**
          * Done: commit
          * When it is time to commit, UoW writes changes to the DB

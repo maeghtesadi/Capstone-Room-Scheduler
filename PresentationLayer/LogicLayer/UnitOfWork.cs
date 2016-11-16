@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using StorageLayer;
+//using StorageLayer;
+using Mappers;
 
 namespace LogicLayer
 {
@@ -24,9 +25,9 @@ namespace LogicLayer
         private List<Room> roomChangedList = new List<Room>();
         private List<Room> roomDeletedList = new List<Room>();
 
-        UserMapper userMapper = userMapper.getInstance();
-        RoomMapper roomMapper = roomMapper.getInstance();
-        ReservationMapper reservationMapper = reservationMapper.getInstance();
+        UserMapper userMapper = UserMapper.getInstance();
+        RoomMapper roomMapper = RoomMapper.getInstance();
+        ReservationMapper reservationMapper = ReservationMapper.getInstance();
 
         private UnitOfWork() { }
 
@@ -37,48 +38,49 @@ namespace LogicLayer
 
         public void registerDirty(User user)
         {
-            userChangedList.add(user);
+            userChangedList.Add(user);
         }
 
         public void registerNew(Reservation reservation)
         {
-            reservationNewList.add(reservation);
+            reservationNewList.Add(reservation);
         }
 
         public void registerDirty(Reservation reservation)
         {
-            reservationChangedList.add(reservation);
+            reservationChangedList.Add(reservation);
         }
 
         public void registerDeleted(Reservation reservation)
         {
-            reservationDeletedList.add(reservation);
+            reservationDeletedList.Add(reservation);
         }
 
         public void registerNew(Room room)
         {
-            roomNewList.add(room);
+            roomNewList.Add(room);
         }
 
         public void registerDirty(Room room)
         {
-            roomChangedList.add(room);
+            roomChangedList.Add(room);
         }
 
         public void registerDeleted(Room room)
         {
-            roomDeletedList.add(room);
+            roomDeletedList.Add(room);
         }
         public void commit()
         {
 
             // To be verified with respective mappers
-            if (userNewList.Count() != 0)
-                userMapper.addUser(userNewList);
-            if (userChangedList.Count() != 0)
-                userMapper.updateUser(userChangedList);
-            if (userDeletedList.Count() != 0)
-                userMapper.deleteUser(userDeletedList);
+            //if (userNewList.Count() != 0)
+                //userMapper.AddUser(userNewList); 
+                //prof doesn't want add users in our case
+            //if (userChangedList.Count() != 0)
+            //    userMapper.updateUser(userChangedList);
+            //if (userDeletedList.Count() != 0)
+            //    userMapper.deleteUser(userDeletedList);
 
             if (reservationNewList.Count() != 0)
                 reservationMapper.addReservation(reservationNewList);
@@ -95,15 +97,15 @@ namespace LogicLayer
                 roomMapper.deleteRoom(roomDeletedList);
 
             //Empty the lists after the Commit.
-            userDeletedList.clear();
-            userChangedList.clear();
-            userNewList.clear();
-            reservationDeletedList.clear();
-            reservationChangedList.clear();
-            reservatioNewList.clear();
-            roomDeletedList.clear();
-            roomChangedList.clear();
-            roomNewList.clear();
+            userDeletedList.Clear();
+            userChangedList.Clear();
+            userNewList.Clear();
+            reservationDeletedList.Clear();
+            reservationChangedList.Clear();
+            reservationNewList.Clear();
+            roomDeletedList.Clear();
+            roomChangedList.Clear();
+            roomNewList.Clear();
         }
     }
 }
