@@ -20,7 +20,7 @@ namespace LogicLayer
         public DateTime reservationDate { get; set; }
         public int reservationHour { get; set; }
         public int reservationID { get; set; }
-        public  string reservationDescription { get; set; }
+        public string reservationDescription { get; set; }
         public Queue<int> waitList { get; set; }
 
         public Reservation()
@@ -69,6 +69,7 @@ namespace LogicLayer
         //{
         //    this.reservationTimeSlot = t;
         //}
+
 
         public void setReservationDateTime(int year, int month, int day, int hour)
         {

@@ -75,42 +75,43 @@ namespace LogicLayer
             return null;
         }
 
+
         //public void displayReservations()
         //{
         //    //this function should return a string in the future so Nim can use it
         //    string message = "The current reservations made in the system are: ";
-           
+
         //    for (int i = 0; i < reservations.Count; i++)
         //    {
 
         //        Console.Write(reservations[i].getReservationUser().getFirstName() + " "); //finish this later
         //        Console.Write(reservations[i].getReservationUser().getLastName() + " reserved at: "); //finish this later
         //        Console.WriteLine(reservations[i].getReservationTimeSlot().getTimeSlotID() + ":00 "); //finish this later
-                
+
         //        //also need the room... how to access based on our current class diagram?
         //    }
         //}
 
-        public void makeReservation(int uid, int roomid, int timeslotid, string desc, DateTime dt)
+        public void makeReservation(int resid, int uid, int roomid, string resdes, DateTime dt, int hour)
         {
             //  Reservation res = new Reservation(roomid, uid, timeslotid, desc, dt);
             //  string s = "Reservation has been created at " + timeslotid + ":00 in room " + roomid;
             //  return s;
-            reservations.Add(new Reservation(roomid, uid, timeslotid, desc, dt));
-
-
+            reservationList.Add(new Reservation(resid, uid, roomid, resdes, dt, hour));
         }
 
-        public void modifyReservation(int resid, int roomid, int timeslotid, DateTime dt, string des)
+        public void modifyReservation(int resid, int uid, int roomid, string resdes, DateTime dt, int hour)
         {
             for (int i = 0; i < reservationList.Count; i++)
             {
                 if (reservationList[i].reservationID == resid)
                 {
                     reservationList[i].reservationID = roomid;
-                    reservationList[i].reservationTimeSlotID = timeslotid;
+                   // reservationList[i].reservationTimeSlotID = timeslotid;
                     reservationList[i].reservationDate = dt;
-                    reservationList[i].reservationDescription = des;
+                    reservationList[i].reservationDescription = resdes;
+                    reservationList[i].reservationHour = hour;
+                    reservationList[i].reservationUserID = uid;
                 }
             }
         }
@@ -126,7 +127,7 @@ namespace LogicLayer
             }
         }
 
-        
+
 
 
     }

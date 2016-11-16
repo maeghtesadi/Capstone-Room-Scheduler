@@ -12,16 +12,36 @@ namespace LogicLayer
     public class ReservationConsole
     {
 
-        public void makeReservation(int userID, int roomID, DateTime date, string description)
+        public void makeReservation(int resid, int uid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
         {
-            Reservation res = new Reservation(roomID, userID, timeSlotID, description, date);
-            ReservationMapper.getInstance().addReservation()
-           // directory.makeNewTimeSlot(roomID, date, timeSlotID);
+            List<Reservation> newReservation = new List<Reservation>();
+            for (int i = firstHour; i < lastHour; i++)
+            {
+                //Reservation res = new Reservation(resid, uid, roomid, resdes, dt, i);
+                Reservation res = ReservationMapper.getInstance().makeNew(uid, roomid, resdes, dt, i);
+                newReservation.Add(res);
+            }
+            UnitOfWork.getInstance().commit();
         }
 
-        public static void modifyReservation(int userID, int roomID, string description)
+        public static void modifyReservation(int resid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
         {
+            List<Reservation> reservationBlock = new List<Reservation>();
+            reservationBlock = ReservationMapper.getInstance().getReservationBlock(blockID);
 
+            if (lastHour - firstHour > reservationBlock.Count)
+            {
+                for (int i = lastHour - firstHour; i > 0; i--)
+                    reservationBlock.Add(new Reservation());
+            }
+
+            if (lastHour - firstHour < reservationBlock.Count)
+            {
+                for (int i = 0; i < lastHour - firstHour - reservationBlock.Count; i++)
+                    reservationBlock.RemoveAt(i);
+            }
+
+            ReservationMapper.getInstance().modifyReservation(resid, roomid, resdes, dt, hour); //blockid later
         }
 
         public static void cancelReservation()
@@ -34,7 +54,7 @@ namespace LogicLayer
             DirectoryOfReservations directory = new DirectoryOfReservations();
             foreach (KeyValuePair<int, Reservation> reservation in RoomMapper.getInstance().getAllRooms())
             {
-                directory.reservationList.Add
+                directory.reservationList.Add();
             }
         }
 
