@@ -85,9 +85,9 @@ namespace Mappers
                     reservation.reservationUserID = ((int)result[1]); //userID
                     reservation.reservationRoomID = ((int)result[2]); //roomID
                     reservation.reservationDescription = ((String)result[3]); //desc
-                    reservation.reservationDate = ((DateTime)result[4]); //date
+                    reservation.reservationDate = (Convert.ToDateTime(result[4])); //date
                     //reservation.setHour((int)result[5]);//hour
-                    reservation.reservationDate = new DateTime(reservation.reservationDate.Year, reservation.reservationDate.Month, reservation.reservationDate.Day, (int)result[5], 0, 0);
+                    reservation.reservationHour = (int)result[5];
                     reservationIdentityMap.addTo(reservation);
 
                 }

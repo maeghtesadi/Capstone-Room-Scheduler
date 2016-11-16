@@ -18,7 +18,7 @@ namespace LogicLayer
         public int reservationTimeSlotID { get; set; }
         public int reservationRoomID { get; set; }
         public DateTime reservationDate { get; set; }
-        
+
         public int reservationID { get; set; }
         public  string reservationDescription { get; set; }
         public Queue<int> waitList { get; set; }

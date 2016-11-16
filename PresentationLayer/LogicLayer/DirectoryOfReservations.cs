@@ -100,6 +100,8 @@ namespace LogicLayer
             //  string s = "Reservation has been created at " + timeslotid + ":00 in room " + roomid;
             //  return s;
             reservations.Add(new Reservation(roomid, uid, timeslotid, desc, dt));
+
+
         }
 
         public void modifyReservation(int resid, int roomid, int timeslotid, DateTime dt, string des)

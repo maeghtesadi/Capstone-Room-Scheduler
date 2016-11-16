@@ -21,7 +21,7 @@ namespace TDG
         private const String TABLE_NAME = "reservation";
 
         //Fields names of the table
-        private readonly String[] FIELDS = { "reservationID", "userID", "roomID", "desc", "date", "hour" };
+        private readonly String[] FIELDS = { "reservationID", "userID", "roomID", "desc", "date", "hour" }; //hour is not TimeSlotID
 
         //Database server (localhost)
         private const String DATABASE_SERVER = "127.0.0.1";
