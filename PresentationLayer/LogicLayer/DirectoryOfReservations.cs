@@ -75,18 +75,19 @@ namespace LogicLayer
             return null;
         }
 
+
         //public void displayReservations()
         //{
         //    //this function should return a string in the future so Nim can use it
         //    string message = "The current reservations made in the system are: ";
-           
+
         //    for (int i = 0; i < reservations.Count; i++)
         //    {
 
         //        Console.Write(reservations[i].getReservationUser().getFirstName() + " "); //finish this later
         //        Console.Write(reservations[i].getReservationUser().getLastName() + " reserved at: "); //finish this later
         //        Console.WriteLine(reservations[i].getReservationTimeSlot().getTimeSlotID() + ":00 "); //finish this later
-                
+
         //        //also need the room... how to access based on our current class diagram?
         //    }
         //}
@@ -114,7 +115,7 @@ namespace LogicLayer
         //        }
         //    }
         //}
-            
+
         //public void cancelReservation(int resid)
         //{
         //    for (int i=0; i < reservationList.Count; i++)
@@ -126,7 +127,7 @@ namespace LogicLayer
         //    }
         //}
 
-        
+
 
 
     }

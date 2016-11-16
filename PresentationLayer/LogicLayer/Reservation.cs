@@ -70,6 +70,7 @@ namespace LogicLayer
         //    this.reservationTimeSlot = t;
         //}
 
+
         public void setReservationDateTime(int year, int month, int day, int hour)
         {
             reservationDate = new DateTime(year, month, day, hour, 0, 0);
