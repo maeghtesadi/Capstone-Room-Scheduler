@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using LogicLayer;
 
-namespace LogicLayer
+namespace CapstoneRoomScheduler.LogicLayer.IdentityMaps
 {
     public class RoomIdentityMap
     {

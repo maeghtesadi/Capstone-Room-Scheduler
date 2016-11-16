@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TDG;
 using LogicLayer;
+using CapstoneRoomScheduler.LogicLayer.IdentityMaps;
 
 namespace Mappers
 {
