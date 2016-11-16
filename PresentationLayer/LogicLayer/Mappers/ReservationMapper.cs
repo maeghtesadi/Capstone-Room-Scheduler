@@ -29,7 +29,7 @@ namespace Mappers
          * Handles the creation of a new object of type Reservation.
          **/
 
-        public Reservation makeNew(int userID, int roomID, string desc, DateTime date, int hour)
+        public Reservation makeNew(int userID, int roomID, string desc, DateTime date)
         {
 
             //Make a new reservation object
@@ -39,7 +39,7 @@ namespace Mappers
             reservation.reservationRoomID = (roomID);
             reservation.reservationDescription = (desc);
             reservation.reservationDate = (date);
-            reservation.reservationDate = new DateTime(date.Year, date.Month, date.Day, hour, 0, 0);
+            reservation.reservationDate = new DateTime(date.Year, date.Month, date.Day, date.Hour, 0, 0);
 
             //Add new reservation object to the identity map, in Live memory.
             reservationIdentityMap.addTo(reservation);
@@ -68,7 +68,7 @@ namespace Mappers
             if (reservation == null)
             {
                 //If not found in Reservation identity map then, it uses TDG to try to retrieve from DB.
-                result = tdgReservation.fetch(reservationID);
+                result = tdgReservation.get(reservationID);
 
                 if (result != null)
                 {
@@ -83,8 +83,6 @@ namespace Mappers
                     reservation.reservationRoomID = ((int)result[2]); //roomID
                     reservation.reservationDescription = ((String)result[3]); //desc
                     reservation.reservationDate = (Convert.ToDateTime(result[4])); //date
-                    //reservation.setHour((int)result[5]);//hour
-                    reservation.reservationHour = (int)result[5];
                     reservationIdentityMap.addTo(reservation);
 
                 }
@@ -104,7 +102,7 @@ namespace Mappers
             Dictionary<int, Reservation> reservations = reservationIdentityMap.findAll();
 
             //Get all reservations in the DB
-            Dictionary<int, Object[]> result = tdgReservation.fetchAll();
+            Dictionary<int, Object[]> result = tdgReservation.getAll();
 
             //Loop trhough each of the result:
             foreach (KeyValuePair<int, Object[]> record in result)
@@ -122,7 +120,6 @@ namespace Mappers
                     reservation.reservationDescription = ((string)record.Value[3]); //desc
                     reservation.reservationDate = ((DateTime)record.Value[4]); //date
                     reservation.reservationDate = new DateTime(reservation.reservationDate.Year, reservation.reservationDate.Month, reservation.reservationDate.Day, (int)record.Value[5], 0, 0);//hour
-
                     reservationIdentityMap.addTo(reservation);
                     reservations.Add(reservation.reservationID, reservation);
 
@@ -146,7 +143,7 @@ namespace Mappers
          * Set reservation attributes
          **/
 
-        public void modifyReservation(int reservationID, int roomID, string desc, DateTime date, int hour)
+        public void modifyReservation(int reservationID, int roomID, string desc, DateTime date)
         {
             //Get the reservation that needs to be updated
             Reservation reservation = getReservation(reservationID);
@@ -157,7 +154,7 @@ namespace Mappers
             reservation.reservationRoomID = (roomID); //mutator function to set the NEW roomID
             reservation.reservationDescription = (desc); //mutator function to set the NEW description
             reservation.reservationDate = (date); //mutator function to set the NEW date
-            reservation.reservationDate = new DateTime (reservation.reservationDate.Year, reservation.reservationDate.Month, reservation.reservationDate.Day, hour, 0, 0); //mutator function to set the NEW hour
+            reservation.reservationDate = new DateTime(reservation.reservationDate.Year, reservation.reservationDate.Month, reservation.reservationDate.Day, reservation.reservationDate.Hour, 0, 0); //mutator function to set the NEW hour
 
             //Register instances as Dirty in the Unit Of Work since the object has been modified.
             UnitOfWork.getInstance().registerDirty(reservation);
@@ -215,6 +212,6 @@ namespace Mappers
             tdgReservation.deleteReservation(deleteList);
         }
 
-        
+
     }
 }
