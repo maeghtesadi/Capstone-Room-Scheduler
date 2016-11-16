@@ -12,16 +12,21 @@ namespace LogicLayer
     public class ReservationConsole
     {
 
-        public void makeReservation(int userID, int roomID, DateTime date, string description)
+        public void makeReservation(int resid, int uid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
         {
-            Reservation res = new Reservation(roomID, userID, timeSlotID, description, date);
-            ReservationMapper.getInstance().addReservation()
-           // directory.makeNewTimeSlot(roomID, date, timeSlotID);
+            List<Reservation> newReservation = new List<Reservation>();
+            for (int i = firstHour; i < lastHour; i++)
+            {
+                //Reservation res = new Reservation(resid, uid, roomid, resdes, dt, i);
+                Reservation res = ReservationMapper.getInstance().makeNew(uid, roomid, resdes, dt, i);
+                newReservation.Add(res);
+            }
+            UnitOfWork.getInstance().commit();
         }
 
-        public static void modifyReservation(int userID, int roomID, string description)
+        public static void modifyReservation(int resid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
         {
-
+            ReservationMapper.getInstance().modifyReservation(resid, roomid, resdes, dt)
         }
 
         public static void cancelReservation()
