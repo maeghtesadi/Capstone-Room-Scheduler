@@ -91,40 +91,40 @@ namespace LogicLayer
         //    }
         //}
 
-        public void makeReservation(int uid, int roomid, int timeslotid, string desc, DateTime dt)
-        {
-            //  Reservation res = new Reservation(roomid, uid, timeslotid, desc, dt);
-            //  string s = "Reservation has been created at " + timeslotid + ":00 in room " + roomid;
-            //  return s;
-            reservations.Add(new Reservation(roomid, uid, timeslotid, desc, dt));
+        //public void makeReservation(int uid, int roomid, int timeslotid, string desc, DateTime dt)
+        //{
+        //    //  Reservation res = new Reservation(roomid, uid, timeslotid, desc, dt);
+        //    //  string s = "Reservation has been created at " + timeslotid + ":00 in room " + roomid;
+        //    //  return s;
+        //    reservations.Add(new Reservation(roomid, uid, timeslotid, desc, dt));
 
 
-        }
+        //}
 
-        public void modifyReservation(int resid, int roomid, int timeslotid, DateTime dt, string des)
-        {
-            for (int i = 0; i < reservationList.Count; i++)
-            {
-                if (reservationList[i].reservationID == resid)
-                {
-                    reservationList[i].reservationID = roomid;
-                    reservationList[i].reservationTimeSlotID = timeslotid;
-                    reservationList[i].reservationDate = dt;
-                    reservationList[i].reservationDescription = des;
-                }
-            }
-        }
+        //public void modifyReservation(int resid, int roomid, int timeslotid, DateTime dt, string des)
+        //{
+        //    for (int i = 0; i < reservationList.Count; i++)
+        //    {
+        //        if (reservationList[i].reservationID == resid)
+        //        {
+        //            reservationList[i].reservationID = roomid;
+        //            reservationList[i].reservationTimeSlotID = timeslotid;
+        //            reservationList[i].reservationDate = dt;
+        //            reservationList[i].reservationDescription = des;
+        //        }
+        //    }
+        //}
             
-        public void cancelReservation(int resid)
-        {
-            for (int i=0; i < reservationList.Count; i++)
-            {
-                if (reservationList[i].reservationID == resid)
-                {
-                    reservationList.Remove(reservationList[i]); //remove reservation from list of reservations
-                }
-            }
-        }
+        //public void cancelReservation(int resid)
+        //{
+        //    for (int i=0; i < reservationList.Count; i++)
+        //    {
+        //        if (reservationList[i].reservationID == resid)
+        //        {
+        //            reservationList.Remove(reservationList[i]); //remove reservation from list of reservations
+        //        }
+        //    }
+        //}
 
         
 

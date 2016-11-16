@@ -34,7 +34,7 @@ namespace LogicLayer
             DirectoryOfReservations directory = new DirectoryOfReservations();
             foreach (KeyValuePair<int, Reservation> reservation in RoomMapper.getInstance().getAllRooms())
             {
-                directory.reservationList.Add
+                directory.reservationList.Add();
             }
         }
 

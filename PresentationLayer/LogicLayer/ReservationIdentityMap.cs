@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using StorageLayer;
+//using StorageLayer;
 
 
 namespace LogicLayer
@@ -33,12 +33,12 @@ namespace LogicLayer
          */
         public void addTo(Reservation reservation)
         {
-            reservationList_ActiveMemory.Add(reservation.getReservationID(), reservation);
+            reservationList_ActiveMemory.Add(reservation.reservationID, reservation);
         }
 
         public void removeFrom(Reservation reservation)
         {
-            reservationList_ActiveMemory.Remove(reservation.getReservationID());
+            reservationList_ActiveMemory.Remove(reservation.reservationID);
         }
 
 
