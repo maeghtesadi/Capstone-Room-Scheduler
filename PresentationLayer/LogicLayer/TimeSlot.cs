@@ -11,7 +11,7 @@ namespace LogicLayer
         public int timeSlotID { get; set; }
         public int reservationID { get; set; }
         public int hour { get; set; }
-        Queue<int> waitlist = new Queue<int>();
+        public Queue<int> waitlist { get; set; }
 
         public TimeSlot()
         {
