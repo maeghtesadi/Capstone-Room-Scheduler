@@ -26,7 +26,22 @@ namespace LogicLayer
 
         public static void modifyReservation(int resid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
         {
-            ReservationMapper.getInstance().modifyReservation(resid, roomid, resdes, dt)
+            List<Reservation> reservationBlock = new List<Reservation>();
+            reservationBlock = ReservationMapper.getInstance().getReservationBlock(blockID);
+
+            if (lastHour - firstHour > reservationBlock.Count)
+            {
+                for (int i = lastHour - firstHour; i > 0; i--)
+                    reservationBlock.Add(new Reservation());
+            }
+
+            if (lastHour - firstHour < reservationBlock.Count)
+            {
+                for (int i = 0; i < lastHour - firstHour - reservationBlock.Count; i++)
+                    reservationBlock.RemoveAt(i);
+            }
+
+            ReservationMapper.getInstance().modifyReservation(resid, roomid, resdes, dt, hour); //blockid later
         }
 
         public static void cancelReservation()
