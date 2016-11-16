@@ -184,6 +184,7 @@
     <Compile Include="LogicLayer\DirectoryOfTimeSlots.cs" />
     <Compile Include="LogicLayer\IdentityMaps\UserIdentityMap.cs" />
     <Compile Include="LogicLayer\IdentityMaps\WaitsForIdentityMap.cs" />
+    <Compile Include="LogicLayer\Mappers\TimeSlotMapper.cs" />
     <Compile Include="LogicLayer\Reservation.cs" />
     <Compile Include="LogicLayer\ReservationConsole.cs" />
     <Compile Include="LogicLayer\Mappers\ReservationMapper.cs" />
