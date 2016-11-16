@@ -21,7 +21,7 @@ namespace TDG
         private const String TABLE_NAME = "reservation";
 
         //Fields names of the table
-        private readonly String[] FIELDS = { "reservationID", "userID", "roomID", "desc", "date", "hour" }; //hour is not TimeSlotID
+        private readonly String[] FIELDS = { "reservationID", "userID", "roomID", "desc", "date" }; 
 
         //Database server (localhost)
         private const String DATABASE_SERVER = "127.0.0.1";
@@ -216,7 +216,7 @@ namespace TDG
                 attributes[2] = reader[2]; //roomID
                 attributes[3] = reader[3]; //desc
                 attributes[4] = reader[4]; //date
-                attributes[5] = reader[5]; //hour
+             
 
                 records.Add((int)reader[0], attributes);
 
@@ -235,9 +235,9 @@ namespace TDG
          * */
         private void createReservation(Reservation reservation)
         {
-            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + reservation.getReservationID() + "," +
-                reservation.getUserID() + "," + reservation.getRoomID() + "," + reservation.getDescription() + "," +
-                reservation.getDate() + "," + reservation.getHour() + ");";
+            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + reservation.reservationID + "," +
+                reservation.reservationUserID + "," + reservation.reservationRoomID + "," + reservation.reservationDescription + "," +
+                reservation.reservationDate +");";
 
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
@@ -250,10 +250,10 @@ namespace TDG
         private void updateReservation(Reservation reservation)
         {
 
-            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + FIELDS[5] + " = " + reservation.getHour() + "," +
-                FIELDS[4] + " = " + reservation.getDate() + "," + FIELDS[3] + " = " + reservation.getDescription() + "," +
-                FIELDS[2] + " = " + reservation.getRoomID() + "," + FIELDS[1] + "=" + reservation.getUserID() + " WHERE " +
-                FIELDS[0] + " = " + reservation.getReservationID + ";";
+            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + 
+                FIELDS[4] + " = " + reservation.reservationDate + "," + FIELDS[3] + " = " + reservation.reservationDescription + "," +
+                FIELDS[2] + " = " + reservation.reservationRoomID + "," + FIELDS[1] + "=" + reservation.reservationUserID + " WHERE " +
+                FIELDS[0] + " = " + reservation.reservationID + ";";
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
         }
@@ -265,23 +265,10 @@ namespace TDG
 
         private void removeReservation(Reservation reservation)
         {
-            this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservation.getReservationID() + ";";
+            this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservation.reservationID + ";";
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
