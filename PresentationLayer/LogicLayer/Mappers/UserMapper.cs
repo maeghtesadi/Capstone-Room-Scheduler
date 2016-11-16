@@ -26,7 +26,7 @@ namespace Mappers
          */
         public User getUser(int userID)
         {
-            User user = userIdentityMap.getInstance().find(userID);
+            User user = UserIdentityMap.getInstance().find(userID);
             Object[] result = null;
 
             // If not found in user identity map, try to retrieve from the DB
@@ -42,7 +42,7 @@ namespace Mappers
                 {
                     // We got the user from the TDG who got it from the DB and now the mapper must add it to the UserIdentityMap
                     user = new User((int)result[0], (String)result[1], (String)result[2], (String)result[3], (int)result[4]);
-                    userIdentityMap.getInstance().addTo(user);
+                    UserIdentityMap.getInstance().addTo(user);
                     return user;
                 }
             }
@@ -55,7 +55,7 @@ namespace Mappers
         public Dictionary<int, User> getAllUser()
         {
             // Get all users from the identity map
-            Dictionary<int, User> users = userIdentityMap.getInstance().findAll();
+            Dictionary<int, User> users = UserIdentityMap.getInstance().findAll();
 
             // Get all users in the database
             Dictionary<int, Object[]> result = tdgUser.getAll();

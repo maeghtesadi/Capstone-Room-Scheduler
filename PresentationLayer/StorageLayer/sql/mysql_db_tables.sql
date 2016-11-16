@@ -22,6 +22,9 @@ SET time_zone = "+00:00";
 CREATE DATABASE IF NOT EXISTS `reservation_system` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `reservation_system`;
 
+
+
+
 -- --------------------------------------------------------
 
 --
@@ -33,9 +36,22 @@ CREATE TABLE `reservation` (
   `userID` int(11) NOT NULL,
   `roomID` int(11) NOT NULL,
   `description` text NOT NULL,
-  `date` date NOT NULL,
+  `date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `timeslot`
+--
+
+CREATE TABLE `timeslot` (
+  `timeSlotID` int(11) NOT NULL,
+  `reservationID` int(11) NOT NULL,
   `hour` enum('8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 -- --------------------------------------------------------
 
@@ -69,7 +85,7 @@ CREATE TABLE `user` (
 --
 
 CREATE TABLE `waitsfor` (
- `reservationID` int(11) NOT NULL,
+  `timeSlotID` int(11) NOT NULL,
   `userID` int(11) NOT NULL,
   `dateTime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -87,6 +103,13 @@ ALTER TABLE `reservation`
   ADD KEY `roomID` (`roomID`);
 
 --
+-- Indexes for table `timeslot`
+--
+ALTER TABLE `timeslot`
+  ADD PRIMARY KEY (`timeSlotID`),
+  ADD KEY `reservationID` (`reservationID`);
+
+--
 -- Indexes for table `room`
 --
 ALTER TABLE `room`
@@ -102,8 +125,8 @@ ALTER TABLE `user`
 -- Indexes for table `waitsfor`
 --
 ALTER TABLE `waitsfor`
-  ADD PRIMARY KEY (`reservationID`,`userID`),
-  ADD KEY `reservationID` (`reservationID`);
+  ADD PRIMARY KEY (`timeSlotID`,`userID`),
+  ADD KEY `timeSlotID` (`timeSlotID`);
 
 --
 -- Constraints for dumped tables
@@ -115,13 +138,19 @@ ALTER TABLE `waitsfor`
 ALTER TABLE `reservation`
   ADD CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`),
   ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`roomID`) REFERENCES `room` (`roomID`);
+  
+--
+-- Constraints for table `timeslot`
+--
+ALTER TABLE `timeslot`
+  ADD CONSTRAINT `timeslot_ibfk_1` FOREIGN KEY (`reservationID`) REFERENCES `reservation` (`reservationID`);
 
 --
 -- Constraints for table `waitsfor`
 --
 ALTER TABLE `waitsfor`
   ADD CONSTRAINT `waitsfor_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`),
-  ADD CONSTRAINT `waitsfor_ibfk_2` FOREIGN KEY (`reservationID`) REFERENCES `reservation` (`reservationID`);
+  ADD CONSTRAINT `waitsfor_ibfk_2` FOREIGN KEY (`timeSlotID`) REFERENCES `timeslot` (`timeSlotID`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

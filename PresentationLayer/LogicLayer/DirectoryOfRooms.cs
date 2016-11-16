@@ -24,18 +24,5 @@ namespace LogicLayer
             return room;
         }
 
-        //public void makeNewTimeSlot(int roomID, DateTime date, int timeSlotID)
-        //{
-        //    Room room = findRoom(roomID);
-        //    room.getTimeSlotList().makeNewTimeSlot(date, timeSlotID);
-        //}
-        //Why is this function in DirectoryOfRooms?
-
-        //public List<Room> getAllRooms()
-        //{
-        //    return roomList;
-        //}
-
-
     }
 }
