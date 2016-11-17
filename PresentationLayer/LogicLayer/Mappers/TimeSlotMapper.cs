@@ -35,7 +35,7 @@ namespace Mappers
             //Make a new TimeSlot object
             TimeSlot timeslot = new TimeSlot();
             timeslot.timeSlotID = (timeslot.GetHashCode());
-            timeslot.timeSlotHour = (hour);
+            timeslot.hour = (hour);
 
             //Add new TimeSlot object to the identity map, in Live memory.
             timeSlotIdentityMap.addTo(timeslot);
@@ -190,14 +190,14 @@ namespace Mappers
         //For Unit of Work: A list of timeslots to be added to the DB is passed to the TDG. 
         public void addTimeSlot(List<TimeSlot> newList)
         {
-            tdgTimeSlot.createTimeSlot(newList);
+            tdgTimeSlot.addTimeSlot(newList);
             waitsForMapper.refreshWaitsFor(newList);
         }
 
         //For Unit of Work : A list of timeslots to be deleted in the DB is passes to the TDG.
         public void deleteTimeSlot(List<TimeSlot> deleteList)
         {
-            tdgTimeSlot.removeTimeSlot(deleteList);
+            tdgTimeSlot.deleteTimeSlot(deleteList);
         }
 
 
