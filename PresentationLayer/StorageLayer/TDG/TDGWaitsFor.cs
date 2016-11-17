@@ -161,13 +161,13 @@ namespace TDG
             }
         }
 
-        public void createWaitsFor(int timeSlotID, int userID, String currentDateTime)
+        private void createWaitsFor(int timeSlotID, int userID, String currentDateTime)
         {
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES ( " + timeSlotID + "," + userID + "," + currentDateTime + ");";
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
         }
-        public void deleteWaitsFor(int timeSlotID, int userID)
+        private void deleteWaitsFor(int timeSlotID, int userID)
         {
             this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlotID + " AND " + FIELDS[1] + " = " + userID;
             this.cmd.Connection = this.conn;

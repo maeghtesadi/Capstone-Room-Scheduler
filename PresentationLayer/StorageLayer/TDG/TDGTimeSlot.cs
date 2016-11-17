@@ -296,22 +296,5 @@ namespace TDG
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

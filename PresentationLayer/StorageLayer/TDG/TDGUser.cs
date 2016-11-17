@@ -98,7 +98,7 @@ namespace TDG
         }
 
         // SQL Statement to update an existing User/Row
-        public void updateUser(User user) {
+        private void updateUser(User user) {
            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " \n" +
                    "SET " + FIELDS[1] + "=" + user.username + "," + FIELDS[2] + "=" + user.password + "," +
                    FIELDS[3] + "=" + user.name + "," + FIELDS[4] + "=" + user.numOfReservations + ";\n" +
