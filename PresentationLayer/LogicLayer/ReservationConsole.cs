@@ -36,6 +36,7 @@ namespace LogicLayer
             {
                 //If waitList for timeSlots exist, give to new user
                 //Else delete current timeSlots
+
             }
             else
             if (resToModify.reservationRoomID != roomid)
@@ -59,6 +60,7 @@ namespace LogicLayer
                 {
                     //If waitList for timeSlot exist, give to new user
                     //Else delete timeSlot
+
                 }
             }
 
@@ -88,9 +90,18 @@ namespace LogicLayer
             {
                 if (directory.timeSlotList[i].reservationID == resid)
                 {
-                    //Give to next user on waitList or delete
-                    //TimeSlotMapper.getInstance().delete(directory.timeSlotList[i].timeSlotID);
-                    //i--?
+                    if(directory.timeSlotList[i].waitlist.Count == 0)
+                    {
+                        TimeSlotMapper.getInstance().delete(directory.timeSlotList[i].timeSlotID);
+                    }
+                    else
+                    {
+                        int userID = directory.timeSlotList[i].waitlist.Dequeue();
+                        Reservation res = ReservationMapper.getInstance().makeNew(userID, ReservationMapper.getInstance().getReservation(resid).reservationRoomID,
+                                                                                "", ReservationMapper.getInstance().getReservation(resid).reservationDate);
+
+                        TimeSlotMapper.getInstance().modifyTimeSlot(directory.timeSlotList[i].timeSlotID, res.reservationID, directory.timeSlotList[i].waitlist);
+                    }
                 }
             }
             ReservationMapper.getInstance().delete(resid);
@@ -98,12 +109,21 @@ namespace LogicLayer
 
         public static DirectoryOfTimeSlots getAllTimeSlots()
         {
-            DirectoryOfTimeSlots directory = new DirectoryOfTimeSlots();
+            DirectoryOfTimeSlots timeSlotDirectory = new DirectoryOfTimeSlots();
+           // WaitsForMapper.getInstance().getAllUsers();
             foreach (KeyValuePair<int, TimeSlot> timeSlot in TimeSlotMapper.getInstance().getAllTimeSlot())
             {
-                directory.timeSlotList.Add(timeSlot.Value);
+                timeSlotDirectory.timeSlotList.Add(timeSlot.Value);
             }
-            return directory;
+
+            for (int i = 0; i < timeSlotDirectory.timeSlotList.Count; i++ )
+            {
+                List <int> waitList = WaitsForMapper.getInstance().getWaitList(timeSlotDirectory.timeSlotList[i].timeSlotID);
+                for (int j = 0; j < waitList.Count; j++)
+                    timeSlotDirectory.timeSlotList[i].waitlist.Enqueue(waitList[j]);
+            }
+
+            return timeSlotDirectory;
         }
 
         public static DirectoryOfReservations getAllReservations()
