@@ -111,6 +111,19 @@ namespace TDG
 
         }
 
+        /**
+         * Add new timeslot(s) to the database
+         */
+        public void updateTimeSlot(List<TimeSlot> updateList)
+        {
+            openConnection();
+            for (int i = 0; i < updateList.Count; i++)
+            {
+                updateTimeSlot(updateList[i]);
+            }
+            closeConnection();
+
+        }
 
         /**
          * Delete timeSlot(s) from the databas
@@ -259,6 +272,16 @@ namespace TDG
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + timeslot.timeSlotID + "," +
                 timeslot.reservationID + "," + timeslot.hour + ");";
 
+            this.cmd.Connection = this.conn;
+            cmd.ExecuteReader();
+        }
+
+        /**
+         * Updates one timeslot to the database
+         * */
+        private void updateTimeSlot(TimeSlot timeslot)
+        {
+            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + " = " + timeslot.reservationID + " WHERE " + FIELDS[0] + " = " + timeslot.timeSlotID;
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
         }
