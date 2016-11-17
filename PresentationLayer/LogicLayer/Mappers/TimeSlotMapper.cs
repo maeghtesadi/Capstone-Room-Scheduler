@@ -155,6 +155,22 @@ namespace Mappers
             return waitsForMapper.getAllUsers(timeSlotID);
         }
 
+        /**
+         * Set time slot attributes
+         */
+        public void setTimeSlot(int timeSlotID, int reservationID, Queue<int> waitList)
+        {
+            // Get the room that needs to be updated
+            TimeSlot timeSlot = getTimeSlot(timeSlotID);
+
+            // Update the room
+            timeSlot.timeSlotID = timeSlotID;
+            timeSlot.reservationID = reservationID;
+            timeSlot.waitlist = waitList;
+
+            // Register it to the unit of work
+            UnitOfWork.getInstance().registerDirty(timeSlot);
+        }
 
         /**
          * Delete timeslot
