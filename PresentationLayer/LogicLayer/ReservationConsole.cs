@@ -77,13 +77,23 @@ namespace LogicLayer
                 }
             }
 
-            ReservationMapper.getInstance().modifyReservation(resToModify)
-
+            ReservationMapper.getInstance().modifyReservation(resToModify.reservationID, roomid, resdes, dt);
+            UnitOfWork.getInstance().commit();
         }
 
         public static void cancelReservation(int resid)
         {
-
+            DirectoryOfTimeSlots directory = getAllTimeSlots();
+            for (int i = 0; i < directory.timeSlotList.Count; i++)
+            {
+                if (directory.timeSlotList[i].reservationID == resid)
+                {
+                    //Give to next user on waitList or delete
+                    //TimeSlotMapper.getInstance().delete(directory.timeSlotList[i].timeSlotID);
+                    //i--?
+                }
+            }
+            ReservationMapper.getInstance().delete(resid);
         }
 
         public static DirectoryOfTimeSlots getAllTimeSlots()
