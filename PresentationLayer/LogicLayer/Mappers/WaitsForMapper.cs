@@ -23,7 +23,7 @@ namespace Mappers
             return tdgWaitsFor.getAllUsers(reservationID);
         }
 
-        public void refreshWaitsFor(List<Reservation> refreshList)
+        public void refreshWaitsFor(List<TimeSlot> refreshList)
         {
             tdgWaitsFor.refreshWaitsFor(refreshList);
         }
