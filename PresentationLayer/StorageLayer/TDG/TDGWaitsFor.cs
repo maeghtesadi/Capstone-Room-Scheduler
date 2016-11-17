@@ -17,7 +17,7 @@ namespace TDG
         private static TDGWaitsFor instance = new TDGWaitsFor();
 
         // Field names of the table
-        private static readonly String[] FIELDS = { "reservationID", "userID", "dateTime" };
+        private static readonly String[] FIELDS = { "timeSlotID", "userID", "dateTime" };
 
         // Database server (localhost)
         private const String DATABASE_SERVER = "127.0.0.1";
@@ -78,7 +78,7 @@ namespace TDG
          * Returns it as a List<int>
          * Where int is the ID of the object and Object[] contains the record of the row
          */
-        public List<int> getAllUsers(int reservationID)
+        public List<int> getAllUsers(int timeSlotID)
         {
             List<int> listOfUsers = new List<int>();
 
@@ -86,7 +86,7 @@ namespace TDG
             openConnection();
 
             // Write and execute the query
-            this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservationID;
+            this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlotID;
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
 
@@ -112,19 +112,19 @@ namespace TDG
         /**
          * 
          */
-        public void refreshWaitsFor(List<Reservation> listOfReservations)
+        public void refreshWaitsFor(List<TimeSlot> listOfTimeSlots)
         {
 
             // Open connection
             openConnection();
 
-            Queue<int> waitList;
+            Queue<int> waitlist;
             List<int> results;
-            foreach (Reservation reservation in listOfReservations)
+            foreach (TimeSlot timeSlot in listOfTimeSlots)
             {
 
-                // Obtain all queuer for that reservation from the database
-                this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservation.reservationID;
+                // Obtain all queuery for that timeSlot from the database
+                this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlot.timeSlotID;
                 this.cmd.Connection = this.conn;
                 MySqlDataReader reader = cmd.ExecuteReader();
 
@@ -132,44 +132,44 @@ namespace TDG
                 results = new List<int>();
                 while (reader.Read())
                 {
-                    results.Add(reader[0]); // Selecting only the userID
+                    results.Add((int)reader[0]); // Selecting only the userID
                 }
 
-                // Get the waitlist of the reservation that is refreshed
-                waitList = reservation.waitList;
+                // Get the waitlist of the timeSlot that is refreshed
+                waitlist = timeSlot.waitlist;
 
                 // If a userID is found in the DB but not in the waitlist: remove from the DB
                 foreach (int userID in results)
                 {
-                    if (!waitList.Contains(userID))
+                    if (!waitlist.Contains(userID))
                     {
-                        deleteWaitsFor(reservation.reservationID, userID);
+                        deleteWaitsFor(timeSlot.timeSlotID, userID);
                     }
                 }
 
                 // If a userID is found in the waitlist but not in the DB: add it to the DB
-                foreach (int userID in waitList)
+                foreach (int userID in waitlist)
                 {
                     if (!results.Contains(userID))
                     {
                         DateTime now = new DateTime();
                         String currentDateTime = now.ToString("yyyy-MM-dd HH:mm:ss");
-                        createWaitsFor(reservation.reservationID, userID, currentDateTime);
+                        createWaitsFor(timeSlot.timeSlotID, userID, currentDateTime);
                     }
                 }
 
             }
         }
 
-        public void createWaitsFor(int reservationID, int userID, String currentDateTime)
+        public void createWaitsFor(int timeSlotID, int userID, String currentDateTime)
         {
-            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES ( " + reservationID + "," + userID + "," + currentDateTime + ");";
+            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES ( " + timeSlotID + "," + userID + "," + currentDateTime + ");";
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
         }
-        public void deleteWaitsFor(int reservationID, int userID)
+        public void deleteWaitsFor(int timeSlotID, int userID)
         {
-            this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservationID + " AND " + FIELDS[1] + " = " + userID;
+            this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlotID + " AND " + FIELDS[1] + " = " + userID;
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
         }
