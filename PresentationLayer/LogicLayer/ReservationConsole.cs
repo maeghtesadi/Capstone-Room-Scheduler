@@ -26,14 +26,62 @@ namespace LogicLayer
 
         public static void modifyReservation(int resid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
         {
-            Reservation res = ReservationMapper.getInstance().modifyReservation(resid, roomid, resdes, dt);
+            DirectoryOfReservations reservationDirectory = getAllReservations();
+            Reservation resToModify = new Reservation();
+            for (int i = 0; i < reservationDirectory.reservationList.Count; i++)
+                if (resid == reservationDirectory.reservationList[i].reservationID)
+                    resToModify = reservationDirectory.reservationList[i];
+
+            if (resToModify.reservationDate.Date != dt.Date)
+            {
+                //If waitList for timeSlots exist, give to new user
+                //Else delete current timeSlots
+            }
+            else
+            if (resToModify.reservationRoomID != roomid)
+            {
+                //If waitList for timeSlots exist, give to new user
+                //Else delete current timeSlots
+            }
+
+
+            //Remove timeSlots that are not in common with the new reservation (depending if they have waitlist or not)
+            for (int i = 0; i < resToModify.timeSlots.Count; i++)
+            {
+                int hour = resToModify.timeSlots[i].hour;
+                bool foundSlot = false;
+                for (int j = firstHour; j < lastHour; j++)
+                {
+                    if (hour == j)
+                        foundSlot = true;
+                }
+                if (!foundSlot)
+                {
+                    //If waitList for timeSlot exist, give to new user
+                    //Else delete timeSlot
+                }
+            }
+
             for (int i = firstHour; i < lastHour; i++)
             {
-                TimeSlot ts = TimeSlotMapper.getInstance().makeNew(res.reservationUserID, i); //update Later
+                bool foundSlot = false;
+                for (int j = 0; j < resToModify.timeSlots.Count; j++)
+                {
+                    if (i == resToModify.timeSlots[j].hour)
+                        foundSlot = true;
+                }
+                if(!foundSlot)
+                {
+                    //add new time slot to the list in reservation to modify
+                    //TimeSlot ts = TimeSlotMapper.getInstance().makeNew(resToModify.reservationUserID, i); //update Later
+                }
             }
+
+            ReservationMapper.getInstance().modifyReservation(resToModify)
+
         }
 
-        public static void cancelReservation()
+        public static void cancelReservation(int resid)
         {
 
         }
