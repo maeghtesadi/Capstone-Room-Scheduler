@@ -8,7 +8,9 @@ using System.Web.Mvc;
 using CapstoneRoomScheduler.LogicLayer.CustomUserManager;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Security;
+using PresentationLayer.Hubs;
 using PresentationLayer.Models;
 
 namespace PresentationLayer.Controllers
@@ -66,7 +68,7 @@ namespace PresentationLayer.Controllers
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Login(string username, string password)
+        public string Login(string username, string password)
         {
             if (new UserManager().IsValid(username, password))
             {
@@ -81,11 +83,12 @@ namespace PresentationLayer.Controllers
 
                 HttpContext.GetOwinContext().Authentication.SignIn(
                    new AuthenticationProperties { IsPersistent = false }, ident);
-                return RedirectToAction("Calendar"); // auth succeed 
+                GlobalHost.ConnectionManager.GetHubContext<CalendarHub>().Clients.All.OnSucess();
+                return "Success"; // auth succeed 
             }
             // invalid username or password
             //ModelState.AddModelError("", "invalid username or password");
-            return RedirectToAction("Calendar");
+            return "Invalid credentials";
         }
 
         [HttpPost]

@@ -28,19 +28,30 @@
     <div class="navbar">
         <div class="dropdown">
                 <ul class="custom-navbar-right">
-                    <li><span style="font-size:20px;padding:0px;"class="glyphicon glyphicon-user dropdownLogin"></span></li>
-                    <li></li>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <li><span style="" class="glyphicon glyphicon-user dropdownLogin"></span></li>
+                }
+                else
+                {
+                    <li>@User.Identity.Name</li>
+                }
+
+
+
+                    
                 </ul>
     @using (Ajax.BeginForm("login", "Account", new AjaxOptions
     {
         HttpMethod = "Post",
-        UpdateTargetId = "result"
+        UpdateTargetId = "failedMessage",
     }))
     {
             <div class="login-popup">
                 <ul>
                     <li><input type="text" class="form-control input-sm" id="username" name="username" placeholder="Login" /></li>
                     <li><input type="text" class="form-control input-sm" id="password" name="password" placeholder="Password" /></li>
+                    <li id="failedMessage"> </li>
                     <li><input type="submit" id="loginButton" class="btn btn-primary"></li>
                 </ul>
             </div>

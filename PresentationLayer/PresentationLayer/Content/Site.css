@@ -47,7 +47,8 @@ textarea {
     padding:11px;
     text-align:center;
     width:51px;
-    color:#3193c6
+    color:#3f4350;
+    font-size:20px;
 }
 
 .login-popup{

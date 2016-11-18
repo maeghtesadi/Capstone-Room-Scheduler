@@ -151,3 +151,8 @@ serverSession.client.getReservations = function (reservationList) {
 $(".dropdownLogin").click(function () {
     $(".login-popup").toggle(300);
 });
+
+function OnSuccess() {
+    location.reload();
+
+}
