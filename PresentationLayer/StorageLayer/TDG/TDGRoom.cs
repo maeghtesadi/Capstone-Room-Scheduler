@@ -238,5 +238,35 @@ namespace TDG
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
         }
+
+        /**
+         * Get the last ID that was entered
+         */
+        public int getLastID()
+        {
+            // lastID to be returned
+            int lastID = 0;
+            openConnection();
+
+            // Get the max id from database
+            this.cmd.CommandText = "SELECT MAX(" + FIELDS[0] + ") FROM " + TABLE_NAME;
+            this.cmd.Connection = this.conn;
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            // read it, there should only be one
+            while (reader.Read())
+            {
+                if (reader[0] != null)
+                {
+                    lastID = (int)reader[0];
+                }
+            }
+
+            // Close connection
+            closeConnection();
+
+            // return the last id
+            return lastID;
+        }
     }
 }

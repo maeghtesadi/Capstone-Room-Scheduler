@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TDG;
 using LogicLayer;
 using CapstoneRoomScheduler.LogicLayer.IdentityMaps;
+using System.Threading;
 
 namespace Mappers
 {
@@ -16,8 +17,17 @@ namespace Mappers
         private TimeSlotIdentityMap timeSlotIdentityMap = TimeSlotIdentityMap.getInstance();
         private WaitsForMapper waitsForMapper = WaitsForMapper.getInstance();
 
+        // The last ID that is used
+        private int lastID;
+
+        // Lock to modify last ID
+        private readonly Object lockLastID;
+
         //default constructor
-        private TimeSlotMapper() { }
+        private TimeSlotMapper()
+        {
+            this.lastID = tdgTimeSlot.getLastID();
+        }
 
 
         public static TimeSlotMapper getInstance()
@@ -26,16 +36,34 @@ namespace Mappers
         }
 
         /**
+         *  Obtain the next ID available
+         **/
+        private int getNextID()
+        {
+            // Increments the last ID atomically, return the increment value
+            //int nextID = Interlocked.Increment(ref this.lastID);
+
+            //lock(this.lockLastID)
+            //{
+            //    this.lastID++;
+            //    nextID = this.lastID;
+            //}
+            return Interlocked.Increment(ref this.lastID);
+        }
+
+        /**
          * Handles the creation of a new object of type TimeSlot.
          **/
 
         public TimeSlot makeNew(int reservationID, int hour)
         {
+            // TimeSlot ID
+            int timeslotID = getNextID();
 
             //Make a new TimeSlot object
             TimeSlot timeslot = new TimeSlot();
             timeslot.reservationID = reservationID;
-            timeslot.timeSlotID = (timeslot.GetHashCode());
+            timeslot.timeSlotID = (timeslotID);
             timeslot.hour = (hour);
 
             //Add new TimeSlot object to the identity map, in Live memory.
