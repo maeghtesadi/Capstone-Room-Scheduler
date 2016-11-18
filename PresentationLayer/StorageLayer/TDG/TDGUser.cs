@@ -102,7 +102,7 @@ namespace TDG
            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " \n" +
                    "SET " + FIELDS[1] + "=" + user.username + "," + FIELDS[2] + "=" + user.password + "," +
                    FIELDS[3] + "=" + user.name + "," + FIELDS[4] + "=" + user.numOfReservations + ";\n" +
-                   " WHERE" + FIELDS[0] + "=" + user.userID + ";";
+                   " WHERE " + FIELDS[0] + "=" + user.userID + ";";
            this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
             reader.Close();
