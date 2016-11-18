@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TDG;
 using LogicLayer;
 using CapstoneRoomScheduler.LogicLayer.IdentityMaps;
+using System.Threading;
 
 namespace Mappers
 {
@@ -16,8 +17,17 @@ namespace Mappers
         private ReservationIdentityMap reservationIdentityMap = ReservationIdentityMap.getInstance();
         private WaitsForMapper waitsForMapper = WaitsForMapper.getInstance();
 
+        // The last ID that is used
+        private int lastID;
+
+        // Lock to modify last ID
+        private readonly Object lockLastID;
+
         //default constructor
-        private ReservationMapper() { }
+        private ReservationMapper()
+        {
+            this.lastID = tdgReservation.getLastID();
+        }
 
 
         public static ReservationMapper getInstance()
@@ -26,15 +36,33 @@ namespace Mappers
         }
 
         /**
+         *  Obtain the next ID available
+         **/
+        private int getNextID()
+        {
+            // Increments the last ID atomically, return the increment value
+            //int nextID = Interlocked.Increment(ref this.lastID);
+
+            //lock(this.lockLastID)
+            //{
+            //    this.lastID++;
+            //    nextID = this.lastID;
+            //}
+            return Interlocked.Increment(ref this.lastID); 
+        }
+
+        /**
          * Handles the creation of a new object of type Reservation.
          **/
 
         public Reservation makeNew(int userID, int roomID, string desc, DateTime date)
         {
+            // Get the next reservation ID
+            int reservationID = getNextID();
 
             //Make a new reservation object
             Reservation reservation = new Reservation();
-            reservation.reservationID = (reservation.GetHashCode());
+            reservation.reservationID = (reservationID);
             reservation.userID = (userID);
             reservation.roomID = (roomID);
             reservation.description = (desc);
