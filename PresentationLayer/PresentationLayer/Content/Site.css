@@ -37,17 +37,33 @@ textarea {
 
 .custom-navbar-right{
 
-height:inherit;
-margin:0px;
-padding:0px
+    height:inherit;
+    margin:0px;
+    padding:0px
 }
 .custom-navbar-right li{
-display:block;
-float:right;
-padding:11px;
-text-align:center;
-width:51px;
-color:#3193c6
+    display:block;
+    float:right;
+    padding:11px;
+    text-align:center;
+    width:51px;
+    color:#3193c6
+}
+
+.login-popup{
+    height:115px;
+    background-color:white;
+    position:fixed;
+    width:200px;
+    right:0px;
+    top:50px;
+    
+}
+.login-popup ul{
+   text-align:center;
+    padding:20px;
+    margin:0px;
+    
 }
 .container-right{   
     margin-top:-10px;

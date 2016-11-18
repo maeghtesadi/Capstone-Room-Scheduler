@@ -146,3 +146,5 @@ serverSession.client.getReservations = function (reservationList) {
     $(".glyphicon-remove").click();
 
 };
+
+//Login popup

@@ -26,23 +26,21 @@
 
     </div>
     <div class="navbar">
+        <div class="dropdown">
                 <ul class="custom-navbar-right">
-                    <li><span style="font-size:20px;padding:0px;"class="glyphicon glyphicon-user" ></span></li>
-                    <li>waoow</li>
+                    <li><span style="font-size:20px;padding:0px;"class="glyphicon glyphicon-user dropdown-toggle"></span></li>
+                    <li></li>
                 </ul>
-                @*<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+
+            <div class="login-popup">
+                <ul>
+                    <li><input type="text" class="form-control input-sm" id="username" name="username" placeholder="Login" /></li>
+                    <li><input type="text" class="form-control input-sm" id="password" name="password" placeholder="Password" /></li>
+                    <li>Password</li>
+                </ul>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav"></ul>
-               
-            </div>*@
-        
-        
     </div>
+  </div>
         <div class="container-right">
                 
                 @RenderBody()
