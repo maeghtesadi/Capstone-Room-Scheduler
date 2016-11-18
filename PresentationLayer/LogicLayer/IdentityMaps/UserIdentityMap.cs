@@ -60,5 +60,23 @@ namespace CapstoneRoomScheduler.LogicLayer.IdentityMaps
                 return null;
         }
 
+        /**
+         * Finds all users that are currently in the active memory
+         */
+        public Dictionary<int, User> findAll()
+        {
+            // Create a new dictionary to be returned
+            Dictionary<int, User> newDictionary = new Dictionary<int, User>();
+
+            // Copy each key value pairs (do not need to deep copy the value, room).
+            // We simply want to not return the reference to the dictionary used here.
+            foreach (KeyValuePair<int, User> pair in this.userList_ActiveMemory)
+            {
+                newDictionary.Add(pair.Key, pair.Value);
+            }
+
+            return newDictionary;
+        }
+
     }
 }
