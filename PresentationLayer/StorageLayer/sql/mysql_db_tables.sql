@@ -143,7 +143,7 @@ ALTER TABLE `reservation`
 -- Constraints for table `timeslot`
 --
 ALTER TABLE `timeslot`
-  ADD CONSTRAINT `timeslot_ibfk_1` FOREIGN KEY (`reservationID`) REFERENCES `reservation` (`reservationID`);
+  ADD CONSTRAINT `timeslot_ibfk_1` FOREIGN KEY (`reservationID`) REFERENCES `reservation` (`reservationID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `waitsfor`
