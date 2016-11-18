@@ -102,12 +102,16 @@ namespace TDG
             // If no record is found, return null
             if (!reader.HasRows)
             {
-                return null;
+                return listOfUsers;
             }
 
             // For each reader, add it to the dictionary
             while (reader.Read())
             {
+                if(reader[0].GetType() == typeof(System.DBNull))
+                {
+                    return listOfUsers;
+                }
                 listOfUsers.Add((int)reader[0]); // Selecting only the userID
             }
 
