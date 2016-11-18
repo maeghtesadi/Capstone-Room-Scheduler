@@ -175,6 +175,7 @@ namespace TDG
                 record[1] = reader[1];
 
             }
+            reader.Close();
             //Close connection
             closeConnection();
 
@@ -222,7 +223,7 @@ namespace TDG
 
 
             }
-
+            reader.Close();
             //close connection
             closeConnection();
 
@@ -241,7 +242,8 @@ namespace TDG
                 mySqlDate + ");";
 
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
         /**
@@ -256,7 +258,8 @@ namespace TDG
                 FIELDS[2] + " = " + reservation.roomID + "," + FIELDS[1] + "=" + reservation.userID + " WHERE " +
                 FIELDS[0] + " = " + reservation.reservationID + ";";
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
 
@@ -268,7 +271,8 @@ namespace TDG
         {
             this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservation.reservationID + ";";
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
         /**
@@ -293,7 +297,7 @@ namespace TDG
                     lastID = (int)reader[0];
                 }
             }
-            
+            reader.Close();
             // Close connection
             closeConnection();
 

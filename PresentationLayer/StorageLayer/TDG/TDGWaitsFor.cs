@@ -103,6 +103,7 @@ namespace TDG
             }
 
             // Close connection
+            reader.Close();
             closeConnection();
 
             // Format and return the result
@@ -166,13 +167,15 @@ namespace TDG
         {
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES ( " + timeSlotID + "," + userID + "," + currentDateTime + ");";
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
         private void deleteWaitsFor(int timeSlotID, int userID)
         {
             this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlotID + " AND " + FIELDS[1] + " = " + userID;
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
     }

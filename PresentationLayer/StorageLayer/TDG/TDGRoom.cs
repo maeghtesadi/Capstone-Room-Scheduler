@@ -164,6 +164,7 @@ namespace TDG
                 record[0] = reader[0];
                 record[1] = reader[1];
             }
+            reader.Close();
             // Close connection
             closeConnection();
 
@@ -201,7 +202,7 @@ namespace TDG
                 attributes[1] = reader[1]; // roomNum
                 records.Add((int)reader[0], attributes);
             }
-
+            reader.Close();
             // Close connection
             closeConnection();
 
@@ -216,7 +217,8 @@ namespace TDG
         {
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + room.roomID + "," + room.roomNum + ");";
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
         /**
@@ -226,7 +228,8 @@ namespace TDG
         {
             this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + "=" + room.roomNum + " WHERE " + FIELDS[0] + " = " + room.roomID + ";";
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
         /**
@@ -236,7 +239,8 @@ namespace TDG
         {
             this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + room.roomID + ";";
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
         /**
@@ -264,7 +268,7 @@ namespace TDG
 
             // Close connection
             closeConnection();
-
+            reader.Close();
             // return the last id
             return lastID;
         }
