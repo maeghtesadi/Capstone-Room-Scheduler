@@ -54,7 +54,7 @@ namespace Mappers
          */
         public User getUserByName(string name)
         {
-            User user = UserIdentityMap.getInstance().finByName(name);
+            User user = UserIdentityMap.getInstance().findByName(name);
             Object[] result = null;
 
             // If not found in user identity map, try to retrieve from the DB
