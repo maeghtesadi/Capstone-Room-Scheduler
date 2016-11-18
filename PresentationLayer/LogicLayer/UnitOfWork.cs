@@ -27,6 +27,7 @@ namespace LogicLayer
 
         private List<TimeSlot> timeSlotNewList = new List<TimeSlot>();
         private List<TimeSlot> timeSlotDeletedList = new List<TimeSlot>();
+        private List<TimeSlot> timeSlotChangedList = new List<TimeSlot>();
 
         UserMapper userMapper = UserMapper.getInstance();
         RoomMapper roomMapper = RoomMapper.getInstance();
@@ -82,6 +83,11 @@ namespace LogicLayer
         public void registerDeleted(TimeSlot timeslot)
         {
             timeSlotDeletedList.Add(timeslot);
+        }
+
+        public void registerDirty(TimeSlot timeslot)
+        {
+            timeSlotChangedList.Add(timeslot);
         }
 
         public void commit()
