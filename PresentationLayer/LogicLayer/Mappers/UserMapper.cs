@@ -50,6 +50,34 @@ namespace Mappers
         }
 
         /**
+         * Retrieve a user given its user name
+         */
+        public User getUserByName(string name)
+        {
+            User user = UserIdentityMap.getInstance().finByName(name);
+            Object[] result = null;
+
+            // If not found in user identity map, try to retrieve from the DB
+            if (user == null)
+            {
+                result = tdgUser.getByName(name);
+                // If the TDG doesn't have it, then it doesn't exist
+                if (result == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    // We got the user from the TDG who got it from the DB and now the mapper must add it to the UserIdentityMap
+                    user = new User((int)result[0], (String)result[1], (String)result[2], (String)result[3], (int)result[4]);
+                    UserIdentityMap.getInstance().addTo(user);
+                    return user;
+                }
+            }
+            return null; //so all code paths return a value
+        }
+
+        /**
         * Retrieve all users
         */
         public Dictionary<int, User> getAllUser()
