@@ -235,9 +235,10 @@ namespace TDG
          * */
         private void createReservation(Reservation reservation)
         {
+            String mySqlDate = reservation.date.Date.ToString("yyyy-MM-dd");
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + reservation.reservationID + "," +
                 reservation.reservationID + "," + reservation.roomID + "," + reservation.description + "," +
-                reservation.date +");";
+                mySqlDate + ");";
 
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
@@ -249,9 +250,9 @@ namespace TDG
 
         private void updateReservation(Reservation reservation)
         {
-
+            String mySqlDate = reservation.date.Date.ToString("yyyy-MM-dd");
             this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + 
-                FIELDS[4] + " = " + reservation.date + "," + FIELDS[3] + " = " + reservation.description + "," +
+                FIELDS[4] + " = " + mySqlDate + "," + FIELDS[3] + " = " + reservation.description + "," +
                 FIELDS[2] + " = " + reservation.roomID + "," + FIELDS[1] + "=" + reservation.userID + " WHERE " +
                 FIELDS[0] + " = " + reservation.reservationID + ";";
             this.cmd.Connection = this.conn;
