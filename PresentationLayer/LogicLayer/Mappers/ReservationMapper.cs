@@ -35,11 +35,10 @@ namespace Mappers
             //Make a new reservation object
             Reservation reservation = new Reservation();
             reservation.reservationID = (reservation.GetHashCode());
-            reservation.reservationUserID = (userID);
-            reservation.reservationRoomID = (roomID);
-            reservation.reservationDescription = (desc);
-            reservation.reservationDate = (date);
-            reservation.reservationDate = new DateTime(date.Year, date.Month, date.Day, date.Hour, 0, 0);
+            reservation.userID = (userID);
+            reservation.roomID = (roomID);
+            reservation.description = (desc);
+            reservation.date = (date);
 
             //Add new reservation object to the identity map, in Live memory.
             reservationIdentityMap.addTo(reservation);
@@ -79,10 +78,10 @@ namespace Mappers
                     //mapper must add reservation to the ReservationIdentityMap
                     reservation = new Reservation();
                     reservation.reservationID = ((int)result[0]); //reservationID
-                    reservation.reservationUserID = ((int)result[1]); //userID
-                    reservation.reservationRoomID = ((int)result[2]); //roomID
-                    reservation.reservationDescription = ((String)result[3]); //desc
-                    reservation.reservationDate = (Convert.ToDateTime(result[4])); //date
+                    reservation.userID = ((int)result[1]); //userID
+                    reservation.roomID = ((int)result[2]); //roomID
+                    reservation.description = ((String)result[3]); //desc
+                    reservation.date = (Convert.ToDateTime(result[4])); //date
                     reservationIdentityMap.addTo(reservation);
 
                 }
@@ -115,11 +114,11 @@ namespace Mappers
 
                     Reservation reservation = new Reservation();
                     reservation.reservationID = ((int)record.Key); //reservationID
-                    reservation.reservationUserID = ((int)record.Value[1]); //userID
-                    reservation.reservationRoomID = ((int)record.Value[2]); //roomID
-                    reservation.reservationDescription = ((string)record.Value[3]); //desc
-                    reservation.reservationDate = ((DateTime)record.Value[4]); //date
-                    reservation.reservationDate = new DateTime(reservation.reservationDate.Year, reservation.reservationDate.Month, reservation.reservationDate.Day, (int)record.Value[5], 0, 0);//hour
+                    reservation.userID = ((int)record.Value[1]); //userID
+                    reservation.roomID = ((int)record.Value[2]); //roomID
+                    reservation.description = ((string)record.Value[3]); //desc
+                    reservation.date = ((DateTime)record.Value[4]); //date
+                    //reservation.date = new DateTime(reservation.reservationDate.Year, reservation.reservationDate.Month, reservation.reservationDate.Day, (int)record.Value[5], 0, 0);//hour
                     reservationIdentityMap.addTo(reservation);
                     reservations.Add(reservation.reservationID, reservation);
 
@@ -151,10 +150,10 @@ namespace Mappers
             //Update the reservation
 
             //reservation.reservationUserID = (userID); //mutator function to set the NEW userID
-            reservation.reservationRoomID = (roomID); //mutator function to set the NEW roomID
-            reservation.reservationDescription = (desc); //mutator function to set the NEW description
-            reservation.reservationDate = (date); //mutator function to set the NEW date
-            reservation.reservationDate = new DateTime(reservation.reservationDate.Year, reservation.reservationDate.Month, reservation.reservationDate.Day, reservation.reservationDate.Hour, 0, 0); //mutator function to set the NEW hour
+            reservation.roomID = (roomID); //mutator function to set the NEW roomID
+            reservation.description = (desc); //mutator function to set the NEW description
+            reservation.date = (date); //mutator function to set the NEW date
+            //reservation.reservationDate = new DateTime(reservation.reservationDate.Year, reservation.reservationDate.Month, reservation.reservationDate.Day, reservation.reservationDate.Hour, 0, 0); //mutator function to set the NEW hour
 
             //Register instances as Dirty in the Unit Of Work since the object has been modified.
             UnitOfWork.getInstance().registerDirty(reservation);
@@ -196,7 +195,7 @@ namespace Mappers
         public void addReservation(List<Reservation> newList)
         {
             tdgReservation.addReservation(newList);
-            waitsForMapper.refreshWaitsFor(newList);
+            waitsForMapper.refreshWaitsFor(newList); //this list should be a list of timeslots? someone check this pls
         }
 
         //For Unit of Work: A list of reservations to be updated in the DB is passed to the TDG.

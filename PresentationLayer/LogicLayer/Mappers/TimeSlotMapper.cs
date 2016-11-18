@@ -169,7 +169,7 @@ namespace Mappers
             timeSlot.waitlist = waitList;
 
             // Register it to the unit of work
-            UnitOfWork.getInstance().registerDirty(timeSlot);
+            UnitOfWork.getInstance().registerDirty(timeSlot); //someone check pls
         }
 
         /**
