@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using CapstoneRoomScheduler.LogicLayer.CustomUserManager;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -65,29 +66,36 @@ namespace PresentationLayer.Controllers
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        // public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
-        public async Task<ActionResult> Login(string userName, string password,bool rememberMe string returnUrl)
+        public ActionResult Login(string username, string password)
         {
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(userName, password, rememberMe, shouldLockout: false);
-            switch (result)
+            if (new UserManager().IsValid(username, password))
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    return View();
+                var ident = new ClaimsIdentity(
+                  new[] { 
+              // adding following 2 claim just for supporting default antiforgery provider
+              new Claim(ClaimTypes.NameIdentifier, username),
+              new Claim(ClaimTypes.Name,username),
+              // optionally you could add roles if any
+              new Claim(ClaimTypes.Role, "RoleName"),
+              new Claim(ClaimTypes.Role, "AnotherRole"),
+                  },
+                  DefaultAuthenticationTypes.ApplicationCookie);
+
+                HttpContext.GetOwinContext().Authentication.SignIn(
+                   new AuthenticationProperties { IsPersistent = false }, ident);
+                return RedirectToAction("Calendar"); // auth succeed 
             }
+            // invalid username or password
+            //ModelState.AddModelError("", "invalid username or password");
+            return RedirectToAction("Calendar");
         }
 
-       
-
+        [HttpPost]
+        public ActionResult Logout()
+        {
+            HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Calendar");
+        }
         //
         // POST: /Account/ForgotPassword
         [HttpPost]

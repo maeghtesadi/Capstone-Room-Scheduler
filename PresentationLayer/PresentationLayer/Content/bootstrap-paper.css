@@ -4166,12 +4166,11 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-tabs .dropdown-menu {
   margin-top: -1px;
   border-top-right-radius: 0;
-  border-top-left-radius: 0;
+.navbar  border-top-left-radius: 0;
 }
-.navbar {
+ {
   position: relative;
-  min-height: 64px;
-  margin-bottom: 23px;
+
   border: 1px solid transparent;
 }
 @media (min-width: 768px) {
