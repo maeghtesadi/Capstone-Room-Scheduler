@@ -27,12 +27,28 @@ textarea {
   height:50px;
   top:0px;
   position:fixed;
-  width:100%;
+  width: calc(100% - 200px);
   margin-left:200px;
   background-color:white;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3)
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+  z-index:10;
+
 }
 
+.custom-navbar-right{
+
+height:inherit;
+margin:0px;
+padding:0px
+}
+.custom-navbar-right li{
+display:block;
+float:right;
+padding:11px;
+text-align:center;
+width:51px;
+color:#3193c6
+}
 .container-right{   
     margin-top:-10px;
     padding:0px;    
@@ -47,5 +63,6 @@ textarea {
     }
     .navbar{
         margin-left:0px;
+        width:100%;
     }
 }
