@@ -49,7 +49,7 @@ CREATE TABLE `reservation` (
 CREATE TABLE `timeslot` (
   `timeSlotID` int(11) NOT NULL,
   `reservationID` int(11) NOT NULL,
-  `hour` enum('8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23') NOT NULL
+  `hour` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
