@@ -14,11 +14,37 @@ namespace Mappers
         private TDGRoom tdgRoom = TDGRoom.getInstance();
         private RoomIdentityMap roomIdentityMap = RoomIdentityMap.getInstance();
 
-        private RoomMapper() { }
+        // The last ID that is used
+        private int lastID;
+
+        // Lock to modify last ID
+        private readonly Object lockLastID;
+
+        private RoomMapper()
+        {
+            this.lastID = tdgRoom.getLastID();
+        }
 
         public static RoomMapper getInstance()
         {
             return instance;
+        }
+
+
+        /**
+         *  Obtain the next ID available
+         **/
+        private int getNextID()
+        {
+            // Increments the last ID atomically, return the increment value
+            int nextID;
+
+            lock (this.lockLastID)
+            {
+                this.lastID++;
+                nextID = this.lastID;
+            }
+            return nextID;
         }
 
         /**
@@ -26,9 +52,12 @@ namespace Mappers
          */
         public Room makeNew (String roomNum)
         {
+
+            int nextID = getNextID();
+
             // Make a new room object
             Room room = new Room();
-            room.roomID = room.GetHashCode();
+            room.roomID = nextID;
             room.roomNum = roomNum;
 
             // Add it to the identity map

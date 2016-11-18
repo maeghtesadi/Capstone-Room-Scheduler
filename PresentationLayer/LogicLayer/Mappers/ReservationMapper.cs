@@ -41,14 +41,14 @@ namespace Mappers
         private int getNextID()
         {
             // Increments the last ID atomically, return the increment value
-            //int nextID = Interlocked.Increment(ref this.lastID);
+            int nextID;
 
-            //lock(this.lockLastID)
-            //{
-            //    this.lastID++;
-            //    nextID = this.lastID;
-            //}
-            return Interlocked.Increment(ref this.lastID); 
+            lock(this.lockLastID)
+            {
+                this.lastID++;
+                nextID = this.lastID;
+            }
+            return nextID; 
         }
 
         /**
