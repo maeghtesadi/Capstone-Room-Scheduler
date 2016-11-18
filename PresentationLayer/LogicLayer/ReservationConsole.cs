@@ -29,22 +29,32 @@ namespace LogicLayer
             DirectoryOfReservations reservationDirectory = getAllReservations();
             Reservation resToModify = new Reservation();
             for (int i = 0; i < reservationDirectory.reservationList.Count; i++)
+            {
                 if (resid == reservationDirectory.reservationList[i].reservationID)
                     resToModify = reservationDirectory.reservationList[i];
-
-            if (resToModify.date.Date != dt.Date)
-            {
-                //If waitList for timeSlots exist, give to new user
-                //Else delete current timeSlots
-
-            }
-            else
-            if (resToModify.roomID != roomid)
-            {
-                //If waitList for timeSlots exist, give to new user
-                //Else delete current timeSlots
             }
 
+            if (resToModify.date.Date != dt.Date || resToModify.roomID != roomid)
+            {
+
+                for (int i = 0; i < resToModify.timeSlots.Count; i++)
+                {
+                    if (resToModify.timeSlots[i].waitlist.Count == 0)
+                    {
+                        //If waitList for timeSlots is empty, delete from db
+                        TimeSlotMapper.getInstance().delete(resToModify.timeSlots[i].timeSlotID);
+                    }
+                    else
+                    {
+                        //Else give new reservation to the first person in waitlist
+                        int userID = resToModify.timeSlots[i].waitlist.Dequeue();
+                        Reservation res = ReservationMapper.getInstance().makeNew(userID, ReservationMapper.getInstance().getReservation(resid).roomID,
+                                                                            "", ReservationMapper.getInstance().getReservation(resid).date);
+
+                        TimeSlotMapper.getInstance().setTimeSlot(resToModify.timeSlots[i].timeSlotID, res.reservationID, resToModify.timeSlots[i].waitlist);
+                    }
+                }
+            }
 
             //Remove timeSlots that are not in common with the new reservation (depending if they have waitlist or not)
             for (int i = 0; i < resToModify.timeSlots.Count; i++)
@@ -60,7 +70,24 @@ namespace LogicLayer
                 {
                     //If waitList for timeSlot exist, give to new user
                     //Else delete timeSlot
+                    if (resToModify.timeSlots[i].waitlist.Count == 0)
+                    {
+                        //If waitList for timeSlots is empty, delete from db
+                        TimeSlotMapper.getInstance().delete(resToModify.timeSlots[i].timeSlotID);
+                    }
+                    else
+                    {
+                        //Else give new reservation to the first person in waitlist
+                        int userID = resToModify.timeSlots[i].waitlist.Dequeue();
+                        Reservation res = ReservationMapper.getInstance().makeNew(userID, ReservationMapper.getInstance().getReservation(resid).roomID,
+                                                                            "", ReservationMapper.getInstance().getReservation(resid).date);
 
+                        TimeSlotMapper.getInstance().setTimeSlot(resToModify.timeSlots[i].timeSlotID, res.reservationID, resToModify.timeSlots[i].waitlist);
+                    }
+                }
+                else
+                {
+                    //do nothing (keep the timeslot)
                 }
             }
 
@@ -72,10 +99,10 @@ namespace LogicLayer
                     if (i == resToModify.timeSlots[j].hour)
                         foundSlot = true;
                 }
-                if(!foundSlot)
+                if (!foundSlot)
                 {
                     //add new time slot to the list in reservation to modify
-                    //TimeSlot ts = TimeSlotMapper.getInstance().makeNew(resToModify.reservationUserID, i); //update Later
+                    TimeSlot ts = TimeSlotMapper.getInstance().makeNew(resToModify.reservationID, i); //update Later
                 }
             }
 
@@ -90,7 +117,7 @@ namespace LogicLayer
             {
                 if (directory.timeSlotList[i].reservationID == resid)
                 {
-                    if(directory.timeSlotList[i].waitlist.Count == 0)
+                    if (directory.timeSlotList[i].waitlist.Count == 0)
                     {
                         TimeSlotMapper.getInstance().delete(directory.timeSlotList[i].timeSlotID);
                     }
@@ -107,18 +134,19 @@ namespace LogicLayer
             ReservationMapper.getInstance().delete(resid);
         }
 
+        //get up-to-date timeslots from database 
         public static DirectoryOfTimeSlots getAllTimeSlots()
         {
             DirectoryOfTimeSlots timeSlotDirectory = new DirectoryOfTimeSlots();
-           // WaitsForMapper.getInstance().getAllUsers();
+            // WaitsForMapper.getInstance().getAllUsers();
             foreach (KeyValuePair<int, TimeSlot> timeSlot in TimeSlotMapper.getInstance().getAllTimeSlot())
             {
                 timeSlotDirectory.timeSlotList.Add(timeSlot.Value);
             }
 
-            for (int i = 0; i < timeSlotDirectory.timeSlotList.Count; i++ )
+            for (int i = 0; i < timeSlotDirectory.timeSlotList.Count; i++)
             {
-                List <int> waitList = WaitsForMapper.getInstance().getAllUsers(timeSlotDirectory.timeSlotList[i].timeSlotID);
+                List<int> waitList = WaitsForMapper.getInstance().getAllUsers(timeSlotDirectory.timeSlotList[i].timeSlotID);
                 for (int j = 0; j < waitList.Count; j++)
                     timeSlotDirectory.timeSlotList[i].waitlist.Enqueue(waitList[j]);
             }
