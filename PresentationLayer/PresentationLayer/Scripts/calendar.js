@@ -146,3 +146,27 @@ serverSession.client.getReservations = function (reservationList) {
     $(".glyphicon-remove").click();
 
 };
+
+
+//header calendar 
+var date= new Date();
+var months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+var days = [ "MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"]
+$(".next").click(function () {
+    var day = parseInt($(".upper-header li .date .day").html());
+    date.setDate(day + 1);
+    $(".upper-header li .date .day").html(date.getDate());
+    $(".upper-header li .date .month").html(months[date.getMonth()]);
+    $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
+
+});
+
+$(".prev").click(function () {
+    var day = parseInt($(".upper-header li .date .day").html());
+    date.setDate(day - 1);
+    $(".upper-header li .date .day").html(date.getDate());
+    $(".upper-header li .date .month").html(months[date.getMonth()]);
+    $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
+
+});
+

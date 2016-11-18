@@ -6,9 +6,9 @@
 <div class="calendar-header">
     <ul class="upper-header">
         <li>
-            @DateTime.Now.DayOfWeek<br>
-            <div style="font-size:18px; margin-top:-20px">@DateTime.Now.ToString("MMMM") @DateTime.Now.ToString("dd")</div>
-        </li>
+			<span class="dayOfTheWeek">@DateTime.Now.DayOfWeek</span> <br>
+			<div class="date" style="font-size:18px; margin-top:-20px"> <span class="month">@DateTime.Now.ToString("MMMM")</span> <span class="day">@DateTime.Now.ToString("dd")</span>    </div>
+</li>
     </ul>
     <ul class="calendar-buttons">
         <li class="prev">❮</li>

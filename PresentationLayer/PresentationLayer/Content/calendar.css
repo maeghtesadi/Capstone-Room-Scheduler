@@ -214,3 +214,6 @@ background-color:#3f4350
 @media screen and (max-width: 290px) {
     .weekdays li, .days li {width: 12.2%;}
 }
+.calendar-buttons li:hover{
+	background-color :#3b98ca;
+}
