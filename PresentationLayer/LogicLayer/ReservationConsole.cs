@@ -15,13 +15,41 @@ namespace LogicLayer
         public static void makeReservation(int uid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
         {
             Reservation res = ReservationMapper.getInstance().makeNew(uid, roomid, resdes, dt);
-
+            updateWaitLIst(uid);
             for (int i = firstHour; i < lastHour; i++)
             {
                 TimeSlot ts = TimeSlotMapper.getInstance().makeNew(res.reservationID, i); //update Later
             }
 
             UnitOfWork.getInstance().commit();
+        }
+
+        //Used when calling create reservation 
+        public static void updateWaitLIst(int userid)
+        {
+            DirectoryOfTimeSlots timeSlotsDirectory = getAllTimeSlots();
+
+            foreach (TimeSlot timeSlot in timeSlotsDirectory.timeSlotList)
+            {
+                if (timeSlot.waitlist.Contains(userid))
+                {
+                    Queue<int> newQueue = new Queue<int>();
+                    int size = timeSlot.waitlist.Count;
+                    for (int i = 0; i < size; i++)
+                    {
+                        if (timeSlot.waitlist.Peek() == userid)
+                        {
+                            timeSlot.waitlist.Dequeue();
+                        }
+                        else
+                        {
+                            newQueue.Enqueue(timeSlot.waitlist.Dequeue());
+                        }
+                    }
+                    TimeSlotMapper.getInstance().setTimeSlot(timeSlot.timeSlotID, timeSlot.reservationID, newQueue);
+                }
+             
+            }
         }
 
         public static void modifyReservation(int resid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
@@ -50,7 +78,7 @@ namespace LogicLayer
                         int userID = resToModify.timeSlots[i].waitlist.Dequeue();
                         Reservation res = ReservationMapper.getInstance().makeNew(userID, ReservationMapper.getInstance().getReservation(resid).roomID,
                                                                             "", ReservationMapper.getInstance().getReservation(resid).date);
-
+                        updateWaitLIst(userID);
                         TimeSlotMapper.getInstance().setTimeSlot(resToModify.timeSlots[i].timeSlotID, res.reservationID, resToModify.timeSlots[i].waitlist);
                     }
                 }
@@ -81,7 +109,7 @@ namespace LogicLayer
                         int userID = resToModify.timeSlots[i].waitlist.Dequeue();
                         Reservation res = ReservationMapper.getInstance().makeNew(userID, ReservationMapper.getInstance().getReservation(resid).roomID,
                                                                             "", ReservationMapper.getInstance().getReservation(resid).date);
-
+                        updateWaitLIst(userID);
                         TimeSlotMapper.getInstance().setTimeSlot(resToModify.timeSlots[i].timeSlotID, res.reservationID, resToModify.timeSlots[i].waitlist);
                     }
                 }
@@ -126,7 +154,7 @@ namespace LogicLayer
                         int userID = directory.timeSlotList[i].waitlist.Dequeue();
                         Reservation res = ReservationMapper.getInstance().makeNew(userID, ReservationMapper.getInstance().getReservation(resid).roomID,
                                                                                 "", ReservationMapper.getInstance().getReservation(resid).date);
-
+                        updateWaitLIst(userID);
                         TimeSlotMapper.getInstance().setTimeSlot(directory.timeSlotList[i].timeSlotID, res.reservationID, directory.timeSlotList[i].waitlist);
                     }
                 }
