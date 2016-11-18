@@ -196,14 +196,14 @@ namespace Mappers
         public void addReservation(List<Reservation> newList)
         {
             tdgReservation.addReservation(newList);
-            waitsForMapper.refreshWaitsFor(newList);
+            
         }
 
         //For Unit of Work: A list of reservations to be updated in the DB is passed to the TDG.
         public void updateReservation(List<Reservation> updateList)
         {
             tdgReservation.updateReservation(updateList);
-            waitsForMapper.refreshWaitsFor(updateList);
+            
         }
 
         //For Unit of Work : A list of reservation to be deleted in the DB is passes to the TDG.
