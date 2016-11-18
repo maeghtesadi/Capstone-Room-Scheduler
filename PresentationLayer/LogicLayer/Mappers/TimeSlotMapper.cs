@@ -34,6 +34,7 @@ namespace Mappers
 
             //Make a new TimeSlot object
             TimeSlot timeslot = new TimeSlot();
+            timeslot.reservationID = reservationID;
             timeslot.timeSlotID = (timeslot.GetHashCode());
             timeslot.hour = (hour);
 

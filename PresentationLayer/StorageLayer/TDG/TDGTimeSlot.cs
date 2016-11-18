@@ -269,12 +269,17 @@ namespace TDG
          * */
         private void createTimeSlot(TimeSlot timeslot)
         {
+            openConnection();
+
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + timeslot.timeSlotID + "," +
                 timeslot.reservationID + "," + timeslot.hour + ");";
 
             this.cmd.Connection = this.conn;
             cmd.ExecuteReader();
+
+            closeConnection();
         }
+
 
         /**
          * Updates one timeslot to the database

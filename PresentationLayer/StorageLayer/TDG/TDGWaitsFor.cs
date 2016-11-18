@@ -122,42 +122,43 @@ namespace TDG
             List<int> results;
             foreach (TimeSlot timeSlot in listOfTimeSlots)
             {
-
-                // Obtain all queuery for that timeSlot from the database
-                this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlot.timeSlotID;
-                this.cmd.Connection = this.conn;
-                MySqlDataReader reader = cmd.ExecuteReader();
-
-                // Store the results
-                results = new List<int>();
-                while (reader.Read())
+                if (timeSlot.waitlist.Count != 0)
                 {
-                    results.Add((int)reader[0]); // Selecting only the userID
-                }
+                    // Obtain all queuery for that timeSlot from the database
+                    this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlot.timeSlotID;
+                    this.cmd.Connection = this.conn;
+                    MySqlDataReader reader = cmd.ExecuteReader();
 
-                // Get the waitlist of the timeSlot that is refreshed
-                waitlist = timeSlot.waitlist;
-
-                // If a userID is found in the DB but not in the waitlist: remove from the DB
-                foreach (int userID in results)
-                {
-                    if (!waitlist.Contains(userID))
+                    // Store the results
+                    results = new List<int>();
+                    while (reader.Read())
                     {
-                        deleteWaitsFor(timeSlot.timeSlotID, userID);
+                        results.Add((int)reader[0]); // Selecting only the userID
+                    }
+
+                    // Get the waitlist of the timeSlot that is refreshed
+                    waitlist = timeSlot.waitlist;
+
+                    // If a userID is found in the DB but not in the waitlist: remove from the DB
+                    foreach (int userID in results)
+                    {
+                        if (!waitlist.Contains(userID))
+                        {
+                            deleteWaitsFor(timeSlot.timeSlotID, userID);
+                        }
+                    }
+
+                    // If a userID is found in the waitlist but not in the DB: add it to the DB
+                    foreach (int userID in waitlist)
+                    {
+                        if (!results.Contains(userID))
+                        {
+                            DateTime now = new DateTime();
+                            String currentDateTime = now.ToString("yyyy-MM-dd HH:mm:ss");
+                            createWaitsFor(timeSlot.timeSlotID, userID, currentDateTime);
+                        }
                     }
                 }
-
-                // If a userID is found in the waitlist but not in the DB: add it to the DB
-                foreach (int userID in waitlist)
-                {
-                    if (!results.Contains(userID))
-                    {
-                        DateTime now = new DateTime();
-                        String currentDateTime = now.ToString("yyyy-MM-dd HH:mm:ss");
-                        createWaitsFor(timeSlot.timeSlotID, userID, currentDateTime);
-                    }
-                }
-
             }
         }
 
