@@ -176,6 +176,7 @@ namespace TDG
 
             }
             //Close connection
+            reader.Close();
             closeConnection();
 
             //Format and return the result
@@ -223,6 +224,7 @@ namespace TDG
             }
 
             //close connection
+            reader.Close();
             closeConnection();
 
             //Format and return the result
@@ -270,6 +272,7 @@ namespace TDG
             }
 
             //close connection
+            reader.Close();
             closeConnection();
 
             //Format and return the result
@@ -285,7 +288,9 @@ namespace TDG
                 timeslot.reservationID + "," + timeslot.hour + ");";
 
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
 
@@ -296,7 +301,8 @@ namespace TDG
         {
             this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + " = " + timeslot.reservationID + " WHERE " + FIELDS[0] + " = " + timeslot.timeSlotID;
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
         /**
@@ -307,7 +313,8 @@ namespace TDG
         {
             this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeslot.timeSlotID + ";";
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
         /**
@@ -334,6 +341,7 @@ namespace TDG
             }
 
             // Close connection
+            reader.Close();
             closeConnection();
 
             // return the last id

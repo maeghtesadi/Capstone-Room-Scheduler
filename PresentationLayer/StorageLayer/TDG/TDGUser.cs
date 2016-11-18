@@ -104,8 +104,9 @@ namespace TDG
                    FIELDS[3] + "=" + user.name + "," + FIELDS[4] + "=" + user.numOfReservations + ";\n" +
                    "WHERE" + FIELDS[0] + "=" + user.userID + ";";
            this.cmd.Connection = this.conn;
-           cmd.ExecuteReader();
-       }
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
+        }
 
         /**
        * Returns a record for the user given its userID
@@ -137,6 +138,7 @@ namespace TDG
                 record[4] = reader[4];
             }
             // Close connection
+            reader.Close();
             closeConnection();
 
             // Format and return the result
@@ -173,6 +175,7 @@ namespace TDG
                 record[4] = reader[4];
             }
             // Close connection
+            reader.Close();
             closeConnection();
 
             // Format and return the result
@@ -219,6 +222,7 @@ namespace TDG
             }
 
             // Close connection
+            reader.Close();
             closeConnection();
 
             // Format and return the result

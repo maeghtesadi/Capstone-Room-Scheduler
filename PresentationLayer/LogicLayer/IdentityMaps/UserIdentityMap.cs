@@ -10,7 +10,7 @@ namespace CapstoneRoomScheduler.LogicLayer.IdentityMaps
         //an instance
         private static UserIdentityMap instance = new UserIdentityMap();
         //list of all users in active memory
-        LinkedList<User> userList_ActiveMemory = new LinkedList<User>();
+        private Dictionary<int, User> userList_ActiveMemory = new Dictionary<int, User>();
 
         public static UserIdentityMap getInstance()
         {
@@ -19,45 +19,27 @@ namespace CapstoneRoomScheduler.LogicLayer.IdentityMaps
 
         public void addTo(User user)
         {
-            userList_ActiveMemory.AddLast(user);
+            userList_ActiveMemory.Add(user.userID, user);
         }
         
         public void removeFrom(User user)
         {
-            userList_ActiveMemory.Remove(user);
-        }
-
-        public User findByName(string name)
-        {
-            foreach (User user in userList_ActiveMemory)
-            {
-                if (user.name == name)
-                {
-                    return user;
-                }
-            }
-
-            return null;
+            userList_ActiveMemory.Remove(user.userID);
         }
 
         public User find(int id)
         {
-            //for (int i = 0; i < userList_ActiveMemory.Count; i++)
-            //{
-            //    if (userList_ActiveMemory.ElementAt(i).userID == id)
-            //    {
-            //        return userList_ActiveMemory.ElementAt(i);
-            //    }
-            //}
-            foreach (User user in userList_ActiveMemory)
+            User user;
+            if (userList_ActiveMemory.TryGetValue(id, out user))
             {
-                if (user.userID == id)
-                {
-                    return user;
-                }
+                return user;
             }
+            return null;
+        }
 
-                return null;
+        public User findByName(string name)
+        {
+
         }
 
         /**
