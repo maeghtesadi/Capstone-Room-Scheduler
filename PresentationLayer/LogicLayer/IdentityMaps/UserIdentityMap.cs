@@ -27,7 +27,7 @@ namespace CapstoneRoomScheduler.LogicLayer.IdentityMaps
             userList_ActiveMemory.Remove(user);
         }
 
-        public User finByName(string name)
+        public User findByName(string name)
         {
             foreach (User user in userList_ActiveMemory)
             {
