@@ -52,19 +52,44 @@ textarea {
 
 .login-popup{
     height:115px;
-    background-color:white;
+    background-color:#3fa9e2;
     position:fixed;
-    width:200px;
+    width:230px;
     right:0px;
     top:50px;
-    
+    z-index:-100;
+    display:none;
 }
 .login-popup ul{
    text-align:center;
-    padding:20px;
-    margin:0px;
-    
+    padding-left:20px;
+    padding-top:5px;
+    padding-right:20px;
+    margin:0px; 
 }
+.login-popup ul li{
+   display:inline;
+   color:white;
+   margin-bottom:10px;
+}
+#loginButton
+{
+margin-top:10px;
+background-color:#3f4350;
+font-size:12px;
+padding: 2px 67px;
+width:inherit;
+border-radius:0px;
+}
+.login-popup .form-control::-webkit-input-placeholder { color: white; }
+.login-popup .form-control:-moz-placeholder { color: white; }
+.login-popup .form-control::-moz-placeholder { color: white; }
+.login-popup .form-control:-ms-input-placeholder { color: white; }
+.login-popup .form-control:focus{
+    box-shadow: inset 0 -2px 0 #3f4350;
+}
+
+
 .container-right{   
     margin-top:-10px;
     padding:0px;    

@@ -148,3 +148,6 @@ serverSession.client.getReservations = function (reservationList) {
 };
 
 //Login popup
+$(".dropdownLogin").click(function () {
+    $(".login-popup").toggle(300);
+});

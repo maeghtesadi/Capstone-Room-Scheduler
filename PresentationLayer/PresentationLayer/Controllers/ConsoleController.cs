@@ -16,10 +16,11 @@ namespace CapstoneRoomScheduler.Controllers
         {
             return View();
         }
-
+        [Authorize]
         [HttpPost]
         public void acceptTimeSlots(string inputCourseName,int firstTimeSlot, int lastTimeSlot, int room, string date)
         {
+            
             DirectoryOfReservations directory = new DirectoryOfReservations();
             for (int i = firstTimeSlot; i <= lastTimeSlot; i ++)
             {

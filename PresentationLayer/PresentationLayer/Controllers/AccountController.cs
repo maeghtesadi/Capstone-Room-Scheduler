@@ -75,9 +75,7 @@ namespace PresentationLayer.Controllers
               // adding following 2 claim just for supporting default antiforgery provider
               new Claim(ClaimTypes.NameIdentifier, username),
               new Claim(ClaimTypes.Name,username),
-              // optionally you could add roles if any
-              new Claim(ClaimTypes.Role, "RoleName"),
-              new Claim(ClaimTypes.Role, "AnotherRole"),
+          
                   },
                   DefaultAuthenticationTypes.ApplicationCookie);
 
