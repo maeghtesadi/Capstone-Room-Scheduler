@@ -166,6 +166,10 @@ namespace TDG
             Object[] record = new Object[FIELDS.Length];
             while (reader.Read())
             {
+                if(reader[0].GetType() == typeof(System.DBNull))
+                {
+                    return null;
+                }
                 record[0] = reader[0]; // timeslotID
                 record[1] = reader[1]; // reservationID
                 record[2] = reader[2]; // dateTime
@@ -206,6 +210,10 @@ namespace TDG
             //For each reader, add it to the dictionary
             while (reader.Read())
             {
+                if (reader[0].GetType() == typeof(System.DBNull))
+                {
+                    return null;
+                }
                 Object[] attributes = new Object[FIELDS.Length];
                 attributes[0] = reader[0]; // timeslotID
                 attributes[1] = reader[1]; // reservationID
@@ -249,6 +257,10 @@ namespace TDG
             //For each reader, add it to the dictionary
             while (reader.Read())
             {
+                if (reader[0].GetType() == typeof(System.DBNull))
+                {
+                    return null;
+                }
                 Object[] attributes = new Object[FIELDS.Length];
                 attributes[0] = reader[0]; // timeslotID
                 attributes[1] = reader[1]; // reservationID
@@ -315,7 +327,7 @@ namespace TDG
             // read it, there should only be one
             while (reader.Read())
             {
-                if(reader[0] != null)
+                if(reader[0].GetType() != typeof(System.DBNull))
                 {
                     lastID = (int)reader[0];
                 }
