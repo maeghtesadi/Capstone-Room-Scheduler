@@ -140,6 +140,38 @@ namespace TDG
         }
 
         /**
+        * Returns a record for the user given its userID
+        */
+        public Object[] getByName(string userName)
+        {
+            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " \n" +
+                    "WHERE " + FIELDS[1] + "=" + userName + ";";
+            this.cmd.Connection = this.conn;
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            // If no record is found, return null
+            if (!reader.HasRows)
+            {
+                return null;
+            }
+            // There is only one result since user names are unique
+            Object[] record = new Object[FIELDS.Length];
+            while (reader.Read())
+            {
+                record[0] = reader[0];
+                record[1] = reader[1];
+                record[2] = reader[2];
+                record[3] = reader[3];
+                record[4] = reader[4];
+            }
+            // Close connection
+            closeConnection();
+
+            // Format and return the result
+            return record;
+        }
+
+        /**
          * Select all data from the table
          * Returns it as a Dictionary<int, Object[]>
          * Where int is the ID of the object and Object[] contains the record of the row
