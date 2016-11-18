@@ -12,13 +12,13 @@ namespace LogicLayer
     public class ReservationConsole
     {
 
-        public void makeReservation(int uid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
+        public static void makeReservation(int uid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
         {
             Reservation res = ReservationMapper.getInstance().makeNew(uid, roomid, resdes, dt);
 
             for (int i = firstHour; i < lastHour; i++)
             {
-                TimeSlot ts = TimeSlotMapper.getInstance().makeNew(res.userID, i); //update Later
+                TimeSlot ts = TimeSlotMapper.getInstance().makeNew(res.reservationID, i); //update Later
             }
 
             UnitOfWork.getInstance().commit();
