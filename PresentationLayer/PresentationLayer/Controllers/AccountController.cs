@@ -15,7 +15,7 @@ using PresentationLayer.Models;
 
 namespace PresentationLayer.Controllers
 {
-    [Authorize]
+    [System.Web.Mvc.Authorize]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -88,7 +88,7 @@ namespace PresentationLayer.Controllers
             }
             // invalid username or password
             //ModelState.AddModelError("", "invalid username or password");
-            return "Invalid credentials";
+            return "Failure";
         }
 
         [HttpPost]

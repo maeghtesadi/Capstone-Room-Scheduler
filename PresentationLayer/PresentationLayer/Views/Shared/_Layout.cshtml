@@ -44,7 +44,7 @@
     @using (Ajax.BeginForm("login", "Account", new AjaxOptions
     {
         HttpMethod = "Post",
-        UpdateTargetId = "failedMessage",
+        OnComplete= "OnSuccess"
     }))
     {
             <div class="login-popup">

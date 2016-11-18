@@ -152,7 +152,12 @@ $(".dropdownLogin").click(function () {
     $(".login-popup").toggle(300);
 });
 
-function OnSuccess() {
-    location.reload();
+function OnSuccess(data) {
+    if (data != "success") {
+        $("#failedMessage").html("Invalid credentials");
+    }
+    else {
+        location.reload();
+    }
 
 }
