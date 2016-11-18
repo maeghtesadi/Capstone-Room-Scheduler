@@ -119,7 +119,7 @@ namespace LogicLayer
             if (timeSlotNewList.Count() != 0)
                 timeSlotMapper.addTimeSlot(timeSlotNewList);
             if (timeSlotDeletedList.Count() != 0)
-                timeSlotMapper.deleteRoom(timeSlotDeletedList);
+                timeSlotMapper.deleteTimeSlot(timeSlotDeletedList);
 
             //Empty the lists after the Commit.
             userDeletedList.Clear();
