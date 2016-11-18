@@ -51,6 +51,15 @@ namespace TDG
             return instance;
         }
 
+        /**
+         * Default constructor, private for Singleton
+         */
+        private TDGWaitsFor()
+        {
+            this.cmd = new MySqlCommand();
+            this.cmd.CommandTimeout = COMMAND_TIMEOUT;
+        }
+
         // Open the database connection to the database
         public bool openConnection()
         {
@@ -86,7 +95,7 @@ namespace TDG
             openConnection();
 
             // Write and execute the query
-            this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlotID + " ORDER BY " + FIELDS[2];
+            this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlotID + " ORDER BY " + FIELDS[2] + ";";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
 
