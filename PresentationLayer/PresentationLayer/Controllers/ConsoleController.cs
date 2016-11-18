@@ -44,7 +44,7 @@ namespace CapstoneRoomScheduler.Controllers
             for (int i = 0; i < (reservationList.Count<Reservation>() - 1); i++)
             {
                firstTimeSlot = reservationList[i].reservationTimeSlotID;
-                while ((reservationList[i].reservationUserID == reservationList[i + 1].reservationUserID) && ((reservationList[i].reservationTimeSlotID + 1) == reservationList[i + 1].reservationTimeSlotID))
+                while ((reservationList[i].userID == reservationList[i + 1].userID) && ((reservationList[i].reservationTimeSlotID + 1) == reservationList[i + 1].reservationTimeSlotID))
                 {
                     i++;
                     if (i == reservationList.Count() - 1)
@@ -57,20 +57,15 @@ namespace CapstoneRoomScheduler.Controllers
                 {
                     initialTimeslot = firstTimeSlot,
                     finalTimeslot = lastTimeSlot,
-                    roomId = reservationList[i - 1].reservationRoomID,
-                    courseName = reservationList[i - 1].reservationDescription,
-                    userName = reservationList[i - 1].reservationUserID
+                    roomId = reservationList[i - 1].roomID,
+                    courseName = reservationList[i - 1].description,
+                    userName = reservationList[i - 1].userID
                 });
                
             }
             return list;
         }
-
-
-
-
-    
-
+        
 
 
         public void updateView()
