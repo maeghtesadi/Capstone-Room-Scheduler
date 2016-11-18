@@ -70,6 +70,9 @@ namespace PresentationLayer.Controllers
         [AllowAnonymous]
         public string Login(string username, string password)
         {
+            if(User.Identity.IsAuthenticated) {
+                return Logout();
+            }
             if (new UserManager().IsValid(username, password))
             {
                 var ident = new ClaimsIdentity(
@@ -91,11 +94,10 @@ namespace PresentationLayer.Controllers
             return "Failure";
         }
 
-        [HttpPost]
-        public ActionResult Logout()
+        public string Logout()
         {
             HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Calendar");
+            return "Success";
         }
         //
         // POST: /Account/ForgotPassword

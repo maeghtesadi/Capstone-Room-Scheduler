@@ -151,9 +151,16 @@ serverSession.client.getReservations = function (reservationList) {
 $(".dropdownLogin").click(function () {
     $(".login-popup").toggle(300);
 });
+$(".userId").click(function () {
+    $(".login-popup").toggle(300);
+    $("#username").remove();
+    $("#password").remove();
+    $("#failedMessage").remove();
+    $("#loginButton").html("Log Out");
+});
 
 function OnSuccess(data) {
-    if (data != "success") {
+    if (data.responseText != "Success") {
         $("#failedMessage").html("Invalid credentials");
     }
     else {

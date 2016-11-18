@@ -30,7 +30,7 @@ textarea {
   width: calc(100% - 200px);
   margin-left:200px;
   background-color:white;
-  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+   box-shadow: inset 0 -3px 0 rgb(197, 197, 197);
   z-index:10;
 
 }
@@ -39,18 +39,31 @@ textarea {
 
     height:inherit;
     margin:0px;
-    padding:0px
+    padding:0px;
+   
 }
 .custom-navbar-right li{
     display:block;
     float:right;
-    padding:11px;
+    
+    padding:0px;
+    vertical-align:text-bottom;
     text-align:center;
     width:51px;
-    color:#3f4350;
+    color:#3F4350;
     font-size:20px;
+     background-color:white;
+     box-shadow: inset 0 -3px 0 #3F4350;
+     height:50px;
+     line-height:67px;
 }
+.custom-navbar-right li:hover {
+    box-shadow: inset 0 -3px 0 #3193c6;
+    }
+.dropdownLogin{
+padding:0px;
 
+}
 .login-popup{
     height:115px;
     background-color:#3fa9e2;
@@ -72,6 +85,10 @@ textarea {
    display:inline;
    color:white;
    margin-bottom:10px;
+}
+.userId{
+font-size:18px;
+
 }
 #loginButton
 {
@@ -107,4 +124,48 @@ border-radius:0px;
         margin-left:0px;
         width:100%;
     }
+}
+
+
+/*Reservation*/
+
+.reservations{
+width:400px;
+height:1080px;
+background-color:white;
+position:fixed;
+float:right;
+top:50px;
+right:0px;
+z-index:40;
+
+
+}
+.tabs{
+height:50px;
+font-size:13px;
+text-align:center;
+vertical-align:middle;
+}
+.reservation-tab{
+padding-top:13px;
+float:left;
+width:50%;
+background-color:#eeeeee;
+height:inherit;
+
+}
+
+.reservation-tab.active,.waitlist-tab.active{
+background-color:white;
+color:black;
+
+}
+
+.waitlist-tab{
+padding-top:10px;
+display:inline-block;
+width:50%;
+background-color:#eeeeee;
+height:inherit;
 }

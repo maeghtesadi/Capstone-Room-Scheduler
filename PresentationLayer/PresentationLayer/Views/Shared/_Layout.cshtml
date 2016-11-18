@@ -34,7 +34,7 @@
                 }
                 else
                 {
-                    <li>@User.Identity.Name</li>
+                    <li><span class="userId">@User.Identity.Name</span></li>
                 }
 
 
@@ -52,7 +52,7 @@
                     <li><input type="text" class="form-control input-sm" id="username" name="username" placeholder="Login" /></li>
                     <li><input type="text" class="form-control input-sm" id="password" name="password" placeholder="Password" /></li>
                     <li id="failedMessage"> </li>
-                    <li><input type="submit" id="loginButton" class="btn btn-primary"></li>
+                    <li><button type="submit" id="loginButton" class="btn btn-primary">Log in</button></li>
                 </ul>
             </div>
     }
