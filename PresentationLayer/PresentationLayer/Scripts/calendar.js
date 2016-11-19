@@ -18,7 +18,6 @@ function timeslotClicked(event) {
     var firstAndLastTimeslot = [0, 0];
     var thisElement = event;
     var room = $(event).data("room");
-    $("input[name='date']").attr("value", date);
     $("input[name='room']").attr("value", room);
     var timeslot = $(event).data("timeslot");
     firstAndLastTimeslot[0] = timeslot;
@@ -43,31 +42,39 @@ function timeslotClicked(event) {
         var timeslot2 = $(this).data("timeslot");
 
         if (seconfuncCalled == false) {
-            firstAndLastTimeslot[1] = $(this).data("timeslot") - 1;
+            firstAndLastTimeslot[1] = firstAndLastTimeslot[0];
             seconfuncCalled = true;
         }
-        //if timeslot selected at the begining or after the range
         if ($(this).attr('data-room') == room) {
-            if (firstAndLastTimeslot[1] < timeslot2) {
-                for (var i = parseInt(timeslot) + 1; i <= parseInt($(this).attr('data-timeslot')) ; i++) {
-
+            //if timeslot selected at the begining or after the range
+            if (firstAndLastTimeslot[1] <= timeslot2 ) {
+                if (timeslot2 - firstAndLastTimeslot[0] > 3) {
+                    firstAndLastTimeslot[1] = firstAndLastTimeslot[0] + 3;
+                }
+                else {
+                    firstAndLastTimeslot[1] = timeslot2;
+                }
+                for (var i = firstAndLastTimeslot[0] + 1; i <= firstAndLastTimeslot[1]; i++) {
                     //adds more timeslots to the already active tismeslots
-                    if ($("li[data-timeslot='" + i + "']li[data-room='" + room + "']").hasClass("active")) { }
+                    if ($("li[data-timeslot='" + i + "']li[data-room='" + room + "']").hasClass("active"));
                     else {
-                        //toggles active the desired timesots
+                        //toggles active the desired timesots begining
                         $("li[data-timeslot='" + i + "']li[data-room='" + room + "']").toggleClass("active");
                     }
                 }
-
-                firstAndLastTimeslot[1] = timeslot2;
+               
             }
             else {
                 //if timeslot is selected before the range
                 if (firstAndLastTimeslot[0] > timeslot2) {
-                    timeslot = timeslot2;
-                    firstAndLastTimeslot[0] = timeslot2;
-                    for (var i = firstAndLastTimeslot[0]; i <= firstAndLastTimeslot[1]; i++) {
 
+                    if (firstAndLastTimeslot[1] - timeslot2 <= 3) {
+                        firstAndLastTimeslot[0] = timeslot2;
+                    }
+                    else {
+                        firstAndLastTimeslot[0] = firstAndLastTimeslot[1] - 3;
+                    }
+                    for (var i = firstAndLastTimeslot[0]; i <= firstAndLastTimeslot[1]; i++) {
                         //adds more timeslots to the already active tismeslots
                         if ($("li[data-timeslot='" + i + "']li[data-room='" + room + "']").hasClass("active")) { }
                         else {
@@ -75,10 +82,9 @@ function timeslotClicked(event) {
                             $("li[data-timeslot='" + i + "']li[data-room='" + room + "']").toggleClass("active");
                         }
                     }
-
-
-
                 }
+                
+                
                     //if timeslot selected is between the range that was already selected
                 else {
                     for (var i = parseInt(timeslot2) + 1; i <= parseInt(firstAndLastTimeslot[1]) ; i++) {
@@ -194,10 +200,24 @@ function getrReservationsFromDB() {
 }
 
 
-$(".showReservations").click(function () { 
+$(".showReservations").click(function () {
     $(".reservations").toggle(200);
     $(".showReservations").toggleClass('active');
+});
 
+
+//header calendar 
+var date= new Date();
+var months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+var days = [ "MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"]
+$(".next").click(function () {
+    var day = parseInt($(".upper-header li .date .day").html());
+    date.setDate(day + 1);
+    $(".upper-header li .date .day").html(date.getDate());
+    $(".upper-header li .date .month").html(months[date.getMonth()]);
+    $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
+
+});
 
 $(".prev").click(function () {
     var day = parseInt($(".upper-header li .date .day").html());
@@ -207,4 +227,3 @@ $(".prev").click(function () {
     $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
     //
 });
-

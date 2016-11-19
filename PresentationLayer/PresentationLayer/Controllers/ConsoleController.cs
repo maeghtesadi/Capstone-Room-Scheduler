@@ -22,7 +22,7 @@ namespace CapstoneRoomScheduler.Controllers
         public void acceptTimeSlots(int room,string description,string date,int firstTimeSlot, int lastTimeSlot)
         {
             ReservationConsole.makeReservation(1, room, description, new DateTime(), firstTimeSlot, lastTimeSlot);
-            updateCalendar();
+           // updateCalendar();
         }
         public void updateCalendar(DateTime date)
         {
