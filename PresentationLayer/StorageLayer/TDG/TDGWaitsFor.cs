@@ -149,6 +149,7 @@ namespace TDG
                     {
                         results.Add((int)reader[0]); // Selecting only the userID
                     }
+                    reader.Close();
 
                     // Get the waitlist of the timeSlot that is refreshed
                     waitlist = timeSlot.waitlist;
@@ -167,11 +168,11 @@ namespace TDG
                     {
                         if (!results.Contains(userID))
                         {
-                            DateTime now = new DateTime();
-                            String currentDateTime = now.ToString("yyyy-MM-dd HH:mm:ss");
+                            String currentDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                             createWaitsFor(timeSlot.timeSlotID, userID, currentDateTime);
                         }
                     }
+
                 }
             }
         }

@@ -118,6 +118,8 @@ namespace LogicLayer
 
             if (timeSlotNewList.Count() != 0)
                 timeSlotMapper.addTimeSlot(timeSlotNewList);
+            if (timeSlotChangedList.Count() != 0)
+                timeSlotMapper.updateTimeSlot(timeSlotChangedList);
             if (timeSlotDeletedList.Count() != 0)
                 timeSlotMapper.deleteTimeSlot(timeSlotDeletedList);
 

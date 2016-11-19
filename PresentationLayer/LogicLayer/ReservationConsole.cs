@@ -14,7 +14,7 @@ namespace LogicLayer
 
         public static void makeReservation(int uid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
         {
-            DirectoryOfRooms roomDirectory = getAllRooms();
+            //DirectoryOfRooms roomDirectory = getAllRooms();
             DirectoryOfReservations reservationDirectory = getAllReservations();
             Reservation res = new Reservation();
             List<int> hours = new List<int>();
@@ -193,12 +193,14 @@ namespace LogicLayer
                                                                                 "", ReservationMapper.getInstance().getReservation(resid).date);
                         updateWaitList(userID);
                         TimeSlotMapper.getInstance().setTimeSlot(directory.timeSlotList[i].timeSlotID, res.reservationID, directory.timeSlotList[i].waitlist);
+                        
                     }
                 }
             }
-            ReservationMapper.getInstance().delete(resid);
             TimeSlotMapper.getInstance().done();
+            ReservationMapper.getInstance().delete(resid);
             ReservationMapper.getInstance().done();
+
         }
 
         //get up-to-date timeslots from database 
