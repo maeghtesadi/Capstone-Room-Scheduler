@@ -102,10 +102,11 @@ namespace TDG
            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " \n" +
                    "SET " + FIELDS[1] + "=" + user.username + "," + FIELDS[2] + "=" + user.password + "," +
                    FIELDS[3] + "=" + user.name + "," + FIELDS[4] + "=" + user.numOfReservations + ";\n" +
-                   "WHERE" + FIELDS[0] + "=" + user.userID + ";";
+                   " WHERE " + FIELDS[0] + "=" + user.userID + ";";
            this.cmd.Connection = this.conn;
-           cmd.ExecuteReader();
-       }
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
+        }
 
         /**
        * Returns a record for the user given its userID
@@ -113,7 +114,7 @@ namespace TDG
         public Object[] get(int userID)
         {
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " \n" +
-                    "WHERE " + FIELDS[0] + "=" + userID + ";";
+                    " WHERE " + FIELDS[0] + "=" + userID + ";";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
 
@@ -126,6 +127,10 @@ namespace TDG
             Object[] record = new Object[FIELDS.Length];
             while (reader.Read())
             {
+                if (reader[0].GetType() == typeof(System.DBNull))
+                {
+                    return null;
+                }
                 record[0] = reader[0];
                 record[1] = reader[1];
                 record[2] = reader[2];
@@ -133,6 +138,7 @@ namespace TDG
                 record[4] = reader[4];
             }
             // Close connection
+            reader.Close();
             closeConnection();
 
             // Format and return the result
@@ -145,7 +151,7 @@ namespace TDG
         public Object[] getByName(string userName)
         {
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " \n" +
-                    "WHERE " + FIELDS[1] + "=" + userName + ";";
+                    " WHERE " + FIELDS[1] + "=" + userName + ";";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
 
@@ -158,6 +164,10 @@ namespace TDG
             Object[] record = new Object[FIELDS.Length];
             while (reader.Read())
             {
+                if (reader[0].GetType() == typeof(System.DBNull))
+                {
+                    return null;
+                }
                 record[0] = reader[0];
                 record[1] = reader[1];
                 record[2] = reader[2];
@@ -165,6 +175,7 @@ namespace TDG
                 record[4] = reader[4];
             }
             // Close connection
+            reader.Close();
             closeConnection();
 
             // Format and return the result
@@ -197,6 +208,10 @@ namespace TDG
             // For each reader, add it to the dictionary
             while (reader.Read())
             {
+                if (reader[0].GetType() == typeof(System.DBNull))
+                {
+                    return null;
+                }
                 Object[] attributes = new Object[FIELDS.Length];
                 attributes[0] = reader[0]; // userID
                 attributes[1] = reader[1]; // userName
@@ -207,6 +222,7 @@ namespace TDG
             }
 
             // Close connection
+            reader.Close();
             closeConnection();
 
             // Format and return the result

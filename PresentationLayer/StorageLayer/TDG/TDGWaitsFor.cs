@@ -51,6 +51,15 @@ namespace TDG
             return instance;
         }
 
+        /**
+         * Default constructor, private for Singleton
+         */
+        private TDGWaitsFor()
+        {
+            this.cmd = new MySqlCommand();
+            this.cmd.CommandTimeout = COMMAND_TIMEOUT;
+        }
+
         // Open the database connection to the database
         public bool openConnection()
         {
@@ -86,23 +95,28 @@ namespace TDG
             openConnection();
 
             // Write and execute the query
-            this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlotID + " ORDER BY " + FIELDS[2];
+            this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlotID + " ORDER BY " + FIELDS[2] + ";";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
 
             // If no record is found, return null
             if (!reader.HasRows)
             {
-                return null;
+                return listOfUsers;
             }
 
             // For each reader, add it to the dictionary
             while (reader.Read())
             {
+                if(reader[0].GetType() == typeof(System.DBNull))
+                {
+                    return listOfUsers;
+                }
                 listOfUsers.Add((int)reader[0]); // Selecting only the userID
             }
 
             // Close connection
+            reader.Close();
             closeConnection();
 
             // Format and return the result
@@ -122,6 +136,7 @@ namespace TDG
             List<int> results;
             foreach (TimeSlot timeSlot in listOfTimeSlots)
             {
+                // The list is not empty, refresh the content of the database
                 if (timeSlot.waitlist.Count != 0)
                 {
                     // Obtain all queuery for that timeSlot from the database
@@ -135,6 +150,7 @@ namespace TDG
                     {
                         results.Add((int)reader[0]); // Selecting only the userID
                     }
+                    reader.Close();
 
                     // Get the waitlist of the timeSlot that is refreshed
                     waitlist = timeSlot.waitlist;
@@ -153,11 +169,19 @@ namespace TDG
                     {
                         if (!results.Contains(userID))
                         {
-                            DateTime now = new DateTime();
-                            String currentDateTime = now.ToString("yyyy-MM-dd HH:mm:ss");
+                            String currentDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                             createWaitsFor(timeSlot.timeSlotID, userID, currentDateTime);
                         }
                     }
+
+                }
+                // If the queue is empty, ensure it is empty by deleting all rows that have that timeslot id
+                else
+                {
+                    this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + timeSlot.timeSlotID;
+                    this.cmd.Connection = this.conn;
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    reader.Close();
                 }
             }
         }
@@ -166,13 +190,15 @@ namespace TDG
         {
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES ( " + timeSlotID + "," + userID + "," + currentDateTime + ");";
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
         private void deleteWaitsFor(int timeSlotID, int userID)
         {
             this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlotID + " AND " + FIELDS[1] + " = " + userID;
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
     }

@@ -21,7 +21,7 @@ namespace Mappers
         private int lastID;
 
         // Lock to modify last ID
-        private readonly Object lockLastID;
+        private readonly Object lockLastID = new Object();
 
         //default constructor
         private TimeSlotMapper()
@@ -126,6 +126,12 @@ namespace Mappers
             //Get all timeslots in the DB
             Dictionary<int, Object[]> result = tdgTimeSlot.getAllTimeSlot();
 
+            // If it's empty, simply return those from the identity map
+            if(result == null)
+            {
+                return timeslots;
+            }
+
             //Loop through each of the result:
             foreach (KeyValuePair<int, Object[]> record in result)
             {
@@ -155,6 +161,12 @@ namespace Mappers
 
             //Get all timeslots in the DB
             Dictionary<int, Object[]> result = tdgTimeSlot.getAllTimeSlot(reservationID);
+
+            // If it's empty, simply return those from the identity map
+            if (result == null)
+            {
+                return timeslots;
+            }
 
             //Loop through each of the result:
             foreach (KeyValuePair<int, Object[]> record in result)
@@ -214,6 +226,11 @@ namespace Mappers
             {
                 timeSlotIdentityMap.removeFrom(timeslot);
             }
+            else
+            {
+                tdgTimeSlot.get(timeSlotID);
+            }
+
 
             //Register as deleted in the Unit Of Work. 
             //Object will be deleted from the DB

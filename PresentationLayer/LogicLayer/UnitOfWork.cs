@@ -106,7 +106,7 @@ namespace LogicLayer
                 reservationMapper.addReservation(reservationNewList);
             if (reservationChangedList.Count() != 0)
                 reservationMapper.updateReservation(reservationChangedList);
-            if (userDeletedList.Count() != 0)
+            if (reservationDeletedList.Count() != 0)
                 reservationMapper.deleteReservation(reservationDeletedList);
 
             if (roomNewList.Count() != 0)
@@ -118,6 +118,8 @@ namespace LogicLayer
 
             if (timeSlotNewList.Count() != 0)
                 timeSlotMapper.addTimeSlot(timeSlotNewList);
+            if (timeSlotChangedList.Count() != 0)
+                timeSlotMapper.updateTimeSlot(timeSlotChangedList);
             if (timeSlotDeletedList.Count() != 0)
                 timeSlotMapper.deleteTimeSlot(timeSlotDeletedList);
 
@@ -132,6 +134,7 @@ namespace LogicLayer
             roomChangedList.Clear();
             roomNewList.Clear();
             timeSlotNewList.Clear();
+            timeSlotChangedList.Clear();
             timeSlotDeletedList.Clear();
         }
     }

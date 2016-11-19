@@ -21,7 +21,7 @@ namespace TDG
         private const String TABLE_NAME = "reservation";
 
         //Fields names of the table
-        private readonly String[] FIELDS = { "reservationID", "userID", "roomID", "desc", "date" }; 
+        private readonly String[] FIELDS = { "reservationID", "userID", "roomID", "description", "date" }; 
 
         //Database server (localhost)
         private const String DATABASE_SERVER = "127.0.0.1";
@@ -156,7 +156,7 @@ namespace TDG
             openConnection();
 
             //Write and execute the query
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + "WHERE" + FIELDS[0] + " = " + reservationID;
+            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + reservationID;
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
 
@@ -171,10 +171,19 @@ namespace TDG
             Object[] record = new Object[FIELDS.Length];
             while (reader.Read())
             {
+                if(reader[0].GetType() == typeof(System.DBNull))
+                {
+                    return null;
+                }
+
                 record[0] = reader[0];
                 record[1] = reader[1];
+                record[2] = reader[2];
+                record[3] = reader[3];
+                record[4] = reader[4];
 
             }
+            reader.Close();
             //Close connection
             closeConnection();
 
@@ -196,7 +205,7 @@ namespace TDG
             openConnection();
 
             //Write and execute the query
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + "WHERE 1;";
+            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
 
@@ -210,6 +219,11 @@ namespace TDG
             //For each reader, add it to the dictionary
             while (reader.Read())
             {
+                if(reader[0].GetType() == typeof(System.DBNull))
+                {
+                    return null;
+                }
+
                 Object[] attributes = new Object[FIELDS.Length];
                 attributes[0] = reader[0]; //reservationID
                 attributes[1] = reader[1]; // userID
@@ -222,7 +236,7 @@ namespace TDG
 
 
             }
-
+            reader.Close();
             //close connection
             closeConnection();
 
@@ -241,7 +255,8 @@ namespace TDG
                 mySqlDate + ");";
 
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
         /**
@@ -251,12 +266,13 @@ namespace TDG
         private void updateReservation(Reservation reservation)
         {
             String mySqlDate = reservation.date.Date.ToString("yyyy-MM-dd");
-            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + 
-                FIELDS[4] + " = " + mySqlDate + "," + FIELDS[3] + " = " + reservation.description + "," +
-                FIELDS[2] + " = " + reservation.roomID + "," + FIELDS[1] + "=" + reservation.userID + " WHERE " +
+            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " +
+                FIELDS[4] + " = '" + mySqlDate + "', " + FIELDS[3] + " = '" + reservation.description + "', " +
+                FIELDS[2] + " = " + reservation.roomID + ", " + FIELDS[1] + " = " + reservation.userID + " WHERE " +
                 FIELDS[0] + " = " + reservation.reservationID + ";";
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
 
@@ -268,7 +284,8 @@ namespace TDG
         {
             this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservation.reservationID + ";";
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
         /**
@@ -288,12 +305,12 @@ namespace TDG
             // read it, there should only be one
             while(reader.Read())
             {
-                if (reader[0] != null)
+                if (reader[0].GetType() != typeof(System.DBNull))
                 {
                     lastID = (int)reader[0];
                 }
             }
-            
+            reader.Close();
             // Close connection
             closeConnection();
 

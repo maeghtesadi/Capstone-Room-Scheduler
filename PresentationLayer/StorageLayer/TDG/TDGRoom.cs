@@ -161,9 +161,14 @@ namespace TDG
             Object[] record = new Object[FIELDS.Length];
             while (reader.Read())
             {
+                if(reader[0].GetType() == typeof(System.DBNull))
+                {
+                    return null;
+                }
                 record[0] = reader[0];
                 record[1] = reader[1];
             }
+            reader.Close();
             // Close connection
             closeConnection();
 
@@ -196,12 +201,16 @@ namespace TDG
             // For each reader, add it to the dictionary
             while (reader.Read())
             {
+                if(reader[0].GetType() == typeof(System.DBNull))
+                {
+                    return null;
+                }
                 Object[] attributes = new Object[FIELDS.Length];
                 attributes[0] = reader[0]; // roomID
                 attributes[1] = reader[1]; // roomNum
                 records.Add((int)reader[0], attributes);
             }
-
+            reader.Close();
             // Close connection
             closeConnection();
 
@@ -216,7 +225,8 @@ namespace TDG
         {
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + room.roomID + "," + room.roomNum + ");";
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
         /**
@@ -226,7 +236,8 @@ namespace TDG
         {
             this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + "=" + room.roomNum + " WHERE " + FIELDS[0] + " = " + room.roomID + ";";
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
         /**
@@ -236,7 +247,8 @@ namespace TDG
         {
             this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + room.roomID + ";";
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
         /**
@@ -256,7 +268,7 @@ namespace TDG
             // read it, there should only be one
             while (reader.Read())
             {
-                if (reader[0] != null)
+                if (reader[0].GetType() != typeof(System.DBNull))
                 {
                     lastID = (int)reader[0];
                 }
@@ -264,7 +276,7 @@ namespace TDG
 
             // Close connection
             closeConnection();
-
+            reader.Close();
             // return the last id
             return lastID;
         }

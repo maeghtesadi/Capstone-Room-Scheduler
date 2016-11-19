@@ -151,7 +151,7 @@ namespace TDG
             openConnection();
 
             //Write and execute the query
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + "WHERE" + FIELDS[0] + " = " + timeslotID;
+            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + timeslotID;
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
 
@@ -166,12 +166,17 @@ namespace TDG
             Object[] record = new Object[FIELDS.Length];
             while (reader.Read())
             {
+                if(reader[0].GetType() == typeof(System.DBNull))
+                {
+                    return null;
+                }
                 record[0] = reader[0]; // timeslotID
                 record[1] = reader[1]; // reservationID
                 record[2] = reader[2]; // dateTime
 
             }
             //Close connection
+            reader.Close();
             closeConnection();
 
             //Format and return the result
@@ -192,7 +197,7 @@ namespace TDG
             openConnection();
 
             //Write and execute the query
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + "WHERE 1;";
+            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
 
@@ -206,6 +211,10 @@ namespace TDG
             //For each reader, add it to the dictionary
             while (reader.Read())
             {
+                if (reader[0].GetType() == typeof(System.DBNull))
+                {
+                    return null;
+                }
                 Object[] attributes = new Object[FIELDS.Length];
                 attributes[0] = reader[0]; // timeslotID
                 attributes[1] = reader[1]; // reservationID
@@ -215,6 +224,7 @@ namespace TDG
             }
 
             //close connection
+            reader.Close();
             closeConnection();
 
             //Format and return the result
@@ -249,6 +259,10 @@ namespace TDG
             //For each reader, add it to the dictionary
             while (reader.Read())
             {
+                if (reader[0].GetType() == typeof(System.DBNull))
+                {
+                    return null;
+                }
                 Object[] attributes = new Object[FIELDS.Length];
                 attributes[0] = reader[0]; // timeslotID
                 attributes[1] = reader[1]; // reservationID
@@ -258,6 +272,7 @@ namespace TDG
             }
 
             //close connection
+            reader.Close();
             closeConnection();
 
             //Format and return the result
@@ -273,7 +288,9 @@ namespace TDG
                 timeslot.reservationID + "," + timeslot.hour + ");";
 
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
 
@@ -284,7 +301,8 @@ namespace TDG
         {
             this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + " = " + timeslot.reservationID + " WHERE " + FIELDS[0] + " = " + timeslot.timeSlotID;
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
         /**
@@ -295,7 +313,8 @@ namespace TDG
         {
             this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeslot.timeSlotID + ";";
             this.cmd.Connection = this.conn;
-            cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
         }
 
         /**
@@ -315,13 +334,14 @@ namespace TDG
             // read it, there should only be one
             while (reader.Read())
             {
-                if(reader[0] != null)
+                if(reader[0].GetType() != typeof(System.DBNull))
                 {
                     lastID = (int)reader[0];
                 }
             }
 
             // Close connection
+            reader.Close();
             closeConnection();
 
             // return the last id
