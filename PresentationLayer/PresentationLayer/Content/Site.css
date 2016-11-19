@@ -24,27 +24,259 @@ textarea {
 }
 .navbar{
   border-color: #0c84e4;
-  top: 0px;    
-  padding-bottom:0px;
-  margin-bottom:0px;
+  height:50px;
+  top:0px;
   position:fixed;
   width:100%;
-  margin-left:200px;
+
+  background-color:white;
+   box-shadow: inset 0 -3px 0 rgb(197, 197, 197);
+  z-index:10;
+
 }
 
+.custom-navbar-right{
+
+    height:inherit;
+    margin:0px;
+    padding:0px;
+   
+}
+.custom-navbar-right li{
+    display:block;
+    float:right;
+    
+    padding:0px;
+    vertical-align:text-bottom;
+    text-align:center;
+    width:51px;
+    color:#3F4350;
+    font-size:20px;
+     background-color:white;
+     box-shadow: inset 0 -3px 0 #3F4350;
+     height:50px;
+     line-height:67px;
+}
+.custom-navbar-right li:hover {
+    box-shadow: inset 0 -3px 0 #3193c6;
+    }
+.dropdownLogin{
+padding:0px;
+
+}
+.login-popup{
+    height:115px;
+    background-color:#3fa9e2;
+    position:fixed;
+    width:230px;
+    right:0px;
+    top:50px;
+    z-index:-100;
+    display:none;
+}
+.login-popup ul{
+   text-align:center;
+    padding-left:20px;
+    padding-top:5px;
+    padding-right:20px;
+    margin:0px; 
+}
+.login-popup ul li{
+   display:inline;
+   color:white;
+   margin-bottom:10px;
+}
+.userId{
+font-size:18px;
+
+}
+#loginButton
+{
+margin-top:10px;
+background-color:#3f4350;
+font-size:12px;
+padding: 2px 67px;
+width:inherit;
+border-radius:0px;
+}
+.login-popup .form-control::-webkit-input-placeholder { color: white; }
+.login-popup .form-control:-moz-placeholder { color: white; }
+.login-popup .form-control::-moz-placeholder { color: white; }
+.login-popup .form-control:-ms-input-placeholder { color: white; }
+.login-popup .form-control:focus{
+    box-shadow: inset 0 -2px 0 #3f4350;
+}
+
+
 .container-right{   
-    top: 15px;
+    margin-top:-10px;
     padding:0px;    
     z-index:-1;
-    margin-left:200px;
-    width:calc(100% - 200px);
+    
+    width:100%;
 }
 @media (max-width: 768px){
     .container-right{   
-        margin-left:0px;
-        width:100%
+        
     }
     .navbar{
-        margin-left:0px;
+       
     }
+}
+
+/*-----------------------------*/
+/*--------Reservation----------*/
+/*-----------------------------*/
+.reservations{
+width:340px;
+height:1080px;
+background-color:white;
+position:fixed;
+float:right;
+top:50px;
+right:0px;
+z-index:40;
+display:none;
+}
+
+/*Tabs*/
+.tabs{
+height:50px;
+font-size:13px;
+text-align:center;
+vertical-align:middle;
+
+}
+.reservation-tab{
+padding-top:15px;
+float:left;
+width:50%;
+background-color:#eeeeee;
+height:inherit;
+
+}
+
+.reservation-tab.active,.waitlist-tab.active{
+background-color:white;
+color:#b9b9b9;
+
+}
+
+.waitlist-tab{
+padding-top:15px;
+display:inline-block;
+width:50%;
+background-color:#eeeeee;
+height:inherit;
+}
+
+/*Reservation Content stuff*/
+
+.reservation-content{
+padding:30px;
+
+
+
+}
+.reservation-item{
+margin:20px 0px;
+height:60px;
+border-style:solid;
+border-color:#eeeeee;
+border-radius:5px;
+border-width:2px;
+background-color:white;
+
+}
+.reservation-item .roomNumber{
+width:15%;
+background-color:#f7f7f7;
+height:56px;
+float:left;
+text-align:center;
+padding-top:16px;
+color:#3fa9e2;
+font-size:17px;
+border-radius:4px 0px 0px 4px;
+}
+.reservation-item .roomNumber .number{
+color:white;
+font-size:16px;
+line-height:22px;
+}
+.reservation-item .roomNumber span{
+line-height:25px;
+}
+
+.reservation-item .reservationDetails {
+width:65%;
+background-color:white;
+float:left;
+padding-top:4px;
+}
+
+.reservation-item .reservationDetails ul {
+padding-left:10px;
+}
+.reservation-item .reservationDetails .description{
+color:#3fa9e2;
+font-size:17px;
+}
+.reservation-item .reservationDetails .timeslot{
+color:#868686;
+font-size:12px;
+line-height:6px;
+}
+
+ .reservation-item .cancelReservation {
+ width:12%;
+border-left:solid 2px #eeeeee;
+height:56px;
+float:right;
+text-align:center;
+padding-top:14px;
+padding-left:4px;
+color:#3fa9e2;
+font-size:15px;
+ }
+  .reservation-item .cancelReservation:hover {
+background-color:#f7f7f7;
+transition: background-color 0.5s ease;
+ }
+
+/*-----------------------------*/
+/*--------Footer---------------*/
+/*-----------------------------*/
+
+.footer{
+width:100%;
+position:fixed;
+bottom:0px;
+height:40px;
+z-index:41;
+background-color:white;
+box-shadow: inset 0 3px 0 rgb(197, 197, 197);
+
+}
+
+.footer .footer-right{
+float:right;
+}
+.icon-inverse{
+padding-top:10px;
+width:50px;
+float:right;
+box-shadow: inset 0 3px 0 #3F4350;
+color:black;
+padding-left:12px;
+border-left:solid 1px #eeeeee;
+background-color:white;
+}
+
+
+.icon-inverse:hover,.icon-inverse.active{
+  box-shadow: inset 0 3px 0 #3193c6;
+  background-color:#f7f7f7;
+  transition: background-color 0.5s ease;
+  transition:box-shadow 0.5s ease;
 }

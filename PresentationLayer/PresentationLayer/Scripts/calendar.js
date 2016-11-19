@@ -42,49 +42,42 @@ function timeslotClicked(event) {
         var timeslot2 = $(this).data("timeslot");
 
         if (seconfuncCalled == false) {
-            firstAndLastTimeslot[1] = firstAndLastTimeslot[0];
+            firstAndLastTimeslot[1] = $(this).data("timeslot") - 1;
             seconfuncCalled = true;
         }
+        //if timeslot selected at the begining or after the range
         if ($(this).attr('data-room') == room) {
-            //if timeslot selected at the begining or after the range
-            if (firstAndLastTimeslot[1] <= timeslot2 ) {
-                if (timeslot2 - firstAndLastTimeslot[0] > 3) {
-                    firstAndLastTimeslot[1] = firstAndLastTimeslot[0] + 3;
+            if (firstAndLastTimeslot[1] < timeslot2) {
+                for (var i = parseInt(timeslot) + 1; i <= parseInt($(this).attr('data-timeslot')) ; i++) {
+
+                    //adds more timeslots to the already active tismeslots
+                    if ($("li[data-timeslot='" + i + "']li[data-room='" + room + "']").hasClass("active")) { }
+                    else {
+                        //toggles active the desired timesots
+                        $("li[data-timeslot='" + i + "']li[data-room='" + room + "']").toggleClass("active");
+                    }
                 }
-                else {
-                    firstAndLastTimeslot[1] = timeslot2;
-                }
-                for (var i = firstAndLastTimeslot[0] + 1; i <= firstAndLastTimeslot[1]; i++) {
-                        //adds more timeslots to the already active tismeslots
-                        if ($("li[data-timeslot='" + i + "']li[data-room='" + room + "']").hasClass("active"));
-                        else {
-                            //toggles active the desired timesots begining
-                            $("li[data-timeslot='" + i + "']li[data-room='" + room + "']").toggleClass("active");
-                        }
-                }
-               
+
+                firstAndLastTimeslot[1] = timeslot2;
             }
             else {
                 //if timeslot is selected before the range
                 if (firstAndLastTimeslot[0] > timeslot2) {
+                    timeslot = timeslot2;
+                    firstAndLastTimeslot[0] = timeslot2;
+                    for (var i = firstAndLastTimeslot[0]; i <= firstAndLastTimeslot[1]; i++) {
 
-                    if (firstAndLastTimeslot[1] - timeslot2 <= 3) {
-                        firstAndLastTimeslot[0] = timeslot2;
-                    }
-                    else {
-                        firstAndLastTimeslot[0] = firstAndLastTimeslot[1] - 3;
-                    }
-                        for (var i = firstAndLastTimeslot[0]; i <= firstAndLastTimeslot[1]; i++) {
-                            //adds more timeslots to the already active tismeslots
-                            if ($("li[data-timeslot='" + i + "']li[data-room='" + room + "']").hasClass("active")) { }
-                            else {
-                                //toggles active the desired timesots
-                                $("li[data-timeslot='" + i + "']li[data-room='" + room + "']").toggleClass("active");
-                            }
+                        //adds more timeslots to the already active tismeslots
+                        if ($("li[data-timeslot='" + i + "']li[data-room='" + room + "']").hasClass("active")) { }
+                        else {
+                            //toggles active the desired timesots
+                            $("li[data-timeslot='" + i + "']li[data-room='" + room + "']").toggleClass("active");
                         }
                     }
-                
-                
+
+
+
+                }
                     //if timeslot selected is between the range that was already selected
                 else {
                     for (var i = parseInt(timeslot2) + 1; i <= parseInt(firstAndLastTimeslot[1]) ; i++) {
@@ -154,26 +147,56 @@ serverSession.client.getReservations = function (reservationList) {
 
 };
 
-
-//header calendar 
-var date= new Date();
-var months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
-var days = [ "MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"]
-$(".next").click(function () {
-    var day = parseInt($(".upper-header li .date .day").html());
-    date.setDate(day + 1);
-    $(".upper-header li .date .day").html(date.getDate());
-    $(".upper-header li .date .month").html(months[date.getMonth()]);
-    $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
-
+//Login popup
+$(".dropdownLogin").click(function () {
+    $(".login-popup").toggle(300);
+});
+$(".userId").click(function () {
+    $(".login-popup").toggle(300);
+    $("#username").remove();
+    $("#password").remove();
+    $("#failedMessage").remove();
+    $("#loginButton").html("Log Out");
 });
 
-$(".prev").click(function () {
-    var day = parseInt($(".upper-header li .date .day").html());
-    date.setDate(day - 1);
-    $(".upper-header li .date .day").html(date.getDate());
-    $(".upper-header li .date .month").html(months[date.getMonth()]);
-    $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
+function OnSuccess(data) {
+    if (data.responseText != "Success") {
+        $("#failedMessage").html("Invalid credentials");
+    }
+    else {
+        location.reload();
+    }
+
+}
+
+
+function buildNewReservationItem(reservationId, description, initialTimeSlot, finalTimeslot , roomID ) //reservtion id goes in .$(".cancelReservation).data(reservationId)
+{
+    var reservationItem = 
+        '<div class="reservation-item">' +
+             '<div class="roomNumber"><span class="fa fa-stack fa-lg"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack number">' + roomID + '</i></span></div>' +
+             '<div class="reservationDetails">'+
+                '<ul>'+
+                '    <li class="description">'+ description +'</li>'+
+                '    <li class="timeslot">From <span class="initialTimeslot">' + initialTimeSlot + '</span> to <span class="finalTimeslot">' + finalTimeslot + '</span></li>' +
+                '</u>' +
+             '</div>' +
+             '<div data-reservationId ="' + reservationId + '"    class="cancelReservation"><span class="fa fa-pencil fa-lg"></span></div>' +
+        '</div>';
+
+    $(".reservations .reservation-content ").append(reservationItem);
+}
+
+function getrReservationsFromDB() {
+
+
+}
+
+
+$(".showReservations").click(function () { 
+    $(".reservations").toggle(200);
+    $(".showReservations").toggleClass('active');
+
+
 
 });
-

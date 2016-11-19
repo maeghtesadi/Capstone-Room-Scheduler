@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CapstoneRoomScheduler.LogicLayer.CustomUserManager;
 using LogicLayer;
 using Microsoft.AspNet.SignalR;
 using PresentationLayer.Hubs;
@@ -16,11 +17,12 @@ namespace CapstoneRoomScheduler.Controllers
         {
             return View();
         }
-
+        [LoggedIn]
         [HttpPost]
         public void acceptTimeSlots(string inputCourseName,int firstTimeSlot, int lastTimeSlot, int room, string date)
         {
-            DirectoryOfReservations directory = new LogicLayer.DirectoryOfReservations();
+            
+            DirectoryOfReservations directory = new DirectoryOfReservations();
             for (int i = firstTimeSlot; i <= lastTimeSlot; i ++)
             {
                 directory.makeReservation(123, room, i, date, new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, i, 0, 0));
