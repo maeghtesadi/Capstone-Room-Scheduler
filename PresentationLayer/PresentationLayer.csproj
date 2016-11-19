@@ -315,8 +315,6 @@
     <Content Include="PresentationLayer\Views\_ViewStart.cshtml" />
     <Content Include="PresentationLayer\Views\Shared\Error.cshtml" />
     <Content Include="PresentationLayer\Views\Shared\_Layout.cshtml" />
-    <Content Include="PresentationLayer\Views\Console\About.cshtml" />
-    <Content Include="PresentationLayer\Views\Console\Contact.cshtml" />
     <Content Include="PresentationLayer\Views\Console\Calendar.cshtml" />
     <Content Include="PresentationLayer\Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="PresentationLayer\Views\Account\ConfirmEmail.cshtml" />
@@ -338,7 +336,6 @@
     <Content Include="PresentationLayer\Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="PresentationLayer\Views\Shared\Lockout.cshtml" />
     <Content Include="PresentationLayer\Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="PresentationLayer\Views\Console\Reservations.cshtml" />
     <None Include="web.config.Debug.old1">
       <DependentUpon>web.config.old1</DependentUpon>
     </None>

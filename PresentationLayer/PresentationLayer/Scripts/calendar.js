@@ -18,6 +18,7 @@ function timeslotClicked(event) {
     var firstAndLastTimeslot = [0, 0];
     var thisElement = event;
     var room = $(event).data("room");
+    $("input[name='date']").attr("value", date);
     $("input[name='room']").attr("value", room);
     var timeslot = $(event).data("timeslot");
     firstAndLastTimeslot[0] = timeslot;
@@ -125,7 +126,7 @@ $.connection.hub.start().done(function () {
 var serverSession = $.connection.calendarHub;
 //Jquery to update the timeslots
 
-serverSession.client.getReservations = function (reservationList) {
+serverSession.client.uodateCalendar = function (reservationList) {
     for (j = 0; j < reservationList.length; j++) {
         var color = colorPallette[Math.floor(Math.random() * colorPallette.length)];
         for (var i = reservationList[j].initialTimeslot; i <= reservationList[j].finalTimeslot; i++) {
