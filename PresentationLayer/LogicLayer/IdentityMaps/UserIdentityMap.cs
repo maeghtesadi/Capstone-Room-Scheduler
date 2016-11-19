@@ -37,9 +37,16 @@ namespace CapstoneRoomScheduler.LogicLayer.IdentityMaps
             return null;
         }
 
-        public User findByName(string name)
+        public User findByName(string username)
         {
-
+            foreach(KeyValuePair<int, User> pair in userList_ActiveMemory)
+            {
+                if(pair.Value.username.Equals(username))
+                {
+                    return pair.Value;
+                }
+            }
+            return null;
         }
 
         /**
