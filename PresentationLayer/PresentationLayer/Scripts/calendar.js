@@ -168,3 +168,11 @@ function OnSuccess(data) {
     }
 
 }
+
+
+$(".showReservations").click(function () { 
+$(".reservations").toggle(200);
+
+
+
+});

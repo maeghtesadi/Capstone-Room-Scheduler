@@ -136,6 +136,7 @@ float:right;
 top:50px;
 right:0px;
 z-index:40;
+display:none;
 }
 
 /*Tabs*/
