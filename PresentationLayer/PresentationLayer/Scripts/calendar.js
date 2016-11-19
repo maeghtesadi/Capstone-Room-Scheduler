@@ -42,42 +42,49 @@ function timeslotClicked(event) {
         var timeslot2 = $(this).data("timeslot");
 
         if (seconfuncCalled == false) {
-            firstAndLastTimeslot[1] = $(this).data("timeslot") - 1;
+            firstAndLastTimeslot[1] = firstAndLastTimeslot[0];
             seconfuncCalled = true;
         }
-        //if timeslot selected at the begining or after the range
         if ($(this).attr('data-room') == room) {
-            if (firstAndLastTimeslot[1] < timeslot2) {
-                for (var i = parseInt(timeslot) + 1; i <= parseInt($(this).attr('data-timeslot')) ; i++) {
-
-                    //adds more timeslots to the already active tismeslots
-                    if ($("li[data-timeslot='" + i + "']li[data-room='" + room + "']").hasClass("active")) { }
-                    else {
-                        //toggles active the desired timesots
-                        $("li[data-timeslot='" + i + "']li[data-room='" + room + "']").toggleClass("active");
-                    }
+            //if timeslot selected at the begining or after the range
+            if (firstAndLastTimeslot[1] <= timeslot2 ) {
+                if (timeslot2 - firstAndLastTimeslot[0] > 3) {
+                    firstAndLastTimeslot[1] = firstAndLastTimeslot[0] + 3;
                 }
-
-                firstAndLastTimeslot[1] = timeslot2;
+                else {
+                    firstAndLastTimeslot[1] = timeslot2;
+                }
+                for (var i = firstAndLastTimeslot[0] + 1; i <= firstAndLastTimeslot[1]; i++) {
+                        //adds more timeslots to the already active tismeslots
+                        if ($("li[data-timeslot='" + i + "']li[data-room='" + room + "']").hasClass("active"));
+                        else {
+                            //toggles active the desired timesots begining
+                            $("li[data-timeslot='" + i + "']li[data-room='" + room + "']").toggleClass("active");
+                        }
+                }
+               
             }
             else {
                 //if timeslot is selected before the range
                 if (firstAndLastTimeslot[0] > timeslot2) {
-                    timeslot = timeslot2;
-                    firstAndLastTimeslot[0] = timeslot2;
-                    for (var i = firstAndLastTimeslot[0]; i <= firstAndLastTimeslot[1]; i++) {
 
-                        //adds more timeslots to the already active tismeslots
-                        if ($("li[data-timeslot='" + i + "']li[data-room='" + room + "']").hasClass("active")) { }
-                        else {
-                            //toggles active the desired timesots
-                            $("li[data-timeslot='" + i + "']li[data-room='" + room + "']").toggleClass("active");
+                    if (firstAndLastTimeslot[1] - timeslot2 <= 3) {
+                        firstAndLastTimeslot[0] = timeslot2;
+                    }
+                    else {
+                        firstAndLastTimeslot[0] = firstAndLastTimeslot[1] - 3;
+                    }
+                        for (var i = firstAndLastTimeslot[0]; i <= firstAndLastTimeslot[1]; i++) {
+                            //adds more timeslots to the already active tismeslots
+                            if ($("li[data-timeslot='" + i + "']li[data-room='" + room + "']").hasClass("active")) { }
+                            else {
+                                //toggles active the desired timesots
+                                $("li[data-timeslot='" + i + "']li[data-room='" + room + "']").toggleClass("active");
+                            }
                         }
                     }
-
-
-
-                }
+                
+                
                     //if timeslot selected is between the range that was already selected
                 else {
                     for (var i = parseInt(timeslot2) + 1; i <= parseInt(firstAndLastTimeslot[1]) ; i++) {
