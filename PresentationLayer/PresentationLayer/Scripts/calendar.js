@@ -174,6 +174,6 @@ $(".prev").click(function () {
     $(".upper-header li .date .day").html(date.getDate());
     $(".upper-header li .date .month").html(months[date.getMonth()]);
     $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
-
+    //
 });
 
