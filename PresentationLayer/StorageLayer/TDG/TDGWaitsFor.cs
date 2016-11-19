@@ -136,6 +136,7 @@ namespace TDG
             List<int> results;
             foreach (TimeSlot timeSlot in listOfTimeSlots)
             {
+                // The list is not empty, refresh the content of the database
                 if (timeSlot.waitlist.Count != 0)
                 {
                     // Obtain all queuery for that timeSlot from the database
@@ -173,6 +174,14 @@ namespace TDG
                         }
                     }
 
+                }
+                // If the queue is empty, ensure it is empty by deleting all rows that have that timeslot id
+                else
+                {
+                    this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + timeSlot.timeSlotID;
+                    this.cmd.Connection = this.conn;
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    reader.Close();
                 }
             }
         }
