@@ -214,6 +214,11 @@ namespace Mappers
             {
                 timeSlotIdentityMap.removeFrom(timeslot);
             }
+            else
+            {
+                tdgTimeSlot.get(timeSlotID);
+            }
+
 
             //Register as deleted in the Unit Of Work. 
             //Object will be deleted from the DB
