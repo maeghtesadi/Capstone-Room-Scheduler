@@ -169,3 +169,48 @@ width:50%;
 background-color:#eeeeee;
 height:inherit;
 }
+
+.reservation-content{
+padding:40px;
+
+
+
+}
+.reservation-item{
+height:65px;
+border-style:solid;
+border-color:#eeeeee;
+
+border-width:3px;
+background-color:white;
+
+}
+.reservation-item .roomNumber{
+width:15%;
+background-color:#f7f7f7;
+height:59px;
+float:left;
+text-align:center;
+padding-top:14px;
+color:#a2a2a2;
+font-size:17px;
+}
+
+.reservation-item .reservationDetails {
+width:70%;
+background-color:white;
+float:left;
+ 
+ }
+ .reservation-item .cancelReservation {
+ width:15%;
+background-color:#f7f7f7;
+height:59px;
+float:right;
+text-align:center;
+padding-top:12px;
+padding-left:15px;
+color:#a2a2a2;
+font-size:20px;
+ 
+ }
