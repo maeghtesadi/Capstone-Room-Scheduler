@@ -35,8 +35,6 @@ namespace LogicLayer
                                 {
                                     timeSlot.waitlist.Enqueue(uid);
                                     TimeSlotMapper.getInstance().setTimeSlot(timeSlot.timeSlotID, timeSlot.reservationID, timeSlot.waitlist);
-                                    updateWaitList(uid);
-
                                 }
                                 hours.Remove(i);
                             }
@@ -55,6 +53,7 @@ namespace LogicLayer
                 }
             }
 
+            updateWaitList(uid);
             TimeSlotMapper.getInstance().done();
             ReservationMapper.getInstance().done();
             //updateWaitLIst(uid);
