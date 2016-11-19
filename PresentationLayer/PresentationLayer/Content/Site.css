@@ -142,13 +142,14 @@ z-index:40;
 
 }
 .tabs{
-height:50px;
-font-size:13px;
+height:60px;
+font-size:16px;
 text-align:center;
 vertical-align:middle;
+
 }
 .reservation-tab{
-padding-top:13px;
+padding-top:15px;
 float:left;
 width:50%;
 background-color:#eeeeee;
@@ -158,12 +159,12 @@ height:inherit;
 
 .reservation-tab.active,.waitlist-tab.active{
 background-color:white;
-color:black;
+color:#b9b9b9;
 
 }
 
 .waitlist-tab{
-padding-top:10px;
+padding-top:15px;
 display:inline-block;
 width:50%;
 background-color:#eeeeee;
@@ -171,46 +172,73 @@ height:inherit;
 }
 
 .reservation-content{
-padding:40px;
+padding:30px;
 
 
 
 }
 .reservation-item{
-height:65px;
+margin:20px 0px;
+height:60px;
 border-style:solid;
 border-color:#eeeeee;
-
-border-width:3px;
+border-radius:5px;
+border-width:2px;
 background-color:white;
 
 }
 .reservation-item .roomNumber{
 width:15%;
 background-color:#f7f7f7;
-height:59px;
+height:56px;
 float:left;
 text-align:center;
-padding-top:14px;
-color:#a2a2a2;
+padding-top:16px;
+color:#3fa9e2;
 font-size:17px;
+border-radius:4px 0px 0px 4px;
+}
+.reservation-item .roomNumber .number{
+color:white;
+font-size:16px;
+line-height:22px;
+}
+.reservation-item .roomNumber span{
+line-height:25px;
 }
 
 .reservation-item .reservationDetails {
-width:70%;
+width:65%;
 background-color:white;
 float:left;
- 
- }
+padding-top:4px;
+}
+
+.reservation-item .reservationDetails ul {
+padding-left:10px;
+}
+.reservation-item .reservationDetails .description{
+color:#3fa9e2;
+font-size:17px;
+}
+.reservation-item .reservationDetails .timeslot{
+color:#868686;
+font-size:12px;
+line-height:6px;
+}
+
  .reservation-item .cancelReservation {
- width:15%;
-background-color:#f7f7f7;
-height:59px;
+ width:12%;
+border-left:solid 2px #eeeeee;
+height:56px;
 float:right;
 text-align:center;
-padding-top:12px;
-padding-left:15px;
-color:#a2a2a2;
-font-size:20px;
- 
+padding-top:8px;
+padding-left:4px;
+color:#3fa9e2;
+font-size:18px;
+ }
+  .reservation-item .cancelReservation:hover {
+background-color:#f7f7f7;
+transition: background-color 0.5s ease;
  }

@@ -32,7 +32,8 @@ namespace PresentationLayer
                       "~/PresentationLayer/Content/bootstrap-paper.css",
                       "~/PresentationLayer/Content/site.css",
                       "~/PresentationLayer/Content/dashboard.css",
-                      "~/PresentationLayer/Content/calendar.css"));
+                      "~/PresentationLayer/Content/calendar.css",
+                      "~/PresentationLayer/fonts/css/font-awesome.css"));
         }
     }
 }
