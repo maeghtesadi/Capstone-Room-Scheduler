@@ -31,9 +31,13 @@ namespace LogicLayer
                         {
                             if (timeSlot.hour == i)
                             {
-                                timeSlot.waitlist.Enqueue(uid);
-                                TimeSlotMapper.getInstance().setTimeSlot(timeSlot.timeSlotID, timeSlot.reservationID, timeSlot.waitlist);
-                                TimeSlotMapper.getInstance().done();
+                                if (!timeSlot.waitlist.Contains(uid))
+                                {
+                                    timeSlot.waitlist.Enqueue(uid);
+                                    TimeSlotMapper.getInstance().setTimeSlot(timeSlot.timeSlotID, timeSlot.reservationID, timeSlot.waitlist);
+                                    updateWaitList(uid);
+
+                                }
                                 hours.Remove(i);
                             }
                         }
