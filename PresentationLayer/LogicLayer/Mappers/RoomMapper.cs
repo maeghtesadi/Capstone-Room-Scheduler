@@ -18,7 +18,7 @@ namespace Mappers
         private int lastID;
 
         // Lock to modify last ID
-        private readonly Object lockLastID;
+        private readonly Object lockLastID = new Object();
 
         private RoomMapper()
         {
