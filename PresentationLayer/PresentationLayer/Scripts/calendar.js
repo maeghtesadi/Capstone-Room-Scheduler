@@ -168,3 +168,21 @@ function OnSuccess(data) {
     }
 
 }
+
+
+function buildNewReservationItem(reservationId, description, initialTimeSlot, finalTimeslot , roomID ) //reservtion id goes in .$(".cancelReservation).data(reservationId)
+{
+    var reservationItem = 
+        '<div class="reservation-item">' +
+             '<div class="roomNumber"><span class="fa fa-stack fa-lg"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack number">' + roomID + '</i></span></div>' +
+             '<div class="reservationDetails">'+
+                '<ul>'+
+                '    <li class="description">'+ description +'</li>'+
+                '    <li class="timeslot">From <span class="initialTimeslot">' + initialTimeSlot + '</span> to <span class="finalTimeslot">' + finalTimeslot + '</span></li>' +
+                '</u>' +
+             '</div>' +
+             '<div data-reservationId ="' + reservationId + '"    class="cancelReservation"><span class="fa fa-pencil fa-lg"></span></div>' +
+        '</div>';
+
+    $(".reservations .reservation-content ").append(reservationItem);
+}
