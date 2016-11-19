@@ -223,7 +223,7 @@ namespace TDG
          */
         private void createRoom(Room room)
         {
-            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + room.roomID + "," + room.roomNum + ");";
+            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + room.roomID + ",'" + room.roomNum + "');";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
             reader.Close();
@@ -234,7 +234,7 @@ namespace TDG
          */
         private void updateRoom(Room room)
         {
-            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + "=" + room.roomNum + " WHERE " + FIELDS[0] + " = " + room.roomID + ";";
+            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + "= '" + room.roomNum + "' WHERE " + FIELDS[0] + " = " + room.roomID + ";";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
             reader.Close();

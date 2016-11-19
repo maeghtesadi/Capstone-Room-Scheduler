@@ -188,7 +188,7 @@ namespace TDG
 
         private void createWaitsFor(int timeSlotID, int userID, String currentDateTime)
         {
-            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES ( " + timeSlotID + "," + userID + "," + currentDateTime + ");";
+            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES ( " + timeSlotID + "," + userID + ", '" + currentDateTime + "');";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
             reader.Close();

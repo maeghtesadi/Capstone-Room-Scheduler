@@ -251,8 +251,8 @@ namespace TDG
         {
             String mySqlDate = reservation.date.Date.ToString("yyyyMMdd");
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + reservation.reservationID + "," +
-                reservation.userID + "," + reservation.roomID + ",'" + reservation.description + "'," +
-                mySqlDate + ");";
+                reservation.userID + "," + reservation.roomID + ",'" + reservation.description + "', '" + 
+                mySqlDate + " ');";
 
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();

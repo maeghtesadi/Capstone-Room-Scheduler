@@ -100,8 +100,8 @@ namespace TDG
         // SQL Statement to update an existing User/Row
         private void updateUser(User user) {
            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " \n" +
-                   "SET " + FIELDS[1] + "=" + user.username + "," + FIELDS[2] + "=" + user.password + "," +
-                   FIELDS[3] + "=" + user.name + "," + FIELDS[4] + "=" + user.numOfReservations + ";\n" +
+                   "SET " + FIELDS[1] + "='" + user.username + "'," + FIELDS[2] + "='" + user.password + "'," +
+                   FIELDS[3] + "='" + user.name + "'," + FIELDS[4] + "=" + user.numOfReservations + ";\n" +
                    " WHERE " + FIELDS[0] + "=" + user.userID + ";";
            this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -151,7 +151,7 @@ namespace TDG
         public Object[] getByName(string userName)
         {
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " \n" +
-                    " WHERE " + FIELDS[1] + "=" + userName + ";";
+                    " WHERE " + FIELDS[1] + "='" + userName + "';";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
 
