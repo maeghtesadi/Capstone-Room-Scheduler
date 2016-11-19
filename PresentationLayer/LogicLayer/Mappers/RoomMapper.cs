@@ -105,8 +105,14 @@ namespace Mappers
             // Get all rooms in the database
             Dictionary<int, Object[]> result = tdgRoom.getAll();
 
+            // If it's empty, simply return those from the identity map
+            if (result == null)
+            {
+                return rooms;
+            }
+
             // Loop through each of the result:
-            foreach(KeyValuePair<int, Object[]> record in result)
+            foreach (KeyValuePair<int, Object[]> record in result)
             {
                 // The room is not in the identity map. Create an instance, add it to identity map and to the return variable
                 if(!rooms.ContainsKey(record.Key))
