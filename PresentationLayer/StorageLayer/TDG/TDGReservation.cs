@@ -21,7 +21,7 @@ namespace TDG
         private const String TABLE_NAME = "reservation";
 
         //Fields names of the table
-        private readonly String[] FIELDS = { "reservationID", "userID", "roomID", "desc", "date" }; 
+        private readonly String[] FIELDS = { "reservationID", "userID", "roomID", "description", "date" }; 
 
         //Database server (localhost)
         private const String DATABASE_SERVER = "127.0.0.1";
@@ -266,9 +266,9 @@ namespace TDG
         private void updateReservation(Reservation reservation)
         {
             String mySqlDate = reservation.date.Date.ToString("yyyy-MM-dd");
-            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + 
-                FIELDS[4] + " = " + mySqlDate + "," + FIELDS[3] + " = " + reservation.description + "," +
-                FIELDS[2] + " = " + reservation.roomID + "," + FIELDS[1] + "=" + reservation.userID + " WHERE " +
+            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " +
+                FIELDS[4] + " = '" + mySqlDate + "', " + FIELDS[3] + " = '" + reservation.description + "', " +
+                FIELDS[2] + " = " + reservation.roomID + ", " + FIELDS[1] + " = " + reservation.userID + " WHERE " +
                 FIELDS[0] + " = " + reservation.reservationID + ";";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
