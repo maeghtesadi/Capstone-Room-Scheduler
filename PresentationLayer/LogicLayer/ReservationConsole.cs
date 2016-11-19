@@ -45,11 +45,12 @@ namespace LogicLayer
 
             if (hours.Count > 0)
             {
-                updateWaitList(uid);
+                
                 res = ReservationMapper.getInstance().makeNew(uid, roomid, resdes, dt);
                 for (int i = 0; i < hours.Count; i++)
                 {
                     TimeSlotMapper.getInstance().makeNew(res.reservationID, hours[i]); //update Later
+                    updateWaitList(uid, dt, i);
                     TimeSlotMapper.getInstance().done();
                 }
             }
@@ -59,13 +60,17 @@ namespace LogicLayer
         }
 
         //Used when calling create reservation 
-        public static void updateWaitList(int userid)
+        public static void updateWaitList(int userid, DateTime date, int hour)
         {
             DirectoryOfTimeSlots timeSlotsDirectory = getAllTimeSlots();
 
             foreach (TimeSlot timeSlot in timeSlotsDirectory.timeSlotList)
             {
-                if (timeSlot.waitlist.Contains(userid))
+                // Obtain the date associated with that timeslot for the current reservation
+                DateTime timeSlotDate = ReservationMapper.getInstance().getReservation(timeSlot.reservationID).date;
+
+                // We only want to remove the user from the waitlist of timeslots of the same date and hour 
+                if (timeSlot.waitlist.Contains(userid) && timeSlotDate.Equals(date) && timeSlot.hour == hour)
                 {
                     Queue<int> newQueue = new Queue<int>();
                     int size = timeSlot.waitlist.Count;
@@ -116,7 +121,7 @@ namespace LogicLayer
                                                                             "", ReservationMapper.getInstance().getReservation(resid).date);
                         ReservationMapper.getInstance().done();
 
-                        updateWaitList(userID);
+                        updateWaitList(userID, ReservationMapper.getInstance().getReservation(resid).date, resToModify.timeSlots[i].hour);
                         TimeSlotMapper.getInstance().setTimeSlot(resToModify.timeSlots[i].timeSlotID, res.reservationID, resToModify.timeSlots[i].waitlist);
                         TimeSlotMapper.getInstance().done();
                     }
@@ -151,7 +156,7 @@ namespace LogicLayer
                                                                             "", ReservationMapper.getInstance().getReservation(resid).date);
                         ReservationMapper.getInstance().done();
 
-                        updateWaitList(userID);
+                        updateWaitList(userID, ReservationMapper.getInstance().getReservation(resid).date, resToModify.timeSlots[i].hour);
                         TimeSlotMapper.getInstance().setTimeSlot(resToModify.timeSlots[i].timeSlotID, res.reservationID, resToModify.timeSlots[i].waitlist);
                         TimeSlotMapper.getInstance().done();
                     }
@@ -192,9 +197,12 @@ namespace LogicLayer
 
             if (hours.Count > 0)
             {
-                updateWaitList(resToModify.userID);
                 for (int i = 0; i < hours.Count; i++)
+                {
+                    updateWaitList(resToModify.userID, resToModify.date, i);
                     TimeSlotMapper.getInstance().makeNew(resToModify.reservationID, hours[i]); //update Later
+                }
+                    
             }
 
             TimeSlotMapper.getInstance().done();
@@ -231,8 +239,9 @@ namespace LogicLayer
                                                                                 "", ReservationMapper.getInstance().getReservation(resid).date);
                         ReservationMapper.getInstance().done();
 
-                        updateWaitList(userID);
+                        
                         TimeSlotMapper.getInstance().setTimeSlot(directory.timeSlotList[i].timeSlotID, res.reservationID, directory.timeSlotList[i].waitlist);
+                        updateWaitList(userID, res.date, directory.timeSlotList[i].hour);
                         TimeSlotMapper.getInstance().done();
 
 
