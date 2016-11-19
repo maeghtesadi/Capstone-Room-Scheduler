@@ -199,5 +199,12 @@ $(".showReservations").click(function () {
     $(".showReservations").toggleClass('active');
 
 
-
+$(".prev").click(function () {
+    var day = parseInt($(".upper-header li .date .day").html());
+    date.setDate(day - 1);
+    $(".upper-header li .date .day").html(date.getDate());
+    $(".upper-header li .date .month").html(months[date.getMonth()]);
+    $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
+    //
 });
+
