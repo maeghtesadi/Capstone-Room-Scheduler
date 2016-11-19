@@ -31,7 +31,7 @@ namespace LogicLayer
                         {
                             if (timeSlot.hour == i)
                             {
-                                if (!timeSlot.waitlist.Contains(uid))
+                                if (!timeSlot.waitlist.Contains(uid) && reservation.userID != uid)
                                 {
                                     timeSlot.waitlist.Enqueue(uid);
                                     TimeSlotMapper.getInstance().setTimeSlot(timeSlot.timeSlotID, timeSlot.reservationID, timeSlot.waitlist);
@@ -45,6 +45,7 @@ namespace LogicLayer
 
             if (hours.Count > 0)
             {
+                updateWaitList(uid);
                 res = ReservationMapper.getInstance().makeNew(uid, roomid, resdes, dt);
                 for (int i = 0; i < hours.Count; i++)
                 {
@@ -53,11 +54,8 @@ namespace LogicLayer
                 }
             }
 
-            updateWaitList(uid);
             TimeSlotMapper.getInstance().done();
             ReservationMapper.getInstance().done();
-            //updateWaitLIst(uid);
-            //UnitOfWork.getInstance().commit();
         }
 
         //Used when calling create reservation 
