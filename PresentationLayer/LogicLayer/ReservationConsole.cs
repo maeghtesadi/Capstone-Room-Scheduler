@@ -162,19 +162,39 @@ namespace LogicLayer
                 }
             }
 
+
+            //Put on waitList if the new timeSlots are already taken, else create new ones
+            List<int> hours = new List<int>();
             for (int i = firstHour; i < lastHour; i++)
+                hours.Add(i);
+
+            foreach (Reservation reservation in reservationDirectory.reservationList)
             {
-                bool foundSlot = false;
-                for (int j = 0; j < resToModify.timeSlots.Count; j++)
+                if (reservation.date == dt && reservation.roomID == roomid)
                 {
-                    if (i == resToModify.timeSlots[j].hour && resToModify.date.Date == dt.Date && resToModify.roomID == roomid)
-                        foundSlot = true;
+                    foreach (TimeSlot timeSlot in reservation.timeSlots)
+                    {
+                        for (int i = firstHour; i < lastHour; i++)
+                        {
+                            if (timeSlot.hour == i)
+                            {
+                                if (!timeSlot.waitlist.Contains(resToModify.userID) && reservation.userID != resToModify.userID)
+                                {
+                                    timeSlot.waitlist.Enqueue(resToModify.userID);
+                                    TimeSlotMapper.getInstance().setTimeSlot(timeSlot.timeSlotID, timeSlot.reservationID, timeSlot.waitlist);
+                                }
+                                hours.Remove(i);
+                            }
+                        }
+                    }
                 }
-                if (!foundSlot)
-                {
-                    //add new time slot to the list in reservation to modify
-                    TimeSlot ts = TimeSlotMapper.getInstance().makeNew(resToModify.reservationID, i); //update Later
-                }
+            }
+
+            if (hours.Count > 0)
+            {
+                updateWaitList(resToModify.userID);
+                for (int i = 0; i < hours.Count; i++)
+                    TimeSlotMapper.getInstance().makeNew(resToModify.reservationID, hours[i]); //update Later
             }
 
             TimeSlotMapper.getInstance().done();
