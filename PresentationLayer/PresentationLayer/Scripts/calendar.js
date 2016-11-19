@@ -194,7 +194,8 @@ function getrReservationsFromDB() {
 
 
 $(".showReservations").click(function () { 
-$(".reservations").toggle(200);
+    $(".reservations").toggle(200);
+    $(".showReservations").toggleClass('active');
 
 
 
