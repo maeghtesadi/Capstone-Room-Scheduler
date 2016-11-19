@@ -178,29 +178,45 @@ namespace LogicLayer
         public static void cancelReservation(int resid)
         {
             DirectoryOfTimeSlots directory = getAllTimeSlots();
+
+            // Loop through each timeslot
             for (int i = 0; i < directory.timeSlotList.Count; i++)
             {
+                // For those who are belonging to the reservation to be cancelled:
                 if (directory.timeSlotList[i].reservationID == resid)
                 {
+                    // If no one is waiting, delete it.
                     if (directory.timeSlotList[i].waitlist.Count == 0)
                     {
                         TimeSlotMapper.getInstance().delete(directory.timeSlotList[i].timeSlotID);
+                        TimeSlotMapper.getInstance().done();
                     }
+
+                    // Otherwise:
+                    // - Obtain the next in line, dequeue.
+                    // - Make a new reservation (done - reservation)
+                    // - Update the waitlists
+                    // - Update the timeslot from old reservation to the new one. (done - timeslot)
                     else
                     {
                         int userID = directory.timeSlotList[i].waitlist.Dequeue();
                         Reservation res = ReservationMapper.getInstance().makeNew(userID, ReservationMapper.getInstance().getReservation(resid).roomID,
                                                                                 "", ReservationMapper.getInstance().getReservation(resid).date);
+                        ReservationMapper.getInstance().done();
+
                         updateWaitList(userID);
                         TimeSlotMapper.getInstance().setTimeSlot(directory.timeSlotList[i].timeSlotID, res.reservationID, directory.timeSlotList[i].waitlist);
-                        
+                        TimeSlotMapper.getInstance().done();
+
+
+                        //updateWaitList(userID);
                     }
                 }
             }
-            TimeSlotMapper.getInstance().done();
+
+            // Completely done with this reservation, delete it.
             ReservationMapper.getInstance().delete(resid);
             ReservationMapper.getInstance().done();
-
         }
 
         //get up-to-date timeslots from database 
