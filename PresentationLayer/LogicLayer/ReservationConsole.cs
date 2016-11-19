@@ -14,12 +14,42 @@ namespace LogicLayer
 
         public static void makeReservation(int uid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
         {
-            Reservation res = ReservationMapper.getInstance().makeNew(uid, roomid, resdes, dt);
-            updateWaitLIst(uid);
+            DirectoryOfRooms roomDirectory = getAllRooms();
+            DirectoryOfReservations reservationDirectory = getAllReservations();
+            Reservation res = new Reservation();
+            List<int> hours = new List<int>();
             for (int i = firstHour; i < lastHour; i++)
+                hours.Add(i);
+
+            foreach (Reservation reservation in reservationDirectory.reservationList)
             {
-                TimeSlot ts = TimeSlotMapper.getInstance().makeNew(res.reservationID, i); //update Later
+                if (reservation.date == dt && reservation.roomID == roomid)
+                {
+                    foreach (TimeSlot timeSlot in reservation.timeSlots)
+                    {
+                        for (int i = firstHour; i < lastHour; i++)
+                        {
+                            if (timeSlot.hour == i)
+                            {
+                                timeSlot.waitlist.Enqueue(uid);
+                                TimeSlotMapper.getInstance().setTimeSlot(timeSlot.timeSlotID, timeSlot.reservationID, timeSlot.waitlist);
+                                hours.Remove(i);
+                            }
+                        }
+                    }
+                }
             }
+
+            if (hours.Count > 0)
+            {
+                res = ReservationMapper.getInstance().makeNew(uid, roomid, resdes, dt);
+                for (int i = 0; i < hours.Count; i++)
+                    TimeSlotMapper.getInstance().makeNew(res.reservationID, hours[i]); //update Later
+            }
+
+
+            //updateWaitLIst(uid);
+
 
             UnitOfWork.getInstance().commit();
         }
