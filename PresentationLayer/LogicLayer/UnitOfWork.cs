@@ -134,6 +134,7 @@ namespace LogicLayer
             roomChangedList.Clear();
             roomNewList.Clear();
             timeSlotNewList.Clear();
+            timeSlotChangedList.Clear();
             timeSlotDeletedList.Clear();
         }
     }
