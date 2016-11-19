@@ -88,6 +88,12 @@ namespace Mappers
             // Get all users in the database
             Dictionary<int, Object[]> result = tdgUser.getAll();
 
+            // If it's empty, simply return those from the identity map
+            if (result == null)
+            {
+                return users;
+            }
+
             // Loop through each of the result:
             foreach (KeyValuePair<int, Object[]> record in result)
             {

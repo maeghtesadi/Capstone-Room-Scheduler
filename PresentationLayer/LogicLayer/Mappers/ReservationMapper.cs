@@ -21,7 +21,7 @@ namespace Mappers
         private int lastID;
 
         // Lock to modify last ID
-        private readonly Object lockLastID;
+        private readonly Object lockLastID = new Object();
 
         //default constructor
         private ReservationMapper()
@@ -130,6 +130,12 @@ namespace Mappers
 
             //Get all reservations in the DB
             Dictionary<int, Object[]> result = tdgReservation.getAll();
+
+            // If it's empty, simply return those from the identity map
+            if (result == null)
+            {
+                return reservations;
+            }
 
             //Loop trhough each of the result:
             foreach (KeyValuePair<int, Object[]> record in result)
