@@ -186,3 +186,8 @@ function buildNewReservationItem(reservationId, description, initialTimeSlot, fi
 
     $(".reservations .reservation-content ").append(reservationItem);
 }
+
+function getrReservationsFromDB() {
+
+
+}
