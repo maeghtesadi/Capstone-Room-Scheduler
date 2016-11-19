@@ -201,7 +201,10 @@ namespace Mappers
             {
                 reservationIdentityMap.removeFrom(reservation);
             }
-
+            else
+            {
+                reservation = getReservation(reservationID);
+            }
             //Register as deleted in the Unit Of Work. 
             //Object will be deleted from the DB
             UnitOfWork.getInstance().registerDeleted(reservation);
