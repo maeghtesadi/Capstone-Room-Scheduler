@@ -33,6 +33,7 @@ namespace LogicLayer
                             {
                                 timeSlot.waitlist.Enqueue(uid);
                                 TimeSlotMapper.getInstance().setTimeSlot(timeSlot.timeSlotID, timeSlot.reservationID, timeSlot.waitlist);
+                                TimeSlotMapper.getInstance().done();
                                 hours.Remove(i);
                             }
                         }
@@ -44,14 +45,16 @@ namespace LogicLayer
             {
                 res = ReservationMapper.getInstance().makeNew(uid, roomid, resdes, dt);
                 for (int i = 0; i < hours.Count; i++)
+                {
                     TimeSlotMapper.getInstance().makeNew(res.reservationID, hours[i]); //update Later
+                    TimeSlotMapper.getInstance().done();
+                }
             }
 
-
+            TimeSlotMapper.getInstance().done();
+            ReservationMapper.getInstance().done();
             //updateWaitLIst(uid);
-
-
-            UnitOfWork.getInstance().commit();
+            //UnitOfWork.getInstance().commit();
         }
 
         //Used when calling create reservation 
@@ -80,6 +83,7 @@ namespace LogicLayer
                 }
              
             }
+            TimeSlotMapper.getInstance().done();
         }
 
         public static void modifyReservation(int resid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
@@ -165,7 +169,10 @@ namespace LogicLayer
             }
 
             ReservationMapper.getInstance().modifyReservation(resToModify.reservationID, roomid, resdes, dt);
-            UnitOfWork.getInstance().commit();
+
+            TimeSlotMapper.getInstance().done();
+            ReservationMapper.getInstance().done();
+            //UnitOfWork.getInstance().commit();
         }
 
         public static void cancelReservation(int resid)
@@ -190,6 +197,8 @@ namespace LogicLayer
                 }
             }
             ReservationMapper.getInstance().delete(resid);
+            TimeSlotMapper.getInstance().done();
+            ReservationMapper.getInstance().done();
         }
 
         //get up-to-date timeslots from database 
@@ -208,7 +217,7 @@ namespace LogicLayer
                 for (int j = 0; j < waitList.Count; j++)
                     timeSlotDirectory.timeSlotList[i].waitlist.Enqueue(waitList[j]);
             }
-
+            //WaitsForMapper.getInstance().Done();
             return timeSlotDirectory;
         }
 
@@ -251,7 +260,6 @@ namespace LogicLayer
                         roomDirectory.roomList[i].roomReservations.Add(reservationDirectory.reservationList[j]);
                 }
             }
-
 
             return roomDirectory;
         }
