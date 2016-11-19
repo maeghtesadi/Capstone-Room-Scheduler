@@ -178,6 +178,9 @@ namespace TDG
 
                 record[0] = reader[0];
                 record[1] = reader[1];
+                record[2] = reader[2];
+                record[3] = reader[3];
+                record[4] = reader[4];
 
             }
             reader.Close();

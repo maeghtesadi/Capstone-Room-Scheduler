@@ -106,7 +106,7 @@ namespace LogicLayer
                 reservationMapper.addReservation(reservationNewList);
             if (reservationChangedList.Count() != 0)
                 reservationMapper.updateReservation(reservationChangedList);
-            if (userDeletedList.Count() != 0)
+            if (reservationDeletedList.Count() != 0)
                 reservationMapper.deleteReservation(reservationDeletedList);
 
             if (roomNewList.Count() != 0)
