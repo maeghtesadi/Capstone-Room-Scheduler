@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Mappers;
 
 namespace LogicLayer
 {
@@ -14,23 +13,6 @@ namespace LogicLayer
         public DirectoryOfRooms()
         {
             roomList = new List<Room>();
-
-            DirectoryOfRooms roomDirectory = new DirectoryOfRooms();
-            DirectoryOfReservations reservationDirectory = new DirectoryOfReservations();
-
-            foreach (KeyValuePair<int, Room> room in RoomMapper.getInstance().getAllRooms())
-            {
-                roomDirectory.roomList.Add(room.Value);
-            }
-
-            for (int i = 0; i < roomDirectory.roomList.Count; i++)
-            {
-                for (int j = 0; j < reservationDirectory.reservationList.Count; j++)
-                {
-                    if (reservationDirectory.reservationList[j].roomID == roomDirectory.roomList[i].roomID)
-                        roomDirectory.roomList[i].roomReservations.Add(reservationDirectory.reservationList[j]);
-                }
-            }
         }
 
         public Room findRoom(int roomID)
