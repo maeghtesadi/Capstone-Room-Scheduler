@@ -26,21 +26,20 @@
 
     </div>*@
     <div class="navbar">
-        <div class="dropdown">
-                <ul class="custom-navbar-right">
+                <div class="custom-navbar-right">
                 @if (!User.Identity.IsAuthenticated)
                 {
-                    <li><span style="" class="glyphicon glyphicon-user dropdownLogin"></span></li>
+                    <div class="icon dropdownLogin"><span style="" class="fa fa-user-circle-o fa-2x"></span></div>
                 }
                 else
                 {
-                    <li><span class="userId">@User.Identity.Name</span></li>
+                    <div><span class="userId">@User.Identity.Name</span></div>
                 }
 
 
 
                     
-                </ul>
+                </div>
     @using (Ajax.BeginForm("login", "Account", new AjaxOptions
     {
         HttpMethod = "Post",
@@ -65,6 +64,7 @@
         </div>
     <div class="footer">
         <div class="footer-right">
+
             <div class="showReservations icon-inverse"><span class="fa fa-server fa-2x" ></span></div>
             <div class="showCalendar icon-inverse"><span class="fa fa-calendar fa-2x"></span></div>
 
@@ -74,7 +74,7 @@
        
 
     </div>
-
+@using (Ajax.BeginForm("login", "calendar", new AjaxOptions{ HttpMethod = "Post",OnComplete = "OnSuccess"})) { }
     <script src="~/PresentationLayer/Scripts/calendar.js"></script>
     @RenderSection("scripts", required: false)
 </body>
