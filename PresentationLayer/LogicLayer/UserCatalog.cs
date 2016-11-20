@@ -8,14 +8,18 @@ namespace LogicLayer
 {
     public class UserCatalog
     {
-        public List<int> registeredUsers { get; set; }
+        public List<User> registeredUsers { get; set; }
 
         public UserCatalog()
         {
-            registeredUsers = new List<int>();
+            registeredUsers = new List<User>();
+            foreach (KeyValuePair<int, User> user in getAllUser())
+            {
+                registeredUsers.Add(user.Value);
+            }
         }
 
-        public UserCatalog(List<int> regusers)
+        public UserCatalog(List<User> regusers)
         {
             this.registeredUsers = regusers;
         }

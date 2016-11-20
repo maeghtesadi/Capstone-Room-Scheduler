@@ -52,15 +52,15 @@ namespace Mappers
         /**
          * Retrieve a user given its user name
          */
-        public User getUserByName(string name)
+        public User getUserByUsername(string username)
         {
-            User user = UserIdentityMap.getInstance().findByName(name);
+            User user = UserIdentityMap.getInstance().findByUsername(username);
             Object[] result = null;
 
             // If not found in user identity map, try to retrieve from the DB
             if (user == null)
             {
-                result = tdgUser.getByName(name);
+                result = tdgUser.getByUsername(username);
                 // If the TDG doesn't have it, then it doesn't exist
                 if (result == null)
                 {
