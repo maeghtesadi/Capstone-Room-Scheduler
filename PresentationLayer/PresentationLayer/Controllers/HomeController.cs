@@ -34,12 +34,9 @@ namespace CapstoneRoomScheduler.Controllers
         [HttpPost]
         public void getAllUserReservations() {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-            hubContext.Clients.All.javascriptFUnction();
-
+            var JsonListofReservations = convertToJsonObject(ReservationConsole.getInstance().getAllReservations().findByUser(User.Identity.getUserId()));
+            hubContext.Clients.All.getAllReservationsForOneUser(JsonListofReservations); //returns a list of reservations in the js function
         }
-
-
-
 
 
         public List<object> convertToJsonObject(List<Reservation> reservationList)

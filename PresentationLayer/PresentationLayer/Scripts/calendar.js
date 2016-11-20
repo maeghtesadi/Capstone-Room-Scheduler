@@ -200,7 +200,20 @@ function OnSuccess(data) {
     }
 
 }
-
+function populate(reservationList)
+{
+    $(".reservations .reservation-content ").empty();
+    for(var i = 0; i<reservationList.length ; i++)
+    {
+        var resID = reservationList[i].reservationID;
+        var des = reservationList[i].description;
+        var timeslots = reservationList[i].timeSlot;
+        var firstTime = timeslots[0];        
+        var secondTime = timeslots[timeslots.length - 1];
+        var roomID = reservationList[i].roomID;
+        buildNewReservationItem(resID, des, firstTime, secondTime, roomID)
+    }
+}
 
 function buildNewReservationItem(reservationId, description, initialTimeSlot, finalTimeslot , roomID ) //reservtion id goes in .$(".cancelReservation).data(reservationId)
 {
@@ -219,15 +232,25 @@ function buildNewReservationItem(reservationId, description, initialTimeSlot, fi
     $(".reservations .reservation-content ").append(reservationItem);
 }
 
-function getrReservationsFromDB() {
+function getAllReservationsForOneUser(userName, Password) {
+    $(".reservations .reservation-content .hiddenReservationButton").click(function (userName, Password) {
 
 
+
+
+    });
+
+
+
+    
 }
 
 
 $(".showReservations").click(function () {
     $(".reservations").toggle(200);
     $(".showReservations").toggleClass('active');
+    var listOfRes = getAllReservationsForOneUser(userName, Password);
+    populate(reservationList);
 });
 
 serverSession.client.notLoggedIn(function () {
