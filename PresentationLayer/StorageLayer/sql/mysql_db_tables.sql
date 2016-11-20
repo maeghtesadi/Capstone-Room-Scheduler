@@ -74,8 +74,7 @@ CREATE TABLE `user` (
   `userID` int(11) NOT NULL,
   `username` varchar(30) NOT NULL UNIQUE,
   `password` varchar(30) NOT NULL,
-  `name` varchar(30) NOT NULL,
-  `numOfReservations` int(11) NOT NULL
+  `name` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
