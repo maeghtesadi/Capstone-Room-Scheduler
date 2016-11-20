@@ -11,17 +11,20 @@ namespace LogicLayer
 {
     public class ReservationConsole
     {
+        private static DirectoryOfReservations directoryOfReservations = new DirectoryOfReservations();
+        private static DirectoryOfRooms directoryOfRooms = new DirectoryOfRooms();
+        private static DirectoryOfTimeSlots directoryOfTimeSlots = new DirectoryOfTimeSlots();
 
         public static void makeReservation(int uid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
         {
             //DirectoryOfRooms roomDirectory = getAllRooms();
-            DirectoryOfReservations reservationDirectory = getAllReservations();
+            directoryOfReservations = getAllReservations();
             Reservation res = new Reservation();
             List<int> hours = new List<int>();
             for (int i = firstHour; i < lastHour; i++)
                 hours.Add(i);
 
-            foreach (Reservation reservation in reservationDirectory.reservationList)
+            foreach (Reservation reservation in directoryOfReservations.reservationList)
             {
                 if (reservation.date == dt && reservation.roomID == roomid)
                 {
