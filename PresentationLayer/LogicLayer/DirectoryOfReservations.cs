@@ -20,22 +20,22 @@ namespace LogicLayer
             }
         }
 
-        public Reservation makeNewReservation(int roomid, int userid, string desc, DateTime date)
+        public Reservation makeNewReservation(int roomID, int userID, string desc, DateTime date)
         {
-            Reservation reservation = ReservationMapper.getInstance().makeNew(userid, roomid, desc, date);
+            Reservation reservation = ReservationMapper.getInstance().makeNew(userID, roomID, desc, date);
             reservationList.Add(reservation);
             return reservation;
         }
 
-        public void modifyReservation(int reservationid, int roomid, string desc, DateTime date)
+        public void modifyReservation(int reservationID, int roomID, string desc, DateTime date)
         {
-            ReservationMapper.getInstance().modifyReservation(reservationid, roomid, desc, date);
+            ReservationMapper.getInstance().modifyReservation(reservationID, roomID, desc, date);
 
             foreach (Reservation reservation in reservationList)
             {
-                if (reservation.reservationID == reservationid)
+                if (reservation.reservationID == reservationID)
                 {
-                    reservation.roomID = roomid;
+                    reservation.roomID = roomID;
                     reservation.description = desc;
                     reservation.date = date;
                 }

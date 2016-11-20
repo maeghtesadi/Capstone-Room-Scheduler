@@ -219,12 +219,12 @@ namespace Mappers
         public void delete(int timeSlotID)
         {
             //Get the timeslot to be deleted by checking the identity map
-            TimeSlot timeslot = timeSlotIdentityMap.find(timeSlotID);
+            TimeSlot timeSlot = timeSlotIdentityMap.find(timeSlotID);
 
             //If TimeSlot IdentityMap returned the object, remove it from identity map
-            if (timeslot != null)
+            if (timeSlot != null)
             {
-                timeSlotIdentityMap.removeFrom(timeslot);
+                timeSlotIdentityMap.removeFrom(timeSlot);
             }
             else
             {
@@ -234,7 +234,7 @@ namespace Mappers
 
             //Register as deleted in the Unit Of Work. 
             //Object will be deleted from the DB
-            UnitOfWork.getInstance().registerDeleted(timeslot);
+            UnitOfWork.getInstance().registerDeleted(timeSlot);
 
         }
         /**

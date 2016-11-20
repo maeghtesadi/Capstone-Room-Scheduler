@@ -22,9 +22,9 @@ namespace LogicLayer
             }
         }
 
-        public TimeSlot makeNewTimeSlot(int resid, int hour)
+        public TimeSlot makeNewTimeSlot(int resID, int hour)
         {
-            TimeSlot timeSlot = TimeSlotMapper.getInstance().makeNew(resid, hour);
+            TimeSlot timeSlot = TimeSlotMapper.getInstance().makeNew(resID, hour);
             timeSlotList.Add(timeSlot);
             return timeSlot;
         }
@@ -43,9 +43,9 @@ namespace LogicLayer
             return TimeSlotMapper.getInstance().getAllUsers(timeSlotID);
         }
 
-        public void addToWaitList(int timeslotid, int reservationid, Queue<int> waitlist)
+        public void addToWaitList(int timeslotID, int reservationID, Queue<int> waitlist)
         {
-            TimeSlotMapper.getInstance().setTimeSlot(timeslotid, reservationid, waitlist);
+            TimeSlotMapper.getInstance().setTimeSlot(timeslotID, reservationID, waitlist);
         }
 
         public Dictionary<int, TimeSlot> getAllTimeSlot()
