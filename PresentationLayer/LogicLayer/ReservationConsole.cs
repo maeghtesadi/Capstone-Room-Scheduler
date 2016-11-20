@@ -69,7 +69,7 @@ namespace LogicLayer
         public void udpateDirectories()
         {
             // Only Console has visibility over DirectoryOfTimeSlot, so this was loop was put here instead of DirectoryOfReservation
-            // Adding timeslots to waiting list
+            // Updating timeSlots of each reservations
             for (int i = 0; i < (directoryOfReservations.reservationList).Count; i++)
             {
                 foreach (KeyValuePair<int, TimeSlot> timeSlot in directoryOfTimeSlots.getAllTimeSlot())
@@ -79,7 +79,7 @@ namespace LogicLayer
                 }
             }
 
-            // Refresh timeslots (refresh the waiting list)
+            // Updating the waitList of each timeSlot
             for (int i = 0; i < directoryOfTimeSlots.timeSlotList.Count; i++)
             {
                 List<int> waitList = directoryOfTimeSlots.getAllUsers(directoryOfTimeSlots.timeSlotList[i].timeSlotID);
@@ -88,7 +88,7 @@ namespace LogicLayer
                         directoryOfTimeSlots.timeSlotList[i].waitlist.Enqueue(waitList[j]);
             }
 
-            //Refresh the reservations for each room
+            //Updating the reservations for each room
             for (int i = 0; i < directoryOfRooms.roomList.Count; i++)
             {
                 foreach (KeyValuePair<int, Reservation> reservation in directoryOfReservations.getAllReservation())
