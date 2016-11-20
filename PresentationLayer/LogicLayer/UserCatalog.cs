@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Mappers;
 namespace LogicLayer
 {
     public class UserCatalog
@@ -13,7 +13,7 @@ namespace LogicLayer
         public UserCatalog()
         {
             registeredUsers = new List<User>();
-            foreach (KeyValuePair<int, User> user in getAllUser())
+            foreach (KeyValuePair<int, User> user in UserMapper.getInstance().getAllUser())
             {
                 registeredUsers.Add(user.Value);
             }
