@@ -13,7 +13,6 @@ namespace CapstoneRoomScheduler.Controllers
 {
     public class HomeController : Controller
     {
-        int i;
         public ActionResult Calendar()
         {
             return View();
@@ -31,6 +30,16 @@ namespace CapstoneRoomScheduler.Controllers
            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
            hubContext.Clients.All.updateCalendar(convertToJsonObject(ReservationConsole.getInstance().getAllReservations().findByDate(date)));
         }
+        public void getAllUserReservations() {
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
+            hubContext.Clients.All.javascriptFUnction();
+
+        }
+
+
+
+
+
         public List<object> convertToJsonObject(List<Reservation> reservationList)
         {
             int firstTimeSlot;
