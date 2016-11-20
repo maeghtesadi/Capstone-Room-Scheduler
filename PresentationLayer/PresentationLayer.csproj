@@ -202,7 +202,7 @@
     <Compile Include="LogicLayer\Mappers\UserMapper.cs" />
     <Compile Include="LogicLayer\Mappers\WaitsForMapper.cs" />
     <Compile Include="PresentationLayer\Controllers\AccountController.cs" />
-    <Compile Include="PresentationLayer\Controllers\ConsoleController.cs" />
+    <Compile Include="PresentationLayer\Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -314,7 +314,7 @@
     <Content Include="PresentationLayer\Views\_ViewStart.cshtml" />
     <Content Include="PresentationLayer\Views\Shared\Error.cshtml" />
     <Content Include="PresentationLayer\Views\Shared\_Layout.cshtml" />
-    <Content Include="PresentationLayer\Views\Console\Calendar.cshtml" />
+    <Content Include="PresentationLayer\Views\Home\Calendar.cshtml" />
     <Content Include="PresentationLayer\Views\Account\Login.cshtml" />
     <None Include="web.config.Debug.old1">
       <DependentUpon>web.config.old1</DependentUpon>

@@ -74,7 +74,7 @@
        
 
     </div>
-@using (Ajax.BeginForm("login", "calendar", new AjaxOptions{ HttpMethod = "Post",OnComplete = "OnSuccess"})) { }
+@using (Ajax.BeginForm("login", "home", new AjaxOptions{ HttpMethod = "Post",OnComplete = "OnSuccess"})) { }
     <script src="~/PresentationLayer/Scripts/calendar.js"></script>
     @RenderSection("scripts", required: false)
 </body>

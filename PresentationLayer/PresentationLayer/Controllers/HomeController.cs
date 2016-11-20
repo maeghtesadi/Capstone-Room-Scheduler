@@ -11,7 +11,7 @@ using PresentationLayer.Hubs;
 
 namespace CapstoneRoomScheduler.Controllers
 {
-    public class ConsoleController : Controller
+    public class HomeController : Controller
     {
         int i;
         public ActionResult Calendar()
