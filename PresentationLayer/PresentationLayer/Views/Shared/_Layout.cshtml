@@ -64,6 +64,7 @@
         </div>
     <div class="footer">
         <div class="footer-right">
+
             <div class="showReservations icon-inverse"><span class="fa fa-server fa-2x" ></span></div>
             <div class="showCalendar icon-inverse"><span class="fa fa-calendar fa-2x"></span></div>
 
@@ -73,7 +74,7 @@
        
 
     </div>
-
+@using (Ajax.BeginForm("login", "calendar", new AjaxOptions{ HttpMethod = "Post",OnComplete = "OnSuccess"})) { }
     <script src="~/PresentationLayer/Scripts/calendar.js"></script>
     @RenderSection("scripts", required: false)
 </body>
