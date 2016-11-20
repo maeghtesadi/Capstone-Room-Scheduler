@@ -230,3 +230,11 @@ $(".showReservations").click(function () {
     $(".showReservations").toggleClass('active');
 });
 
+serverSession.client.notLoggedIn(function () {
+
+
+
+
+
+
+});

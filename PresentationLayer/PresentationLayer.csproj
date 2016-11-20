@@ -203,7 +203,6 @@
     <Compile Include="LogicLayer\Mappers\WaitsForMapper.cs" />
     <Compile Include="PresentationLayer\Controllers\AccountController.cs" />
     <Compile Include="PresentationLayer\Controllers\ConsoleController.cs" />
-    <Compile Include="PresentationLayer\Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -316,26 +315,7 @@
     <Content Include="PresentationLayer\Views\Shared\Error.cshtml" />
     <Content Include="PresentationLayer\Views\Shared\_Layout.cshtml" />
     <Content Include="PresentationLayer\Views\Console\Calendar.cshtml" />
-    <Content Include="PresentationLayer\Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="PresentationLayer\Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="PresentationLayer\Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="PresentationLayer\Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="PresentationLayer\Views\Account\ForgotPassword.cshtml" />
-    <Content Include="PresentationLayer\Views\Account\ForgotPasswordConfirmation.cshtml" />
     <Content Include="PresentationLayer\Views\Account\Login.cshtml" />
-    <Content Include="PresentationLayer\Views\Account\Register.cshtml" />
-    <Content Include="PresentationLayer\Views\Account\ResetPassword.cshtml" />
-    <Content Include="PresentationLayer\Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="PresentationLayer\Views\Account\SendCode.cshtml" />
-    <Content Include="PresentationLayer\Views\Account\VerifyCode.cshtml" />
-    <Content Include="PresentationLayer\Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="PresentationLayer\Views\Manage\ChangePassword.cshtml" />
-    <Content Include="PresentationLayer\Views\Manage\Index.cshtml" />
-    <Content Include="PresentationLayer\Views\Manage\ManageLogins.cshtml" />
-    <Content Include="PresentationLayer\Views\Manage\SetPassword.cshtml" />
-    <Content Include="PresentationLayer\Views\Manage\VerifyPhoneNumber.cshtml" />
-    <Content Include="PresentationLayer\Views\Shared\Lockout.cshtml" />
-    <Content Include="PresentationLayer\Views\Shared\_LoginPartial.cshtml" />
     <None Include="web.config.Debug.old1">
       <DependentUpon>web.config.old1</DependentUpon>
     </None>
