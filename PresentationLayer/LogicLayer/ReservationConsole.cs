@@ -101,7 +101,7 @@ namespace LogicLayer
             }
         }
 
-        public void updateWaitList(int userid, DateTime date, int hour)
+        public void updateWaitList(int userID, DateTime date, int hour)
         {
             foreach (TimeSlot timeSlot in directoryOfTimeSlots.timeSlotList)
             {
@@ -109,13 +109,13 @@ namespace LogicLayer
                 DateTime timeSlotDate = directoryOfReservations.getReservation(timeSlot.reservationID).date;
 
                 // We only want to remove the user from the waitlist of timeslots of the same date and hour 
-                if (timeSlot.waitlist.Contains(userid) && timeSlotDate.Equals(date) && timeSlot.hour == hour)
+                if (timeSlot.waitlist.Contains(userID) && timeSlotDate.Equals(date) && timeSlot.hour == hour)
                 {
                     Queue<int> newQueue = new Queue<int>();
                     int size = timeSlot.waitlist.Count;
                     for (int i = 0; i < size; i++)
                     {
-                        if (timeSlot.waitlist.Peek() == userid)
+                        if (timeSlot.waitlist.Peek() == userID)
                         {
                             timeSlot.waitlist.Dequeue();
                         }
