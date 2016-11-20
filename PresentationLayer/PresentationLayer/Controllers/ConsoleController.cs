@@ -22,12 +22,12 @@ namespace CapstoneRoomScheduler.Controllers
         public void acceptTimeSlots(int room,string description,int day,int month,int year,int firstTimeSlot, int lastTimeSlot)
         {
             ReservationConsole.makeReservation(1, room, description, new DateTime(year,month,day), firstTimeSlot, lastTimeSlot);
-           // updateCalendar();
+            updateCalendar(new DateTime(year, month, day));
         }
         public void updateCalendar(DateTime date)
         {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-            hubContext.Clients.All.updateCalendar();
+            hubContext.Clients.All.updateCalendar(ReservationConsole.getAllReservations().findByDate(date));
         }
         //public List<object> convertToJsonObject(List<Reservation> reservationList)
         //{
