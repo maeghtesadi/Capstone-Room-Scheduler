@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mappers;
 
 namespace LogicLayer
 {
@@ -13,13 +14,79 @@ namespace LogicLayer
         public DirectoryOfReservations()
         {
             reservationList = new List<Reservation>();
+            foreach (KeyValuePair<int, Reservation> reservation in ReservationMapper.getInstance().getAllReservation())
+            {
+                reservationList.Add(reservation.Value);
+            }
+
+            for (int i = 0; i < reservationList.Count; i++)
+            {
+                foreach (KeyValuePair<int, TimeSlot> timeSlot in TimeSlotMapper.getInstance().getAllTimeSlot())
+                {
+                    if (reservationList[i].reservationID == timeSlot.Value.reservationID)
+                        reservationList[i].timeSlots.Add(timeSlot.Value);
+                }
+            }
         }
-       
+
+        public Reservation makeNewReservation(int roomid, int userid, string desc, DateTime date)
+        {
+            Reservation reservation = ReservationMapper.getInstance().makeNew(userid, roomid, desc, date);
+            reservationList.Add(reservation);
+            return reservation;
+        }
+
+        public void modifyReservation(int reservationid, int roomid, string desc, DateTime date)
+        {
+            ReservationMapper.getInstance().modifyReservation(reservationid, roomid, desc, date);
+
+            foreach (Reservation reservation in reservationList)
+            {
+                if (reservation.reservationID == reservationid)
+                {
+                    reservation.roomID = roomid;
+                    reservation.description = desc;
+                    reservation.date = date;
+                }
+            }
+        }
+
+        public void cancelReservation(int reservationid)
+        {
+            ReservationMapper.getInstance().delete(reservationid);
+
+            foreach (Reservation reservation in reservationList)
+                if (reservation.reservationID == reservationid)
+                {
+                    reservationList.Remove(reservation);
+                    return;
+                }
+        }
+
+        public Reservation getReservation(int id)
+        {
+            return ReservationMapper.getInstance().getReservation(id);
+        }
+
+        public void refresh()
+        {
+            for (int i = 0; i < reservationList.Count; i++)
+            {
+                foreach (KeyValuePair<int, TimeSlot> timeSlot in TimeSlotMapper.getInstance().getAllTimeSlot())
+                {
+                    if (reservationList[i].reservationID == timeSlot.Value.reservationID)
+                        reservationList[i].timeSlots.Add(timeSlot.Value);
+                }
+            }
+        }
+
         public List<Reservation> findByDate(DateTime date)
         {
             List<Reservation> listByDate = new List<Reservation>();
-            foreach(Reservation reservation in reservationList ) {
-                if(reservation.date.Date == date.Date) {
+            foreach (Reservation reservation in reservationList)
+            {
+                if (reservation.date.Date == date.Date)
+                {
                     listByDate.Add(reservation);
                 }
             }
@@ -39,7 +106,7 @@ namespace LogicLayer
             return listByuserId;
         }
 
-        public List<Reservation> filterByBlock(DateTime date) //for front end, in progress
+        public List<Reservation> filterByBlock(DateTime date)
         {
             List<Reservation> listByDate = new List<Reservation>();
             foreach (Reservation reservation in reservationList)
