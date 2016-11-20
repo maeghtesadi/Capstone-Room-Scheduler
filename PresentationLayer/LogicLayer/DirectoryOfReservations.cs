@@ -42,21 +42,21 @@ namespace LogicLayer
             }
         }
 
-        public void cancelReservation(int reservationid)
+        public void cancelReservation(int reservationID)
         {
-            ReservationMapper.getInstance().delete(reservationid);
+            ReservationMapper.getInstance().delete(reservationID);
 
             foreach (Reservation reservation in reservationList)
-                if (reservation.reservationID == reservationid)
+                if (reservation.reservationID == reservationID)
                 {
                     reservationList.Remove(reservation);
                     return;
                 }
         }
 
-        public Reservation getReservation(int id)
+        public Reservation getReservation(int reservationID)
         {
-            return ReservationMapper.getInstance().getReservation(id);
+            return ReservationMapper.getInstance().getReservation(reservationID);
         }
 
         public Dictionary<int, Reservation> getAllReservation()
@@ -82,12 +82,12 @@ namespace LogicLayer
             return listByDate;
         }
 
-        public List<Reservation> findByUser(int userId)
+        public List<Reservation> findByUser(int userID)
         {
             List<Reservation> listByuserId = new List<Reservation>();
             foreach (Reservation reservation in reservationList)
             {
-                if (reservation.reservationID == userId)
+                if (reservation.reservationID == userID)
                 {
                     listByuserId.Add(reservation);
                 }
