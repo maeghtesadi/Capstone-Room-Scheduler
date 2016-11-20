@@ -148,10 +148,10 @@ namespace TDG
         /**
         * Returns a record for the user given its userID
         */
-        public Object[] getByName(string userName)
+        public Object[] getByUsername(string username)
         {
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " \n" +
-                    " WHERE " + FIELDS[1] + "='" + userName + "';";
+                    " WHERE " + FIELDS[1] + "='" + username + "';";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
 
