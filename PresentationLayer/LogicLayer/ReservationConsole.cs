@@ -16,20 +16,11 @@ namespace LogicLayer
         DirectoryOfRooms directoryOfRooms = new DirectoryOfRooms();
         DirectoryOfTimeSlots directoryOfTimeSlots = new DirectoryOfTimeSlots();
 
-        ReservationConsole()
+        public ReservationConsole()
         {
-            foreach (KeyValuePair<int, Reservation> reservation in getAllReservation())
-            {
-                reservationList.Add(reservation.Value);
-            }
-
-            foreach (KeyValuePair<int, TimeSlot> timeSlot in getAllTimeSlot())
-            {
-                timeSlotList.Add(timeSlot.Value);
-            }
-
-            refresh();
+            udpateDirectories();
         }
+
         public void makeReservation(int uid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
         {
             Reservation res = new Reservation();
@@ -66,16 +57,16 @@ namespace LogicLayer
                 {
                     directoryOfTimeSlots.makeNewTimeSlot(res.reservationID, hours[i]);
                     updateWaitList(uid, dt, i);
-                    TimeSlotMapper.getInstance().done();
+                    directoryOfTimeSlots.done();
                 }
             }
 
-            TimeSlotMapper.getInstance().done();
-            ReservationMapper.getInstance().done();
-            refresh();
+            directoryOfTimeSlots.done();
+            directoryOfReservations.done();
+            udpateDirectories();
         }
 
-        public void refresh()
+        public void udpateDirectories()
         {
             // Only Console has visibility over DirectoryOfTimeSlot, so this was loop was put here instead of DirectoryOfReservation
             // Adding timeslots to waiting list
@@ -96,7 +87,18 @@ namespace LogicLayer
                     for (int j = 0; j < waitList.Count; j++)
                         directoryOfTimeSlots.timeSlotList[i].waitlist.Enqueue(waitList[j]);
             }
+
+            //Refresh the reservations for each room
+            for (int i = 0; i < directoryOfRooms.roomList.Count; i++)
+            {
+                foreach (KeyValuePair<int, Reservation> reservation in directoryOfReservations.getAllReservation())
+                {
+                    if (reservation.Value.roomID == directoryOfRooms.roomList[i].roomID)
+                        directoryOfRooms.roomList[i].roomReservations.Add(reservation.Value);
+                }
+            }
         }
+
         public void updateWaitList(int userid, DateTime date, int hour)
         {
             foreach (TimeSlot timeSlot in directoryOfTimeSlots.timeSlotList)
@@ -124,7 +126,7 @@ namespace LogicLayer
                 }
 
             }
-            TimeSlotMapper.getInstance().done();
+            directoryOfTimeSlots.done();
         }
 
         public void modifyReservation(int resid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
@@ -145,7 +147,7 @@ namespace LogicLayer
                     {
                         //If waitList for timeSlots is empty, delete from db
                         directoryOfTimeSlots.deleteTimeSlot(resToModify.timeSlots[i].timeSlotID);
-                        TimeSlotMapper.getInstance().done();
+                        directoryOfTimeSlots.done();
                     }
                     else
                     {
@@ -153,10 +155,10 @@ namespace LogicLayer
                         int userID = resToModify.timeSlots[i].waitlist.Dequeue();
                         Reservation res = directoryOfReservations.makeNewReservation(directoryOfReservations.getReservation(resid).roomID, userID, "",
                             directoryOfReservations.getReservation(resid).date);
-                        ReservationMapper.getInstance().done();
+                        directoryOfReservations.done();
                         updateWaitList(userID, directoryOfReservations.getReservation(resid).date, resToModify.timeSlots[i].hour);
                         directoryOfTimeSlots.addToWaitList(resToModify.timeSlots[i].timeSlotID, res.reservationID, resToModify.timeSlots[i].waitlist);
-                        TimeSlotMapper.getInstance().done();
+                        directoryOfTimeSlots.done();
                     }
                 }
             }
@@ -179,7 +181,7 @@ namespace LogicLayer
                     {
                         //If waitList for timeSlots is empty, delete from db
                         directoryOfTimeSlots.deleteTimeSlot(resToModify.timeSlots[i].timeSlotID);
-                        TimeSlotMapper.getInstance().done();
+                        directoryOfTimeSlots.done();
                     }
                     else
                     {
@@ -187,11 +189,11 @@ namespace LogicLayer
                         int userID = resToModify.timeSlots[i].waitlist.Dequeue();
                         Reservation res = directoryOfReservations.makeNewReservation(directoryOfReservations.getReservation(resid).roomID, userID, "",
                             directoryOfReservations.getReservation(resid).date);
-                        ReservationMapper.getInstance().done();
+                        directoryOfReservations.done();
 
                         updateWaitList(userID, directoryOfReservations.getReservation(resid).date, resToModify.timeSlots[i].hour);
                         directoryOfTimeSlots.addToWaitList(resToModify.timeSlots[i].timeSlotID, res.reservationID, resToModify.timeSlots[i].waitlist);
-                        TimeSlotMapper.getInstance().done();
+                        directoryOfTimeSlots.done();
                     }
                 }
             }
@@ -232,10 +234,10 @@ namespace LogicLayer
                 }
             }
 
-            TimeSlotMapper.getInstance().done();
+            directoryOfTimeSlots.done();
             directoryOfReservations.modifyReservation(resToModify.reservationID, roomid, resdes, dt);
-            ReservationMapper.getInstance().done();
-            refresh();
+            directoryOfReservations.done();
+            udpateDirectories();
         }
 
         public void cancelReservation(int resid)
@@ -250,7 +252,7 @@ namespace LogicLayer
                     if (directoryOfTimeSlots.timeSlotList[i].waitlist.Count == 0)
                     {
                         directoryOfTimeSlots.deleteTimeSlot(directoryOfTimeSlots.timeSlotList[i].timeSlotID);
-                        TimeSlotMapper.getInstance().done();
+                        directoryOfTimeSlots.done();
                     }
 
                     // Otherwise:
@@ -262,19 +264,19 @@ namespace LogicLayer
                     {
                         int userID = directoryOfTimeSlots.timeSlotList[i].waitlist.Dequeue();
                         Reservation res = directoryOfReservations.makeNewReservation(directoryOfReservations.getReservation(resid).roomID, userID, "", directoryOfReservations.getReservation(resid).date);
-                        ReservationMapper.getInstance().done();
+                        directoryOfReservations.done();
 
                         directoryOfTimeSlots.addToWaitList(directoryOfTimeSlots.timeSlotList[i].timeSlotID, res.reservationID, directoryOfTimeSlots.timeSlotList[i].waitlist);
                         updateWaitList(userID, res.date, directoryOfTimeSlots.timeSlotList[i].hour);
-                        TimeSlotMapper.getInstance().done();
+                        directoryOfTimeSlots.done();
                     }
                 }
             }
 
             // Completely done with this reservation, delete it.
             directoryOfReservations.cancelReservation(resid);
-            ReservationMapper.getInstance().done();
-            refresh();
+            directoryOfReservations.done();
+            udpateDirectories();
         }
 
         public DirectoryOfTimeSlots getAllTimeSlots()

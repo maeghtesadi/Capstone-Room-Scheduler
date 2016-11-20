@@ -15,19 +15,20 @@ namespace LogicLayer
         {
             roomList = new List<Room>();
 
-            foreach (KeyValuePair<int, Room> room in RoomMapper.getInstance().getAllRooms())
+            foreach (KeyValuePair<int, Room> room in getAllRooms())
             {
                 roomList.Add(room.Value);
-            }
+            }           
+        }
 
-            for (int i = 0; i < roomList.Count; i++)
-            {
-                foreach (KeyValuePair<int, Reservation> reservation in ReservationMapper.getInstance().getAllReservation())
-                {
-                    if (reservation.Value.roomID == roomList[i].roomID)
-                        roomList[i].roomReservations.Add(reservation.Value);
-                }
-            }
+        public Dictionary<int, Room> getAllRooms()
+        {
+            return RoomMapper.getInstance().getAllRooms();
+        }
+
+        public void done()
+        {
+            RoomMapper.getInstance().done();
         }
 
         public Room findRoom(int roomID)

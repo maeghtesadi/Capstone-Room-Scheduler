@@ -14,6 +14,10 @@ namespace LogicLayer
         public DirectoryOfReservations()
         {
             reservationList = new List<Reservation>();
+            foreach (KeyValuePair<int, Reservation> reservation in getAllReservation())
+            {
+                reservationList.Add(reservation.Value);
+            }
         }
 
         public Reservation makeNewReservation(int roomid, int userid, string desc, DateTime date)
@@ -57,7 +61,12 @@ namespace LogicLayer
 
         public Dictionary<int, Reservation> getAllReservation()
         {
-            ReservationMapper.getInstance().getAllReservation();
+            return ReservationMapper.getInstance().getAllReservation();
+        }
+
+        public void done()
+        {
+            ReservationMapper.getInstance().done();
         }
 
         public List<Reservation> findByDate(DateTime date)

@@ -15,6 +15,11 @@ namespace LogicLayer
         public DirectoryOfTimeSlots()
         {
             timeSlotList = new List<TimeSlot>();
+
+            foreach (KeyValuePair<int, TimeSlot> timeSlot in getAllTimeSlot())
+            {
+                timeSlotList.Add(timeSlot.Value);
+            }
         }
 
         public TimeSlot makeNewTimeSlot(int resid, int hour)
@@ -35,16 +40,22 @@ namespace LogicLayer
 
         public List<int> getAllUsers(int timeSlotID)
         {
-            TimeSlotMapper.getInstance().getAllUsers(timeSlotID);
+            return TimeSlotMapper.getInstance().getAllUsers(timeSlotID);
         }
 
         public void addToWaitList(int timeslotid, int reservationid, Queue<int> waitlist)
         {
             TimeSlotMapper.getInstance().setTimeSlot(timeslotid, reservationid, waitlist);
         }
+
         public Dictionary<int, TimeSlot> getAllTimeSlot()
         {
-            TimeSlotMapper.getInstance().getAllTimeSlot();
+            return TimeSlotMapper.getInstance().getAllTimeSlot();
+        }
+
+        public void done()
+        {
+            TimeSlotMapper.getInstance().done();
         }
     }
 }
