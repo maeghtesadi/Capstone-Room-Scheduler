@@ -58,10 +58,31 @@ namespace LogicLayer
 
             TimeSlotMapper.getInstance().done();
             ReservationMapper.getInstance().done();
-            directoryOfReservations.refresh();
-            directoryOfTimeSlots.refresh();
+            refresh();
         }
 
+        public void refresh()
+        {
+            // Only Console has visibility over DirectoryOfTimeSlot, so this was loop was put here instead of DirectoryOfReservation
+            // Refresh 'reservations'
+            for (int i = 0; i < (directoryOfReservations.reservationList).Count; i++)
+            {
+                foreach (KeyValuePair<int, TimeSlot> timeSlot in directoryOfTimeSlots.getAllTimeSlot())
+                {
+                    if (directoryOfReservations.reservationList[i].reservationID == timeSlot.Value.reservationID)
+                        directoryOfReservations.reservationList[i].timeSlots.Add(timeSlot.Value);
+                }
+            }
+
+            // Refresh timeslots (get the waiting list)
+            for (int i = 0; i < directoryOfTimeSlots.timeSlotList.Count; i++)
+            {
+                List<int> waitList = directoryOfTimeSlots.getAllUsers(directoryOfTimeSlots.timeSlotList[i].timeSlotID);
+                if (waitList != null)
+                    for (int j = 0; j < waitList.Count; j++)
+                        directoryOfTimeSlots.timeSlotList[i].waitlist.Enqueue(waitList[j]);
+            }
+        }
         public void updateWaitList(int userid, DateTime date, int hour)
         {
             foreach (TimeSlot timeSlot in directoryOfTimeSlots.timeSlotList)
@@ -200,8 +221,7 @@ namespace LogicLayer
             TimeSlotMapper.getInstance().done();
             directoryOfReservations.modifyReservation(resToModify.reservationID, roomid, resdes, dt);
             ReservationMapper.getInstance().done();
-            directoryOfReservations.refresh();
-            directoryOfTimeSlots.refresh();
+            refresh();
         }
 
         public void cancelReservation(int resid)
@@ -240,8 +260,7 @@ namespace LogicLayer
             // Completely done with this reservation, delete it.
             directoryOfReservations.cancelReservation(resid);
             ReservationMapper.getInstance().done();
-            directoryOfReservations.refresh();
-            directoryOfTimeSlots.refresh();
+            refresh();
         }
 
         public DirectoryOfTimeSlots getAllTimeSlots()

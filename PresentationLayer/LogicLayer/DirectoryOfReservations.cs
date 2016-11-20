@@ -14,7 +14,7 @@ namespace LogicLayer
         public DirectoryOfReservations()
         {
             reservationList = new List<Reservation>();
-            foreach (KeyValuePair<int, Reservation> reservation in ReservationMapper.getInstance().getAllReservation())
+            foreach (KeyValuePair<int, Reservation> reservation in this.getAllReservation())
             {
                 reservationList.Add(reservation.Value);
             }
@@ -68,16 +68,9 @@ namespace LogicLayer
             return ReservationMapper.getInstance().getReservation(id);
         }
 
-        public void refresh()
+        public Dictionary<int, Reservation> getAllReservation()
         {
-            for (int i = 0; i < reservationList.Count; i++)
-            {
-                foreach (KeyValuePair<int, TimeSlot> timeSlot in TimeSlotMapper.getInstance().getAllTimeSlot())
-                {
-                    if (reservationList[i].reservationID == timeSlot.Value.reservationID)
-                        reservationList[i].timeSlots.Add(timeSlot.Value);
-                }
-            }
+            ReservationMapper.getInstance().getAllReservation();
         }
 
         public List<Reservation> findByDate(DateTime date)
