@@ -13,7 +13,7 @@ namespace LogicLayer
     {
         //Instance of ReservationConsole class
         private static ReservationConsole instance = new ReservationConsole();
-       
+
         DirectoryOfReservations directoryOfReservations = new DirectoryOfReservations();
         DirectoryOfRooms directoryOfRooms = new DirectoryOfRooms();
         DirectoryOfTimeSlots directoryOfTimeSlots = new DirectoryOfTimeSlots();
@@ -303,6 +303,10 @@ namespace LogicLayer
         public DirectoryOfRooms getAllRooms()
         {
             return directoryOfRooms;
+        }
+        public UserCatalog getUserCatalog()
+        {
+            return userCatalog;
         }
     }
 }
