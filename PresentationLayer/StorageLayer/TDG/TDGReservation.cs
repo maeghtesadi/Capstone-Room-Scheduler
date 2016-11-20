@@ -249,7 +249,7 @@ namespace TDG
          * */
         private void createReservation(Reservation reservation)
         {
-            String mySqlDate = reservation.date.Date.ToString("yyyyMMdd");
+            String mySqlDate = reservation.date.Date.ToString("yyyy-MM-dd");
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + reservation.reservationID + "," +
                 reservation.userID + "," + reservation.roomID + ",'" + reservation.description + "', '" + 
                 mySqlDate + " ');";

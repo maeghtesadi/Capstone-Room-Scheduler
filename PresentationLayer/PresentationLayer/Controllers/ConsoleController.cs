@@ -19,9 +19,9 @@ namespace CapstoneRoomScheduler.Controllers
         }
         [LoggedIn]
         [HttpPost]
-        public void acceptTimeSlots(int room,string description,string date,int firstTimeSlot, int lastTimeSlot)
+        public void acceptTimeSlots(int room,string description,int day,int month,int year,int firstTimeSlot, int lastTimeSlot)
         {
-            ReservationConsole.makeReservation(1, room, description, new DateTime(), firstTimeSlot, lastTimeSlot);
+            ReservationConsole.makeReservation(1, room, description, new DateTime(year,month,day), firstTimeSlot, lastTimeSlot);
            // updateCalendar();
         }
         public void updateCalendar(DateTime date)

@@ -11,6 +11,27 @@ var colorPallette = [
     ['#7f8c8d', '#95a5a6']
 
 ];
+//header calendar 
+var date = new Date();
+var months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+var days = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]
+$(".next").click(function () {
+    var day = parseInt($(".upper-header li .date .day").html());
+    date.setDate(day + 1);
+    $(".upper-header li .date .day").html(date.getDate());
+    $(".upper-header li .date .month").html(months[date.getMonth()]);
+    $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
+
+});
+
+$(".prev").click(function () {
+    var day = parseInt($(".upper-header li .date .day").html());
+    date.setDate(day - 1);
+    $(".upper-header li .date .day").html(date.getDate());
+    $(".upper-header li .date .month").html(months[date.getMonth()]);
+    $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
+    //
+});
 
 //Function is run when any of the timeslot li is clicked
 function timeslotClicked(event) {
@@ -19,6 +40,10 @@ function timeslotClicked(event) {
     var thisElement = event;
     var room = $(event).data("room");
     $("input[name='room']").attr("value", room);
+    $("input[name='day']").attr("value", date.getDate());
+    $("input[name='month']").attr("value", date.getMonth()+1);
+    $("input[name='year']").attr("value", date.getFullYear());
+
     var timeslot = $(event).data("timeslot");
     firstAndLastTimeslot[0] = timeslot;
     $("#firstTimeslot").html(firstAndLastTimeslot[0]);
@@ -205,25 +230,3 @@ $(".showReservations").click(function () {
     $(".showReservations").toggleClass('active');
 });
 
-
-//header calendar 
-var date= new Date();
-var months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
-var days = [ "MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"]
-$(".next").click(function () {
-    var day = parseInt($(".upper-header li .date .day").html());
-    date.setDate(day + 1);
-    $(".upper-header li .date .day").html(date.getDate());
-    $(".upper-header li .date .month").html(months[date.getMonth()]);
-    $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
-
-});
-
-$(".prev").click(function () {
-    var day = parseInt($(".upper-header li .date .day").html());
-    date.setDate(day - 1);
-    $(".upper-header li .date .day").html(date.getDate());
-    $(".upper-header li .date .month").html(months[date.getMonth()]);
-    $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
-    //
-});
