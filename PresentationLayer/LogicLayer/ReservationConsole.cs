@@ -17,7 +17,7 @@ namespace LogicLayer
         DirectoryOfReservations directoryOfReservations = new DirectoryOfReservations();
         DirectoryOfRooms directoryOfRooms = new DirectoryOfRooms();
         DirectoryOfTimeSlots directoryOfTimeSlots = new DirectoryOfTimeSlots();
-
+        UserCatalog userCatalog = new UserCatalog();
         
         public static ReservationConsole getInstance()
         {
