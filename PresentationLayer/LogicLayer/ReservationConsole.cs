@@ -11,43 +11,45 @@ namespace LogicLayer
 {
     public class ReservationConsole
     {
+        private static DirectoryOfReservations directoryOfReservations;
+        private static DirectoryOfRooms directoryOfRooms;
+        private static DirectoryOfTimeSlots directoryOfTimeSlots;
 
         public static void makeReservation(int uid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
         {
-            DirectoryOfReservations directory = new DirectoryOfReservations();
-            directory.makeReservation(uid, roomid, resdes, dt, firstHour, lastHour);
+            directoryOfReservations = new DirectoryOfReservations();
+            directoryOfReservations.makeReservation(uid, roomid, resdes, dt, firstHour, lastHour);
         }
 
         public static void modifyReservation(int resid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
         {
-            DirectoryOfReservations directory = new DirectoryOfReservations();
-            directory.modifyReservation(resid, roomid, resdes, dt, firstHour, lastHour);
+            directoryOfReservations = new DirectoryOfReservations();
+            directoryOfReservations.modifyReservation(resid, roomid, resdes, dt, firstHour, lastHour);
         }
 
         public static void cancelReservation(int resid)
         {
-            DirectoryOfReservations directory = new DirectoryOfReservations();
-            directory.cancelReservation(resid);
+            directoryOfReservations = new DirectoryOfReservations();
+            directoryOfReservations.cancelReservation(resid);
         }
 
         //get up-to-date timeslots from database 
         public static DirectoryOfTimeSlots getAllTimeSlots()
         {
-            DirectoryOfTimeSlots timeSlotDirectory = new DirectoryOfTimeSlots();
-            return timeSlotDirectory;
+            directoryOfTimeSlots = new DirectoryOfTimeSlots();
+            return directoryOfTimeSlots;
         }
 
         public static DirectoryOfReservations getAllReservations()
         {
-            DirectoryOfReservations reservationDirectory = new DirectoryOfReservations();
-            return reservationDirectory;
-        }
-       
+            directoryOfReservations = new DirectoryOfReservations();
+            return directoryOfReservations;
+        }      
 
         public static DirectoryOfRooms getAllRooms()
         {
-            DirectoryOfRooms roomDirectory = new DirectoryOfRooms();
-            return roomDirectory;
+            directoryOfRooms = new DirectoryOfRooms();
+            return directoryOfRooms;
         }
     }
 }
