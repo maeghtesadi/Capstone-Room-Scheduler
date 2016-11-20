@@ -16,7 +16,6 @@ namespace PresentationLayer
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
             // Add /MyVeryOwn/ folder to the default location scheme for STANDARD Views
             var razorEngine = ViewEngines.Engines.OfType<RazorViewEngine>().FirstOrDefault();
             razorEngine.ViewLocationFormats =

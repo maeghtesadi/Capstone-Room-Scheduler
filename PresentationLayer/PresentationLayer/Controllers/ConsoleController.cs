@@ -13,6 +13,7 @@ namespace CapstoneRoomScheduler.Controllers
 {
     public class ConsoleController : Controller
     {
+        int i;
         public ActionResult Calendar()
         {
             return View();
@@ -21,13 +22,14 @@ namespace CapstoneRoomScheduler.Controllers
         [HttpPost]
         public void acceptTimeSlots(int room,string description,int day,int month,int year,int firstTimeSlot, int lastTimeSlot)
         {
-            ReservationConsole.makeReservation(1, room, description, new DateTime(year,month,day), firstTimeSlot, lastTimeSlot);
+       
+            ReservationConsole.getInstance().makeReservation(1,room,description,new DateTime(year,month,day),firstTimeSlot,lastTimeSlot);
             updateCalendar(new DateTime(year, month, day));
         }
         public void updateCalendar(DateTime date)
         {
-            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-            hubContext.Clients.All.updateCalendar(convertToJsonObject(ReservationConsole.getAllReservations().findByDate(date)));
+           var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
+           hubContext.Clients.All.updateCalendar(convertToJsonObject(ReservationConsole.getInstance().getAllReservations().findByDate(date)));
         }
         public List<object> convertToJsonObject(List<Reservation> reservationList)
         {

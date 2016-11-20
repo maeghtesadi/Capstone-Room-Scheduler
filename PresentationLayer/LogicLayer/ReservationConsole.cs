@@ -11,11 +11,20 @@ namespace LogicLayer
 {
     public class ReservationConsole
     {
-
+        //Instance of ReservationConsole class
+        private static ReservationConsole instance = new ReservationConsole();
+       
         DirectoryOfReservations directoryOfReservations = new DirectoryOfReservations();
         DirectoryOfRooms directoryOfRooms = new DirectoryOfRooms();
         DirectoryOfTimeSlots directoryOfTimeSlots = new DirectoryOfTimeSlots();
 
+        
+        public static ReservationConsole getInstance()
+        {
+            return instance;
+        }
+
+        //default constructor
         public ReservationConsole()
         {
             udpateDirectories();

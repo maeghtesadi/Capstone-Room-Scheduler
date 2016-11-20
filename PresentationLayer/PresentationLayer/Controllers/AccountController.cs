@@ -80,6 +80,7 @@ namespace PresentationLayer.Controllers
               // adding following 2 claim just for supporting default antiforgery provider
               new Claim(ClaimTypes.NameIdentifier, username),
               new Claim(ClaimTypes.Name,username),
+              
           
                   },
                   DefaultAuthenticationTypes.ApplicationCookie);
