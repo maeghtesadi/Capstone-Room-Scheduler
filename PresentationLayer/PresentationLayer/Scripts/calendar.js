@@ -157,7 +157,7 @@ $.connection.hub.start().done(function () {
 var serverSession = $.connection.calendarHub;
 //Jquery to update the timeslots
 
-serverSession.client.uodateCalendar = function (reservationList) {
+serverSession.client.updateCalendar = function (reservationList) {
     for (j = 0; j < reservationList.length; j++) {
         var color = colorPallette[Math.floor(Math.random() * colorPallette.length)];
         for (var i = reservationList[j].initialTimeslot; i <= reservationList[j].finalTimeslot; i++) {
@@ -166,13 +166,13 @@ serverSession.client.uodateCalendar = function (reservationList) {
             $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").css('background-color',color[1]);
         }
         //First timeslot classtoggle=reservedHeader
-        $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").addClass("reserved-header").html(reservationList[j].studentName);
+        $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").addClass("reserved-header").html(reservationList[j].userName);
         $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").css('background-color', color[0]);
         //Second timeslot classtoggle=reservedd;
         var time = "<u>Time</u>: From " + reservationList[j].initialTimeslot + " to " + (parseInt(reservationList[j].finalTimeslot) + 1);
         var courseName = "<u>Course Name</u>: " + reservationList[j].courseName;
-        var waitingList = "<u>Waiting List:</u>:";
-        $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time + "</br>" + courseName + "</br>" + waitingList);
+       // var waitingList = "<u>Waiting List:</u>:";
+        $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time + "</br>" + courseName + "</br>");
         
     }
     $(".glyphicon-remove").click();
