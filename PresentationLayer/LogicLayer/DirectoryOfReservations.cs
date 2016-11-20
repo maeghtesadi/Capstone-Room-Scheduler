@@ -14,19 +14,6 @@ namespace LogicLayer
         public DirectoryOfReservations()
         {
             reservationList = new List<Reservation>();
-            foreach (KeyValuePair<int, Reservation> reservation in this.getAllReservation())
-            {
-                reservationList.Add(reservation.Value);
-            }
-
-            for (int i = 0; i < reservationList.Count; i++)
-            {
-                foreach (KeyValuePair<int, TimeSlot> timeSlot in TimeSlotMapper.getInstance().getAllTimeSlot())
-                {
-                    if (reservationList[i].reservationID == timeSlot.Value.reservationID)
-                        reservationList[i].timeSlots.Add(timeSlot.Value);
-                }
-            }
         }
 
         public Reservation makeNewReservation(int roomid, int userid, string desc, DateTime date)

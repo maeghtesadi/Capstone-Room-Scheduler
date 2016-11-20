@@ -15,17 +15,6 @@ namespace LogicLayer
         public DirectoryOfTimeSlots()
         {
             timeSlotList = new List<TimeSlot>();
-            foreach (KeyValuePair<int, TimeSlot> timeSlot in TimeSlotMapper.getInstance().getAllTimeSlot())
-            {
-                timeSlotList.Add(timeSlot.Value);
-            }
-            for (int i = 0; i < timeSlotList.Count; i++)
-            {
-                List<int> waitList = WaitsForMapper.getInstance().getAllUsers(timeSlotList[i].timeSlotID);
-                if (waitList != null)
-                    for (int j = 0; j < waitList.Count; j++)
-                        timeSlotList[i].waitlist.Enqueue(waitList[j]);
-            }
         }
 
         public TimeSlot makeNewTimeSlot(int resid, int hour)
@@ -44,16 +33,15 @@ namespace LogicLayer
                     timeSlotList.Remove(timeSlot);
         }
 
-        public void getAllUsers(int timeSlotID)
+        public List<int> getAllUsers(int timeSlotID)
         {
             TimeSlotMapper.getInstance().getAllUsers(timeSlotID);
         }
+
         public void addToWaitList(int timeslotid, int reservationid, Queue<int> waitlist)
         {
             TimeSlotMapper.getInstance().setTimeSlot(timeslotid, reservationid, waitlist);
         }
-
-        // The mapper returns a Dictionary of key-value pairs... Not sure if I should use this or KeyValuePair<int, TimeSlot>
         public Dictionary<int, TimeSlot> getAllTimeSlot()
         {
             TimeSlotMapper.getInstance().getAllTimeSlot();

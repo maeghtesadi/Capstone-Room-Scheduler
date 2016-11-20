@@ -16,6 +16,20 @@ namespace LogicLayer
         DirectoryOfRooms directoryOfRooms = new DirectoryOfRooms();
         DirectoryOfTimeSlots directoryOfTimeSlots = new DirectoryOfTimeSlots();
 
+        ReservationConsole()
+        {
+            foreach (KeyValuePair<int, Reservation> reservation in getAllReservation())
+            {
+                reservationList.Add(reservation.Value);
+            }
+
+            foreach (KeyValuePair<int, TimeSlot> timeSlot in getAllTimeSlot())
+            {
+                timeSlotList.Add(timeSlot.Value);
+            }
+
+            refresh();
+        }
         public void makeReservation(int uid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
         {
             Reservation res = new Reservation();
@@ -64,7 +78,7 @@ namespace LogicLayer
         public void refresh()
         {
             // Only Console has visibility over DirectoryOfTimeSlot, so this was loop was put here instead of DirectoryOfReservation
-            // Refresh 'reservations'
+            // Adding timeslots to waiting list
             for (int i = 0; i < (directoryOfReservations.reservationList).Count; i++)
             {
                 foreach (KeyValuePair<int, TimeSlot> timeSlot in directoryOfTimeSlots.getAllTimeSlot())
@@ -74,7 +88,7 @@ namespace LogicLayer
                 }
             }
 
-            // Refresh timeslots (get the waiting list)
+            // Refresh timeslots (refresh the waiting list)
             for (int i = 0; i < directoryOfTimeSlots.timeSlotList.Count; i++)
             {
                 List<int> waitList = directoryOfTimeSlots.getAllUsers(directoryOfTimeSlots.timeSlotList[i].timeSlotID);
