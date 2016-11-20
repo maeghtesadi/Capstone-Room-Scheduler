@@ -30,7 +30,8 @@ namespace LogicLayer
 
             foreach (Reservation reservation in directoryOfReservations.reservationList)
             {
-                if (reservation.date == dt && reservation.roomID == roomid)
+                // Compare if the date (not the time portion) are the same and the rooms are the same
+                if (reservation.date.Date == dt.Date && reservation.roomID == roomid)
                 {
                     foreach (TimeSlot timeSlot in reservation.timeSlots)
                     {
