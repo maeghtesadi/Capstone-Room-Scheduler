@@ -30,6 +30,7 @@ namespace CapstoneRoomScheduler.Controllers
            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
            hubContext.Clients.All.updateCalendar(convertToJsonObject(ReservationConsole.getInstance().getAllReservations().findByDate(date)));
         }
+        [HttpPost]
         public void getAllUserReservations() {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
             hubContext.Clients.All.javascriptFUnction();

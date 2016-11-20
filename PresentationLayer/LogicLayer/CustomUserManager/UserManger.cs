@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using LogicLayer;
 
 namespace CapstoneRoomScheduler.LogicLayer.CustomUserManager
 {
@@ -10,10 +11,16 @@ namespace CapstoneRoomScheduler.LogicLayer.CustomUserManager
     {
         public bool IsValid(string username, string password)
         {
-            if(username=="nim")
-            return true;
+            UserCatalog userCatalog = new UserCatalog();
+            //go through the usercatalog to find the user
+            foreach(User user in userCatalog.registeredUsers)
+            {
+                if(user.name==username && user.password==password) {
+                    return true;
+                }
+            }
             return false;
-           //return True whenever
+     
         }
     }
     public class LoggedIn : AuthorizeAttribute
