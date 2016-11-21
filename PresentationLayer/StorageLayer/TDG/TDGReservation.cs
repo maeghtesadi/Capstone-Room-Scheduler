@@ -102,20 +102,15 @@ namespace TDG
          * */
 
 
-        public Boolean addReservation(List<Reservation> newList)
+        public void addReservation(List<Reservation> newList)
         {
             if (!openConnection())
-                return false;
+                return;
             for (int i = 0; i < newList.Count; i++)
             {
-                if (!createReservation(newList[i]))
-                {
-                    closeConnection();
-                    return false;
-                }
+                createReservation(newList[i]);
             }
             closeConnection();
-            return true;
         }
 
 
@@ -123,20 +118,15 @@ namespace TDG
          * Update reservations of the database
          * */
 
-        public Boolean updateReservation(List<Reservation> updateList)
+        public void updateReservation(List<Reservation> updateList)
         {
             if (!openConnection())
-                return false;
+                return;
             for (int i = 0; i < updateList.Count; i++)
             {
-                if (!updateReservation(updateList[i]))
-                {
-                    closeConnection();
-                    return false;
-                }
+                updateReservation(updateList[i]);
             }
             closeConnection();
-            return true;
         }
 
 
@@ -145,21 +135,15 @@ namespace TDG
          *
          * */
 
-        public Boolean deleteReservation(List<Reservation> deleteList)
+        public void deleteReservation(List<Reservation> deleteList)
         {
             if (!openConnection())
-                return false;
+                return;
             for (int i = 0; i < deleteList.Count; i++)
             {
-                if (!removeReservation(deleteList[i]))
-                {
-                    closeConnection();
-                    return false;
-                }
-
+                removeReservation(deleteList[i]);
             }
             closeConnection();
-            return true;
 
         }
 
@@ -177,7 +161,7 @@ namespace TDG
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + reservationID;
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = null;
-            bool successful = true;
+
             Object[] record = null; // to be returned
             try
             {
@@ -209,7 +193,6 @@ namespace TDG
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                successful = false;
             }
             finally
             {
@@ -220,10 +203,7 @@ namespace TDG
             }
 
             //Format and return the result
-            if (successful)
-                return record;
-            else
-                return null;
+            return record;
         }
 
 
@@ -238,9 +218,7 @@ namespace TDG
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
             //Open Connection
             if (!openConnection())
-                return null;
-
-            bool successful = true;
+                return records;
 
             //Write and execute the query
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
@@ -252,10 +230,10 @@ namespace TDG
             {
                 reader = cmd.ExecuteReader();
 
-                //If no record is found, return null
+                //If no record is found, return empty records
                 if (!reader.HasRows)
                 {
-                    return null;
+                    return records;
 
                 }
 
@@ -264,7 +242,7 @@ namespace TDG
                 {
                     if (reader[0].GetType() == typeof(System.DBNull))
                     {
-                        return null;
+                        return records;
                     }
 
                     Object[] attributes = new Object[FIELDS.Length];
@@ -283,7 +261,6 @@ namespace TDG
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                successful = false;
             }
             finally
             {
@@ -294,16 +271,13 @@ namespace TDG
             }
 
             //Format and return the result
-            if (successful)
-                return records;
-            else
-                return null;
+            return records;
         }
 
         /**
          * Adds one reservation to the database
          * */
-        private Boolean createReservation(Reservation reservation)
+        private void createReservation(Reservation reservation)
         {
             String mySqlDate = reservation.date.Date.ToString("yyyy-MM-dd");
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + reservation.reservationID + "," +
@@ -312,7 +286,6 @@ namespace TDG
 
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = null;
-            bool successful = false;
 
             try
             {
@@ -321,21 +294,18 @@ namespace TDG
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                successful = false;
             }
             finally
             {
                 reader.Close();
             }
-
-            return successful;
         }
 
         /**
          * Updates one reservation of the database
          * */
 
-        private Boolean updateReservation(Reservation reservation)
+        private void updateReservation(Reservation reservation)
         {
             String mySqlDate = reservation.date.Date.ToString("yyyy-MM-dd");
             this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " +
@@ -344,7 +314,6 @@ namespace TDG
                 FIELDS[0] + " = " + reservation.reservationID + ";";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = null;
-            bool successful = false;
 
             try
             {
@@ -353,13 +322,11 @@ namespace TDG
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                successful = false;
             }
             finally
             {
                 reader.Close();
             }
-            return successful;
         }
 
 
@@ -367,12 +334,11 @@ namespace TDG
          * Removes one reservation from the database
          * */
 
-        private Boolean removeReservation(Reservation reservation)
+        private void removeReservation(Reservation reservation)
         {
             this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservation.reservationID + ";";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = null;
-            bool successful = true;
 
             try
             {
@@ -381,13 +347,11 @@ namespace TDG
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                successful = false;
             }
             finally
             {
                 reader.Close();
             }
-            return successful;
         }
 
         /**

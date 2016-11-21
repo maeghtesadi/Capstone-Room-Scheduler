@@ -90,13 +90,10 @@ namespace TDG
         public List<int> getAllUsers(int timeSlotID)
         {
             List<int> listOfUsers = new List<int>();
-            bool successful = true;
 
             // Open connection
             if (!openConnection())
-            {
-                return null;
-            }
+                return listOfUsers;
 
             // Write and execute the query
             this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlotID + " ORDER BY " + FIELDS[2] + ";";
@@ -108,7 +105,7 @@ namespace TDG
             {
                 reader = cmd.ExecuteReader();
 
-                // If no record is found, return null
+                // If no record is found, return empty list
                 if (!reader.HasRows)
                 {
                     return listOfUsers;
@@ -128,7 +125,6 @@ namespace TDG
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                successful = false;
             }
 
             // Close reader and connection
@@ -140,33 +136,25 @@ namespace TDG
                 }
                 closeConnection();
             }
-            
+
             // If successful, return the list
-            if(successful)
-            {
-                return listOfUsers;
-            }
-            else
-            {
-                return null;
-            }
+            return listOfUsers;
         }
 
         /**
          * 
          */
-        public Boolean refreshWaitsFor(List<TimeSlot> listOfTimeSlots)
+        public void refreshWaitsFor(List<TimeSlot> listOfTimeSlots)
         {
 
             // Open connection
             if(!openConnection())
             {
-                return false;
+                return;
             }
 
             Queue<int> waitlist;
             List<int> results;
-            bool successful = true;
 
             foreach (TimeSlot timeSlot in listOfTimeSlots)
             {
@@ -216,7 +204,6 @@ namespace TDG
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
-                        successful = false;
                     }
                     finally
                     {
@@ -238,7 +225,6 @@ namespace TDG
                     catch(Exception ex)
                     {
                         Console.WriteLine(ex.Message);
-                        successful = false;
                     }
                     finally
                     {
@@ -247,15 +233,13 @@ namespace TDG
                 }
             }
             closeConnection();
-            return successful;
         }
 
-        private Boolean createWaitsFor(int timeSlotID, int userID, String currentDateTime)
+        private void createWaitsFor(int timeSlotID, int userID, String currentDateTime)
         {
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES ( " + timeSlotID + "," + userID + ", '" + currentDateTime + "');";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = null;
-            bool successful = true;
             try
             {
                 reader = cmd.ExecuteReader();
@@ -263,20 +247,17 @@ namespace TDG
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                successful = false;
             }
             finally
             {
                 reader.Close();
             }
-            return successful;
         }
-        private Boolean deleteWaitsFor(int timeSlotID, int userID)
+        private void deleteWaitsFor(int timeSlotID, int userID)
         {
             this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlotID + " AND " + FIELDS[1] + " = " + userID;
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = null;
-            bool successful = true;
 
             try
             {
@@ -285,13 +266,11 @@ namespace TDG
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                successful = false;
             }
             finally
             {
                 reader.Close();
             }
-            return successful;
         }
     }
 }

@@ -86,27 +86,20 @@ namespace TDG
         }
 
         // Updates the list of users in the DB
-        public Boolean updateUser(List<User> updateList)
+        public void updateUser(List<User> updateList)
         {
             if(!openConnection())
-            {
-                return false;
-            }
+                return;
+
             for (int i = 0; i < updateList.Count(); i++)
             {
-                if(!updateUser(updateList[i]))
-                {
-                    closeConnection();
-                    return false;
-                }
+                updateUser(updateList[i]);
             }
             closeConnection();
-            return true;
         }
 
         // SQL Statement to update an existing User/Row
-        private Boolean updateUser(User user) {
-           bool successful = true;
+        private void updateUser(User user) {
            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " \n" +
                    "SET " + FIELDS[1] + "='" + user.username + "'," + FIELDS[2] + "='" + user.password + "'," +
                    FIELDS[3] + "='" + user.name + ";\n" +
@@ -121,13 +114,11 @@ namespace TDG
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                successful = false;
             }
             finally
             {
                 reader.Close();
             }
-            return successful;
         }
 
         /**
@@ -135,7 +126,6 @@ namespace TDG
        */
         public Object[] get(int userID)
         {
-            bool successful = true;
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " \n" +
                     " WHERE " + FIELDS[0] + "=" + userID + ";";
             this.cmd.Connection = this.conn;
@@ -168,7 +158,6 @@ namespace TDG
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                successful = false;
             }
             finally
             {
@@ -178,10 +167,7 @@ namespace TDG
             }
 
             // Format and return the result
-            if (successful)
-                return record;
-            else
-                return null;
+            return record;
         }
 
       
@@ -193,12 +179,11 @@ namespace TDG
          */
         public Dictionary<int, Object[]> getAll()
         {
-            bool successful = true;
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
 
             // Open connection
             if(!openConnection())
-                return null;
+                return records;
 
             // Write and execute the query
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
@@ -209,10 +194,10 @@ namespace TDG
             {
                 reader = cmd.ExecuteReader();
 
-                // If no record is found, return null
+                // If no record is found, return empty records
                 if (!reader.HasRows)
                 {
-                    return null;
+                    return records;
                 }
 
                 // For each reader, add it to the dictionary
@@ -220,7 +205,7 @@ namespace TDG
                 {
                     if (reader[0].GetType() == typeof(System.DBNull))
                     {
-                        return null;
+                        return records;
                     }
                     Object[] attributes = new Object[FIELDS.Length];
                     attributes[0] = reader[0]; // userID
@@ -233,7 +218,6 @@ namespace TDG
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                successful = false;
             }
             finally
             {
@@ -242,10 +226,7 @@ namespace TDG
             }
 
             // Format and return the result
-            if (successful)
-                return records;
-            else
-                return null;
+            return records;
         }
     }
 }

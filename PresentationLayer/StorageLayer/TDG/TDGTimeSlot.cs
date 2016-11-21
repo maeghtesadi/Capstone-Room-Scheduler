@@ -100,40 +100,29 @@ namespace TDG
         /**
          * Add new timeslot(s) to the database
          */
-        public Boolean addTimeSlot(List<TimeSlot> newList)
+        public void addTimeSlot(List<TimeSlot> newList)
         {
             if (!openConnection())
-                return false;
+                return;
             for (int i = 0; i < newList.Count; i++)
             {
-                if (!createTimeSlot(newList[i]) {
-                    closeConnection();
-                    return false;
-                }
+                createTimeSlot(newList[i]);
             }
             closeConnection();
-            return true;
         }
 
         /**
          * Add new timeslot(s) to the database
          */
-        public Boolean updateTimeSlot(List<TimeSlot> updateList)
+        public void updateTimeSlot(List<TimeSlot> updateList)
         {
             if (!openConnection())
-                return false;
+                return;
             for (int i = 0; i < updateList.Count; i++)
             {
-                if(!updateTimeSlot(updateList[i]))
-                {
-                    closeConnection();
-                    return false;
-                }
+                updateTimeSlot(updateList[i]);
             }
             closeConnection();
-
-            return true;
-
         }
 
         /**
@@ -141,21 +130,15 @@ namespace TDG
          *
          * */
 
-        public Boolean deleteTimeSlot(List<TimeSlot> deleteList)
+        public void deleteTimeSlot(List<TimeSlot> deleteList)
         {
             if (!openConnection())
-                return false;
+                return;
             for (int i = 0; i < deleteList.Count; i++)
             {
-                if(!removeTimeSlot(deleteList[i]))
-                {
-                    closeConnection();
-                    return false;
-                }
-
+                removeTimeSlot(deleteList[i]);
             }
             closeConnection();
-            return true;
         }
 
         /**
@@ -167,8 +150,6 @@ namespace TDG
             //Open connection
             if (!openConnection())
                 return null;
-
-            bool successful = true;
 
             //Write and execute the query
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + timeslotID;
@@ -201,7 +182,6 @@ namespace TDG
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                successful = false;
             }
             finally
             {
@@ -211,10 +191,7 @@ namespace TDG
             }
 
             //Format and return the result
-            if (successful)
-                return record;
-            else
-                return null;
+            return record;
         }
 
 
@@ -229,9 +206,7 @@ namespace TDG
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
             //Open Connection
             if (!openConnection())
-                return null;
-
-            bool successful = true;
+                return records;
 
             //Write and execute the query
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
@@ -242,10 +217,10 @@ namespace TDG
             {
                 reader = cmd.ExecuteReader();
 
-                //If no record is found, return null
+                //If no record is found, return empty records
                 if (!reader.HasRows)
                 {
-                    return null;
+                    return records;
 
                 }
 
@@ -254,7 +229,7 @@ namespace TDG
                 {
                     if (reader[0].GetType() == typeof(System.DBNull))
                     {
-                        return null;
+                        return records;
                     }
                     Object[] attributes = new Object[FIELDS.Length];
                     attributes[0] = reader[0]; // timeslotID
@@ -267,7 +242,6 @@ namespace TDG
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                successful = false;
             }
             finally
             {
@@ -277,10 +251,7 @@ namespace TDG
             }
 
             //Format and return the result
-            if (successful)
-                return records;
-            else
-                return null;
+            return records;
         }
 
         /**
@@ -295,9 +266,7 @@ namespace TDG
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
             //Open Connection
             if (!openConnection())
-                return null;
-
-            bool successful = true;
+                return records;
 
             //Write and execute the query
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[1] + " = " + reservationID;
@@ -307,10 +276,10 @@ namespace TDG
             try
             {
                 reader = cmd.ExecuteReader();
-                //If no record is found, return null
+                //If no record is found, return empty records
                 if (!reader.HasRows)
                 {
-                    return null;
+                    return records;
 
                 }
 
@@ -319,7 +288,7 @@ namespace TDG
                 {
                     if (reader[0].GetType() == typeof(System.DBNull))
                     {
-                        return null;
+                        return records;
                     }
                     Object[] attributes = new Object[FIELDS.Length];
                     attributes[0] = reader[0]; // timeslotID
@@ -332,7 +301,6 @@ namespace TDG
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                successful = false;
             }
             finally
             {
@@ -342,23 +310,19 @@ namespace TDG
             }
 
             //Format and return the result
-            if (successful)
-                return records;
-            else
-                return null;
+            return records;
         }
 
         /**
          * Adds one timeslot to the database
          * */
-        private Boolean createTimeSlot(TimeSlot timeslot)
+        private void createTimeSlot(TimeSlot timeslot)
         {
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + timeslot.timeSlotID + "," +
                 timeslot.reservationID + "," + timeslot.hour + ");";
 
             this.cmd.Connection = this.conn;
-
-            bool successful = true;
+            
             MySqlDataReader reader = null;
             try
             {
@@ -367,22 +331,19 @@ namespace TDG
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                successful = false;
             }
             finally
             {
                 reader.Close();
             }
-            return successful;
         }
 
 
         /**
          * Updates one timeslot to the database
          * */
-        private Boolean updateTimeSlot(TimeSlot timeslot)
+        private void updateTimeSlot(TimeSlot timeslot)
         {
-            bool successful = true;
             this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + " = " + timeslot.reservationID + " WHERE " + FIELDS[0] + " = " + timeslot.timeSlotID;
             this.cmd.Connection = this.conn;
 
@@ -395,22 +356,19 @@ namespace TDG
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                successful = false;
             }
             finally
             {
                 reader.Close();
             }
-            return successful;
         }
 
         /**
          * Removes one timeslot from the database
          * */
 
-        private Boolean removeTimeSlot(TimeSlot timeslot)
+        private void removeTimeSlot(TimeSlot timeslot)
         {
-            bool successful = true;
             this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeslot.timeSlotID + ";";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = null;
@@ -422,13 +380,11 @@ namespace TDG
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                successful = false;
             }
             finally
             {
                 reader.Close();
             }
-            return successful;
         }
 
         /**
