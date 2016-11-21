@@ -35,7 +35,7 @@ namespace LogicLayer
         {
             Reservation res = new Reservation();
             List<int> hours = new List<int>();
-            for (int i = firstHour; i < lastHour; i++)
+            for (int i = firstHour; i <= lastHour; i++)
                 hours.Add(i);
 
             foreach (Reservation reservation in directoryOfReservations.reservationList)
@@ -45,7 +45,7 @@ namespace LogicLayer
                 {
                     foreach (TimeSlot timeSlot in reservation.timeSlots)
                     {
-                        for (int i = firstHour; i < lastHour; i++)
+                        for (int i = firstHour; i <=lastHour; i++)
                         {
                             if (timeSlot.hour == i)
                             {
