@@ -31,16 +31,19 @@ $(".prev").click(function () {
     $(".upper-header li .date .day").html(date.getDate());
     $(".upper-header li .date .month").html(months[date.getMonth()]);
     $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
-    updateCalendarDisplay();
+    setDate();
+    $(".getNext").click();
     
 });
 
-function updateCalendarDisplay() {
-    $("input[name='dayOfMonth']").attr("value", (date.getDate()+1));
-    $("input[name='monthOfyear']").attr("value", (date.getMonth() + 1));
-    $("input[name='CalendarYear']").attr("value", (date.getYear()));
-    $(".getNext").click();
+function setCalendarDate() {
+    $("input[name='day']").attr("value", (date.getDate()));
+    $("input[name='month']").attr("value", (date.getMonth() + 1));
+    $("input[name='year']").attr("value", (date.getYear()));
+    
 }
+
+
 
 function rendercalendar(){
 }
@@ -60,9 +63,7 @@ function timeslotClicked(event) {
     var thisElement = event;
     var room = $(event).data("room");
     $("input[name='room']").attr("value", room);
-    $("input[name='day']").attr("value", date.getDate());
-    $("input[name='month']").attr("value", date.getMonth()+1);
-    $("input[name='year']").attr("value", date.getFullYear());
+    setCalendarDate();
 
     var timeslot = $(event).data("timeslot");
     firstAndLastTimeslot[0] = timeslot;
@@ -255,7 +256,8 @@ function buildNewReservationItem(reservationId, description, initialTimeSlot, fi
                 '    <li class="timeslot">From <span class="initialTimeslot">' + initialTimeSlot + '</span> to <span class="finalTimeslot">' + (finalTimeslot +1) + '</span></li>' +
                 '</u>' +
              '</div>' +
-             '<div data-reservationId ="' + reservationId + '"    class="cancelReservation"><span class="fa fa-pencil fa-lg"></span></div>' +
+             '<div data-reservationId ="' + reservationId + '"    class="cancelReservation"><span class="fa fa-times fa-lg"></span></div>'+
+             '<div data-reservationId ="' + reservationId + '"    class="modifyReservation"><span class="fa fa-pencil fa-lg"></span></div>' +
         '</div>';
 
     $(".reservations .reservation-content ").append(reservationItem);

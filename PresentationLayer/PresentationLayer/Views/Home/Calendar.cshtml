@@ -17,15 +17,15 @@
         <li>Week</li>
     </ul>
     <ul class="room">
-        @*@for (var room = 1; room <= 5; room++)
+        @for (var room = 1; room <= 5; room++)
         {
             <li>Room @room</li>
-        }*@
+        }
     </ul>
 </div>
 
 <ul class="timeslots">
-    @*@for(var room = 1; room <= 5; room++) {
+    @for(var room = 1; room <= 5; room++) {
         <li>
             
             <ul>
@@ -36,9 +36,9 @@
             </ul>
         </li>
   
-    }*@
+    }
 </ul>
-@using (Ajax.BeginForm("acceptTimeSlots", "Home", new AjaxOptions {
+@using (Ajax.BeginForm("makeReservation", "Home", new AjaxOptions {
     HttpMethod = "Post",
     UpdateTargetId = "result"
 }))

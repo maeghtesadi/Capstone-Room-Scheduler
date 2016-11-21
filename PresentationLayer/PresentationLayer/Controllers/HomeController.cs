@@ -20,10 +20,24 @@ namespace CapstoneRoomScheduler.Controllers
         }
         [LoggedIn]
         [HttpPost]
-        public void acceptTimeSlots(int room,string description,int day,int month,int year,int firstTimeSlot, int lastTimeSlot)
+        public void makeReservation(int room,string description,int day,int month,int year,int firstTimeSlot, int lastTimeSlot)
         {
        
             ReservationConsole.getInstance().makeReservation(Int32.Parse(User.Identity.GetUserId()),room,description,new DateTime(year,month,day),firstTimeSlot,lastTimeSlot);
+            updateCalendar(year, month, day);
+        }
+        [HttpPost]
+        public void modifyReservation(string resid,int day,int month, int year)
+        {
+
+            ReservationConsole.getInstance();
+            updateCalendar(year, month, day);
+        }
+        [HttpPost]
+        public void cancelReservation(string resid,int day, int month, int year)
+        {
+
+            ReservationConsole.getInstance();
             updateCalendar(year, month, day);
         }
 

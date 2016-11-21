@@ -83,10 +83,28 @@
 
 @using (Ajax.BeginForm("updateCalendar", "home", new AjaxOptions { HttpMethod = "Post", OnComplete = "OnSuccess" }))
 {
-	<input type="hidden" name="dayOfMonth" value="0" />
-	<input type="hidden" name="monthOfyear" value="0" />
-	<input type="hidden" name="CalendarYear" value="0" />
+	<input type="hidden" name="day" value="0" />
+	<input type="hidden" name="year" value="0" />
+	<input type="hidden" name="year" value="0" />
 	<button class="hiddenButton getNext " type="submit">show reservations</button>
+
+}
+@using (Ajax.BeginForm("cancelReservation", "home", new AjaxOptions { HttpMethod = "Post", OnComplete = "OnSuccess" }))
+{
+    <input type="hidden" name="day" value="0" />
+    <input type="hidden" name="year" value="0" />
+    <input type="hidden" name="year" value="0" />
+    <input type="hidden" name="resId" value="0" />
+    <button class="hiddenButton getNext " type="submit">show reservations</button>
+
+}
+@using (Ajax.BeginForm("modifyReservation", "home", new AjaxOptions { HttpMethod = "Post", OnComplete = "OnSuccess" }))
+{
+    <input type="hidden" name="day" value="0" />
+    <input type="hidden" name="year" value="0" />
+    <input type="hidden" name="year" value="0" />
+    <input type="hidden" name="resid" value="0" />
+    <button class="hiddenButton getNext " type="submit">show reservations</button>
 
 }
     <script src="~/PresentationLayer/Scripts/calendar.js"></script>

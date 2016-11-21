@@ -213,7 +213,7 @@ line-height:25px;
 }
 
 .reservation-item .reservationDetails {
-width:65%;
+width:53%;
 background-color:white;
 float:left;
 padding-top:4px;
@@ -243,7 +243,22 @@ padding-left:4px;
 color:#3fa9e2;
 font-size:15px;
  }
+ .reservation-item .modifyReservation {
+ width:12%;
+border-left:solid 2px #eeeeee;
+height:56px;
+float:right;
+text-align:center;
+padding-top:14px;
+padding-left:4px;
+color:#3fa9e2;
+font-size:15px;
+ }
   .reservation-item .cancelReservation:hover {
+background-color:#f7f7f7;
+transition: background-color 0.5s ease;
+ }
+   .reservation-item .modifyReservation:hover {
 background-color:#f7f7f7;
 transition: background-color 0.5s ease;
  }
