@@ -184,6 +184,8 @@ namespace TDG
                     reader.Close();
                 }
             }
+
+            closeConnection();
         }
 
         private void createWaitsFor(int timeSlotID, int userID, String currentDateTime)
