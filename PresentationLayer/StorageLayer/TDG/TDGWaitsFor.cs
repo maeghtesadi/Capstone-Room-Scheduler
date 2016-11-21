@@ -246,7 +246,7 @@ namespace TDG
                     }
                 }
             }
-
+            closeConnection();
             return successful;
         }
 
