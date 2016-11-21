@@ -179,7 +179,7 @@ namespace LogicLayer
             {
                 int hour = resToModify.timeSlots[i].hour;
                 bool foundSlot = false;
-                for (int j = firstHour; j < lastHour; j++)
+                for (int j = firstHour; j <= lastHour; j++)
                 {
                     if (hour == j)
                         foundSlot = true;
@@ -211,7 +211,7 @@ namespace LogicLayer
 
             //Put on waitList if the new timeSlots are already taken, else create new ones
             List<int> hours = new List<int>();
-            for (int i = firstHour; i < lastHour; i++)
+            for (int i = firstHour; i <= lastHour; i++)
                 hours.Add(i);
 
             foreach (Reservation reservation in directoryOfReservations.reservationList)
@@ -220,7 +220,7 @@ namespace LogicLayer
                 {
                     foreach (TimeSlot timeSlot in reservation.timeSlots)
                     {
-                        for (int i = firstHour; i < lastHour; i++)
+                        for (int i = firstHour; i <= lastHour; i++)
                         {
                             if (timeSlot.hour == i)
                             {
