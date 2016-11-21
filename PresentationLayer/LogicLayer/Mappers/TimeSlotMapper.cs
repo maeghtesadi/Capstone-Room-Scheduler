@@ -78,6 +78,23 @@ namespace Mappers
         }
 
         /**
+         * Retrieve the total number of hours associated with given reservation IDs
+         */
+
+        public int findHoursByReservationID(List <int> IDlist)
+        {
+            int hours = 0;
+            hours = TimeSlotIdentityMap.getInstance().findTotalHours(IDlist);
+
+            if (hours == 0)
+            {
+                hours = tdgTimeSlot.getTotalHoursforID(IDlist);
+            }
+
+            return hours;
+        }
+
+        /**
          * Retrieve a TimeSlot given its TimeSlot ID.
          */
 
