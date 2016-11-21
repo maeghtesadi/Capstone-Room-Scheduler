@@ -38,7 +38,7 @@ namespace CapstoneRoomScheduler.Controllers
             hubContext.Clients.All.populateReservations(JsonListofReservations); //returns a list of reservations in the js function
         }
 
-
+        //Techiincally asp/signarl autmatically converts to json when you pass an object to javascript but here we just convert it into an easy to digest object
         public List<object> convertToJsonObject(List<Reservation> reservationList)
         {
             

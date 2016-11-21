@@ -238,3 +238,11 @@ $(".showReservations").click(function () {
     $(".hiddenReservationButton").click();
 });
 
+
+serverSession.client.notLoggedIn = function () {
+
+
+
+
+
+};
