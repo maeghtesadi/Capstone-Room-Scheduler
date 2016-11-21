@@ -67,7 +67,7 @@ namespace CapstoneRoomScheduler.Controllers
             {
                 firstTimeSlot = reservationList[i].timeSlots[0].hour;
                 
-                lastTimeSlot = reservationList[i].timeSlots[reservationList[i].timeSlots.Count()-1].hour+1;
+                lastTimeSlot = reservationList[i].timeSlots[reservationList[i].timeSlots.Count()-1].hour;
                 list.Add(new
                 {
                     initialTimeslot = firstTimeSlot,
