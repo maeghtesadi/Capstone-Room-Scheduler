@@ -141,6 +141,27 @@ namespace TDG
 
         }
 
+        public int getTotalHoursforID(List<int> IDlist)
+        {
+            int hours = 0;
+            //Open connection
+            openConnection();
+
+            foreach (int reservationID in IDlist)
+            {
+                //Write and execute the query
+                this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[1] + " = " + reservationID;
+                this.cmd.Connection = this.conn;
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    hours += Convert.ToInt32(reader[2]);
+                }
+            }
+            return hours;
+        }
+
         /**
          * Returns a record for the timeslot given its timeslotID
          */
