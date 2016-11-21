@@ -323,22 +323,24 @@ $(".reservation-content").on('click',".cancelReservation",function(){
     $(".confirm").toggle(0);
     $(".confirm").css('opacity', '0');
     $(".confirm").position({
-        my: "left top",
-        at: "right+3 top+3",
-        of: $(".cancelReservation"),
-        
+        my: "center+120 top ",
+        at: "bottom",
+        of: thisElement,
+
     });
     $(".confirm").toggle(0);
     $(".confirm").css('opacity', '1');
     $(".confirm").toggle(300);
-    $(".confirm").on('click', function () {
+    $(".confirm-yes").on('click', function () {
         setCalendarDate();
         $("input[name='resid']").attr("value", thisElement.data("reservationid"));
         $(".cancelReservationAjax").click();
         $(".confirm").off('click');
         $(".reservation-content").click();
     });
-    
+    $(".confirm-no").on('click', function () {
+        $(".confirm").toggle('blind',300);
+    });
     
     
 

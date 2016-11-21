@@ -265,24 +265,34 @@ transition: background-color 0.5s ease;
 
  .confirm
  {
- font-size:20px;
- position:absolute;
- height:48px;
-background-color: #00cc56;
+ font-size:15px;
+ position:fixed;
 color: white;
- padding:5px 3px;
+ padding:0px 0px;
  display:none;
- border-radius:0px 6px 5px 0px;
-
+ text-align:center;
+ width:270px;
  }
-  .confirm:hover
+ .confirm-yes{
+ background-color: #00cc56;
+  float:left;
+ width:50%;
+  border-radius:0px 0px 0px 6px;
+ }
+ .confirm-no{
+ float:right;
+ width:50%;
+ background-color: red;
+  border-radius:0px 0px 6px 0px;
+ }
+  /*.confirm:hover
  {
 
  background-color:green;
  transition: background-color 0.5s ease;
 
 
- }
+ }*/
 
 /*-----------------------------*/
 /*--------Footer---------------*/

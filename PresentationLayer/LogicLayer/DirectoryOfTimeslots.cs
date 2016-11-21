@@ -34,8 +34,11 @@ namespace LogicLayer
             TimeSlotMapper.getInstance().delete(id);
 
             foreach (TimeSlot timeSlot in timeSlotList)
-                if (timeSlot.timeSlotID == id)
+                if (timeSlot.timeSlotID == id) {
                     timeSlotList.Remove(timeSlot);
+                    break;
+                }
+                    
         }
 
         public List<int> getAllUsers(int timeSlotID)
