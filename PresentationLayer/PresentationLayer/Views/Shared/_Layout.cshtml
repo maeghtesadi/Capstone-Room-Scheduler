@@ -77,7 +77,16 @@
     </div>
 @using (Ajax.BeginForm("getReservations", "home", new AjaxOptions{ HttpMethod = "Post",OnComplete = "OnSuccess"})) { 
 
-<button class="hiddenReservationButton" type="submit">show reservations</button>
+<button class="hiddenButton reservationButton " type="submit">show reservations</button>
+
+}
+
+@using (Ajax.BeginForm("updateCalendar", "home", new AjaxOptions { HttpMethod = "Post", OnComplete = "OnSuccess" }))
+{
+	<input type="hidden" name="dayOfMonth" value="0" />
+	<input type="hidden" name="monthOfyear" value="0" />
+	<input type="hidden" name="CalendarYear" value="0" />
+	<button class="hiddenButton getNext " type="submit">show reservations</button>
 
 }
     <script src="~/PresentationLayer/Scripts/calendar.js"></script>

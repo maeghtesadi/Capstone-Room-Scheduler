@@ -24,10 +24,13 @@ namespace CapstoneRoomScheduler.Controllers
         {
        
             ReservationConsole.getInstance().makeReservation(Int32.Parse(User.Identity.GetUserId()),room,description,new DateTime(year,month,day),firstTimeSlot,lastTimeSlot);
-            updateCalendar(new DateTime(year, month, day));
+            updateCalendar(year, month, day);
         }
-        public void updateCalendar(DateTime date)
+
+        [HttpPost]
+        public void updateCalendar(int year, int month, int day)
         {
+           DateTime date = new DateTime(year, month, day);
            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
            hubContext.Clients.All.updateCalendar(convertToJsonObject(ReservationConsole.getInstance().getAllReservations().findByDate(date)));
         }
