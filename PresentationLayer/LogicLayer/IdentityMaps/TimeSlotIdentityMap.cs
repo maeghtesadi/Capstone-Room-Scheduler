@@ -62,7 +62,7 @@ namespace CapstoneRoomScheduler.LogicLayer.IdentityMaps
             {
                 foreach (int reservationID in IDlist)
                 {
-                    if (pair.Value.reservationID.Equals(reservationID) {
+                    if (pair.Value.reservationID.Equals(reservationID)) {
                         hours += pair.Value.hour;
                     }
                 }
