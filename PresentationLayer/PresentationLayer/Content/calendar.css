@@ -218,6 +218,6 @@ background-color:#3f4350
 	background-color :#3b98ca;
 }
 
-.hiddenReservationButton {
-	style="display: none;"
+.hiddenButton {
+	display: none;
 }

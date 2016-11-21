@@ -14,14 +14,14 @@ var colorPallette = [
 //header calendar 
 var date = new Date();
 var months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
-var days = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]
+var days = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
 $(".next").click(function () {
     var day = parseInt($(".upper-header li .date .day").html());
     date.setDate(day + 1);
     $(".upper-header li .date .day").html(date.getDate());
     $(".upper-header li .date .month").html(months[date.getMonth()]);
     $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
-
+    updateCalendarDisplay();
 });
 
 $(".prev").click(function () {
@@ -30,8 +30,19 @@ $(".prev").click(function () {
     $(".upper-header li .date .day").html(date.getDate());
     $(".upper-header li .date .month").html(months[date.getMonth()]);
     $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
-    //
+    updateCalendarDisplay();
+    
 });
+
+function updateCalendarDisplay() {
+    $("input[name='dayOfMonth']").attr("value", (date.getDate()+1));
+    $("input[name='monthOfyear']").attr("value", (date.getMonth() + 1));
+    $("input[name='CalendarYear']").attr("value", (date.getYear()));
+    $(".getNext").click();
+}
+
+function rendercalendar(){
+}
 
 //Function is run when any of the timeslot li is clicked
 function timeslotClicked(event) {
@@ -108,8 +119,6 @@ function timeslotClicked(event) {
                         }
                     }
                 }
-                
-                
                     //if timeslot selected is between the range that was already selected
                 else {
                     for (var i = parseInt(timeslot2) + 1; i <= parseInt(firstAndLastTimeslot[1]) ; i++) {
@@ -135,6 +144,7 @@ function timeslotClicked(event) {
 
 
 }
+
 $(".timeslots li ul li").on("click.firstFunction", function () {
     timeslotClicked(this);
 });
@@ -221,7 +231,7 @@ function buildNewReservationItem(reservationId, description, initialTimeSlot, fi
              '<div class="reservationDetails">'+
                 '<ul>'+
                 '    <li class="description">'+ description +'</li>'+
-                '    <li class="timeslot">From <span class="initialTimeslot">' + initialTimeSlot + '</span> to <span class="finalTimeslot">' + finalTimeslot + '</span></li>' +
+                '    <li class="timeslot">From <span class="initialTimeslot">' + initialTimeSlot + '</span> to <span class="finalTimeslot">' + (finalTimeslot +1) + '</span></li>' +
                 '</u>' +
              '</div>' +
              '<div data-reservationId ="' + reservationId + '"    class="cancelReservation"><span class="fa fa-pencil fa-lg"></span></div>' +
@@ -235,14 +245,10 @@ function buildNewReservationItem(reservationId, description, initialTimeSlot, fi
 $(".showReservations").click(function () {
     $(".reservations").toggle(200);
     $(".showReservations").toggleClass('active');
-    $(".hiddenReservationButton").click();
+    $(".reservationButton").click();
 });
 
 
 serverSession.client.notLoggedIn = function () {
-
-
-
-
 
 };
