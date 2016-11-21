@@ -11,6 +11,7 @@ var colorPallette = [
     ['#7f8c8d', '#95a5a6']
 
 ];
+$(".reservation-popup-test").draggable();
 //header calendar 
 var date = new Date();
 var months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];

@@ -60,26 +60,29 @@ height:50px;
 }
 
 .login-popup{
-    height:115px;
-    background-color:#3fa9e2;
+    height:50px;
+    background-color:#3f4350;
     position:fixed;
-    width:230px;
+    width:500px;
     right:0px;
     top:50px;
     z-index:-100;
     display:none;
+   box-shadow: inset 3px -3px 0 rgb(197, 197, 197);
+    
+    
 }
 .login-popup ul{
-   text-align:center;
+   display:inline-flex;
     padding-left:20px;
     padding-top:5px;
     padding-right:20px;
     margin:0px; 
 }
 .login-popup ul li{
-   display:inline;
+
    color:white;
-   margin-bottom:10px;
+   margin-left:10px;
 }
 .userId{
 font-size:18px;
@@ -87,12 +90,14 @@ font-size:18px;
 }
 #loginButton
 {
-margin-top:10px;
-background-color:#3f4350;
+margin-top:5px;
+background-color:#848484;
 font-size:12px;
-padding: 2px 67px;
-width:inherit;
-border-radius:0px;
+padding: 2px 50px;
+width:20px;
+border-radius:0px;  
+color:black;
+text-align:center;
 }
 .login-popup .form-control::-webkit-input-placeholder { color: white; }
 .login-popup .form-control:-moz-placeholder { color: white; }
