@@ -46,7 +46,7 @@ $(".prev").click(function () {
 function setCalendarDate() {
     $("input[name='day']").attr("value", (date.getDate()));
     $("input[name='month']").attr("value", (date.getMonth() + 1));
-    $("input[name='year']").attr("value", (date.getYear()));
+    $("input[name='year']").attr("value", (date.getFullYear()));
     
 }
 
@@ -247,7 +247,7 @@ serverSession.client.populateReservations = function (reservationList) {
     $(".reservations .reservation-content ").empty();
     for(var i = 0; i<reservationList.length ; i++)
     {
-        var resID = reservationList[i].reservationID;
+        var resID = reservationList[i].reservationId;
         var des = reservationList[i].description;
         var firstTime = reservationList[i].initialTimeslot;
         var secondTime = reservationList[i].finalTimeslot;
@@ -304,18 +304,28 @@ function remakeCalendar() {
 }
 
 //Cancel reservations
-$(".reservation-content").on('click',"cancelReservation",function(){
+$(".reservation-content").on('click',".cancelReservation",function(){
+    var thisElement=$(this);
     $(".confirm").toggle(0);
     $(".confirm").css('opacity', '0');
     $(".confirm").position({
         my: "left top",
-        at: "right top",
+        at: "right+3 top+3",
         of: $(".cancelReservation"),
         
     });
     $(".confirm").toggle(0);
     $(".confirm").css('opacity', '1');
     $(".confirm").toggle(300);
+    $(".confirm").on('click', function () {
+        setCalendarDate();
+        $("input[name='resid']").attr("value", thisElement.data("reservationid"));
+        $(".cancelReservationAjax").click();
+        $(".confirm").off('click');
+        $(".reservation-content").click();
+    });
+    
+    
     
 
 });
