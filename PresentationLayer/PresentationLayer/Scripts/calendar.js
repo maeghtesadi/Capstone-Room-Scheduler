@@ -178,6 +178,7 @@ var serverSession = $.connection.calendarHub;
 //Jquery to update the timeslots
 
 serverSession.client.updateCalendar = function (reservationList) {
+    remakeCalendar();
     for (j = 0; j < reservationList.length; j++) {
         var color = colorPallette[Math.floor(Math.random() * colorPallette.length)];
         for (var i = reservationList[j].initialTimeslot; i <= reservationList[j].finalTimeslot; i++) {
@@ -291,3 +292,4 @@ function remakeCalendar() {
     
 
 }
+
