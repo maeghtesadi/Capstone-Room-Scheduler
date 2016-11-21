@@ -146,6 +146,7 @@ namespace TDG
 
         }
 
+
         /**
          * Returns a record for the reservation given its reservationID
          * */
@@ -192,6 +193,38 @@ namespace TDG
         }
 
 
+        public List<int> findById(int userID, DateTime date)
+        {
+            List<int> IDlist = new List<int>();
+            //Open connection
+            openConnection();
+
+            //Write and execute the query
+            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE" + FIELDS[1] + "=" + userID + ";";
+            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE" + FIELDS[4] + "=" + date + ";";
+            this.cmd.Connection = this.conn;
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            if (!reader.HasRows)
+                {
+                    return null;
+                }
+
+            //For each reader, add it to the dictionary
+            while (reader.Read())
+            {
+                Object[] attributes = new Object[FIELDS.Length];
+                attributes[4] = reader[4];
+                IDlist.Add(Convert.ToInt32(reader[4]));
+            }
+
+            reader.Close();
+            //close connection
+            closeConnection();
+
+            //Format and return the result
+            return IDlist;
+        }
         /**
          * Select all data from the table
          * Returns it as a Dictionary <int, Object[]>
