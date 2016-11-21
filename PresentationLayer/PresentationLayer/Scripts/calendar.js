@@ -275,3 +275,17 @@ function notLoggedIn () {
     $("#failedMessage").html("Sign in to continue")
 
 };
+
+
+function remakeCalendar() {
+
+    var reservedTimeslots = $(".timeslots li[class]");
+    for (var i = 0; i < reservedTimeslots.length ; i++) {
+        $(reservedTimeslots[i]).html($(reservedTimeslots[i]).data('timeslot') + ':00')
+    }
+    $(".timeslots li").removeClass("reserved reserved-header active");
+    $(".timeslots li").removeAttr("style");
+
+    
+
+}
