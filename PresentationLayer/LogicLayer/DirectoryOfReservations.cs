@@ -87,7 +87,7 @@ namespace LogicLayer
             List<Reservation> listByuserId = new List<Reservation>();
             foreach (Reservation reservation in reservationList)
             {
-                if (reservation.reservationID == userID)
+                if (reservation.userID == userID)
                 {
                     listByuserId.Add(reservation);
                 }

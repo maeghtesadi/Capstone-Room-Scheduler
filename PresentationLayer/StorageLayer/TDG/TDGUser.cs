@@ -25,7 +25,7 @@ namespace TDG
         private static TDGUser instance = new TDGUser();
 
         // Field names of the table
-        private static readonly String[] FIELDS = { "userID", "username", "password", "name", "numOfReservations" };
+        private static readonly String[] FIELDS = { "userID", "username", "password", "name" };
         
         // Database server (localhost)
         private const String DATABASE_SERVER = "127.0.0.1";
@@ -101,7 +101,7 @@ namespace TDG
         private void updateUser(User user) {
            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " \n" +
                    "SET " + FIELDS[1] + "='" + user.username + "'," + FIELDS[2] + "='" + user.password + "'," +
-                   FIELDS[3] + "='" + user.name + "'," + FIELDS[4] + "=" + user.numOfReservations + ";\n" +
+                   FIELDS[3] + "='" + user.name + ";\n" +
                    " WHERE " + FIELDS[0] + "=" + user.userID + ";";
            this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -135,7 +135,7 @@ namespace TDG
                 record[1] = reader[1];
                 record[2] = reader[2];
                 record[3] = reader[3];
-                record[4] = reader[4];
+               
             }
             // Close connection
             reader.Close();
@@ -145,42 +145,7 @@ namespace TDG
             return record;
         }
 
-        /**
-        * Returns a record for the user given its userID
-        */
-        public Object[] getByUsername(string username)
-        {
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " \n" +
-                    " WHERE " + FIELDS[1] + "='" + username + "';";
-            this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
-
-            // If no record is found, return null
-            if (!reader.HasRows)
-            {
-                return null;
-            }
-            // There is only one result since user names are unique
-            Object[] record = new Object[FIELDS.Length];
-            while (reader.Read())
-            {
-                if (reader[0].GetType() == typeof(System.DBNull))
-                {
-                    return null;
-                }
-                record[0] = reader[0];
-                record[1] = reader[1];
-                record[2] = reader[2];
-                record[3] = reader[3];
-                record[4] = reader[4];
-            }
-            // Close connection
-            reader.Close();
-            closeConnection();
-
-            // Format and return the result
-            return record;
-        }
+      
 
         /**
          * Select all data from the table
@@ -217,7 +182,6 @@ namespace TDG
                 attributes[1] = reader[1]; // userName
                 attributes[2] = reader[2]; // password
                 attributes[3] = reader[3]; // name
-                attributes[4] = reader[4]; // numOfReservations
                 records.Add((int)reader[0], attributes);
             }
 

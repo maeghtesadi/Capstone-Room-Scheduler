@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using CapstoneRoomScheduler.LogicLayer.CustomUserManager;
+using CapstoneRoomScheduler.LogicLayer.AuthorizeManager;
+using Microsoft.AspNet.Identity;
 using LogicLayer;
 using Microsoft.AspNet.SignalR;
 using PresentationLayer.Hubs;
@@ -19,30 +20,46 @@ namespace CapstoneRoomScheduler.Controllers
         }
         [LoggedIn]
         [HttpPost]
-        public void acceptTimeSlots(int room,string description,int day,int month,int year,int firstTimeSlot, int lastTimeSlot)
+        public void makeReservation(int room,string description,int day,int month,int year,int firstTimeSlot, int lastTimeSlot)
         {
        
-            ReservationConsole.getInstance().makeReservation(1,room,description,new DateTime(year,month,day),firstTimeSlot,lastTimeSlot);
-            updateCalendar(new DateTime(year, month, day));
+            ReservationConsole.getInstance().makeReservation(Int32.Parse(User.Identity.GetUserId()),room,description,new DateTime(year,month,day),firstTimeSlot,lastTimeSlot);
+            updateCalendar(year, month, day);
         }
-        public void updateCalendar(DateTime date)
+        [HttpPost]
+        public void modifyReservation(string resid,int day,int month, int year)
         {
+
+            ReservationConsole.getInstance();
+            updateCalendar(year, month, day);
+        }
+        [HttpPost]
+        public void cancelReservation(string resid,int day, int month, int year)
+        {
+
+            ReservationConsole.getInstance();
+            updateCalendar(year, month, day);
+        }
+
+        [HttpPost]
+        public void updateCalendar(int year, int month, int day)
+        {
+           DateTime date = new DateTime(year, month, day);
            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
            hubContext.Clients.All.updateCalendar(convertToJsonObject(ReservationConsole.getInstance().getAllReservations().findByDate(date)));
         }
+        [LoggedIn]
         [HttpPost]
-        public void getAllUserReservations() {
+        public void getReservations() {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-            hubContext.Clients.All.javascriptFUnction();
-
+            var JsonListofReservations = convertToJsonObject(ReservationConsole.getInstance().getAllReservations().findByUser(Int32.Parse(User.Identity.GetUserId())));
+            hubContext.Clients.All.populateReservations(JsonListofReservations); //returns a list of reservations in the js function
         }
 
-
-
-
-
+        //Techiincally asp/signarl autmatically converts to json when you pass an object to javascript but here we just convert it into an easy to digest object
         public List<object> convertToJsonObject(List<Reservation> reservationList)
         {
+            
             int firstTimeSlot;
             int lastTimeSlot;
             List<object> list = new List<object>();
@@ -56,8 +73,10 @@ namespace CapstoneRoomScheduler.Controllers
                     initialTimeslot = firstTimeSlot,
                     finalTimeslot = lastTimeSlot,
                     roomId = reservationList[i].roomID,
-                    courseName = reservationList[i].description,
-                    userName = User.Identity.Name
+                    description = reservationList[i].description,
+                    userName =  ReservationConsole.getInstance().getUserCatalog().registeredUsers.First(x => x.userID == reservationList[i].userID).name,
+                    reservationId = reservationList[i].reservationID
+
                 });
 
             }
