@@ -23,7 +23,7 @@ namespace CapstoneRoomScheduler.Controllers
         public void acceptTimeSlots(int room,string description,int day,int month,int year,int firstTimeSlot, int lastTimeSlot)
         {
        
-            ReservationConsole.getInstance().makeReservation(1,room,description,new DateTime(year,month,day),firstTimeSlot,lastTimeSlot);
+            ReservationConsole.getInstance().makeReservation(Int32.Parse(User.Identity.GetUserId()),room,description,new DateTime(year,month,day),firstTimeSlot,lastTimeSlot);
             updateCalendar(new DateTime(year, month, day));
         }
         public void updateCalendar(DateTime date)
@@ -32,15 +32,16 @@ namespace CapstoneRoomScheduler.Controllers
            hubContext.Clients.All.updateCalendar(convertToJsonObject(ReservationConsole.getInstance().getAllReservations().findByDate(date)));
         }
         [HttpPost]
-        public void getAllUserReservations() {
+        public void getReservations() {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-            var JsonListofReservations = convertToJsonObject(ReservationConsole.getInstance().getAllReservations().findByUser(User.Identity.getUserId()));
-            hubContext.Clients.All.getAllReservationsForOneUser(JsonListofReservations); //returns a list of reservations in the js function
+            var JsonListofReservations = convertToJsonObject(ReservationConsole.getInstance().getAllReservations().findByUser(Int32.Parse(User.Identity.GetUserId())));
+            hubContext.Clients.All.populateReservations(JsonListofReservations); //returns a list of reservations in the js function
         }
 
 
         public List<object> convertToJsonObject(List<Reservation> reservationList)
         {
+            
             int firstTimeSlot;
             int lastTimeSlot;
             List<object> list = new List<object>();
@@ -55,7 +56,9 @@ namespace CapstoneRoomScheduler.Controllers
                     finalTimeslot = lastTimeSlot,
                     roomId = reservationList[i].roomID,
                     courseName = reservationList[i].description,
-                    userName = User.Identity.Name
+                    userName =  ReservationConsole.getInstance().getUserCatalog().registeredUsers.First(x => x.userID == reservationList[i].userID).name,
+                    reservationId = reservationList[i].reservationID
+
                 });
 
             }

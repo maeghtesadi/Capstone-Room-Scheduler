@@ -74,9 +74,9 @@
        
 
     </div>
-@using (Ajax.BeginForm("getAllUserReservations", "home", new AjaxOptions{ HttpMethod = "Post",OnComplete = "OnSuccess"})) { 
-<button> tyoe=submit</button>
-<button class="hiddenReservationButton" type="button">show reservations</button>
+@using (Ajax.BeginForm("getReservations", "home", new AjaxOptions{ HttpMethod = "Post",OnComplete = "OnSuccess"})) { 
+
+<button class="hiddenReservationButton" type="submit">show reservations</button>
 
 }
     <script src="~/PresentationLayer/Scripts/calendar.js"></script>
