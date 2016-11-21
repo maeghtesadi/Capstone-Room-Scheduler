@@ -17,6 +17,8 @@ $(window).scroll(function () {
 $(".reservation-popup-test").draggable();
 //header calendar 
 var date = new Date();
+setCalendarDate();
+$(".getNext").click();
 var months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 var days = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
 
@@ -27,6 +29,7 @@ $(".next").click(function () {
     $(".upper-header li .date .month").html(months[date.getMonth()]);
     $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
     setCalendarDate();
+    $(".getNext").click();
 });
 
 $(".prev").click(function () {
@@ -36,16 +39,18 @@ $(".prev").click(function () {
     $(".upper-header li .date .month").html(months[date.getMonth()]);
     $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
     setCalendarDate();
+    $(".getNext").click();
+    
 });
 
 function setCalendarDate() {
     $("input[name='day']").attr("value", (date.getDate()));
     $("input[name='month']").attr("value", (date.getMonth() + 1));
     $("input[name='year']").attr("value", (date.getYear()));
-    $(".getNext").click();
+    
 }
 
-$(document).ready(setCalendarDate);
+
 
 function rendercalendar(){
 }
@@ -198,12 +203,9 @@ serverSession.client.updateCalendar = function (reservationList) {
         $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time + "</br>" + description + "</br>");
         
     }
-    
-};
-
-$("#submitButton").click(function () {
     $(".glyphicon-remove").click();
-})
+
+};
 
 //Login popup
 $(".dropdownLogin").click(function () {
