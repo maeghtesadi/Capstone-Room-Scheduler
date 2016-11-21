@@ -170,9 +170,9 @@ serverSession.client.updateCalendar = function (reservationList) {
         $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").css('background-color', color[0]);
         //Second timeslot classtoggle=reservedd;
         var time = "<u>Time</u>: From " + reservationList[j].initialTimeslot + " to " + (parseInt(reservationList[j].finalTimeslot) + 1);
-        var courseName = "<u>Course Name</u>: " + reservationList[j].courseName;
+        var description = "<u>Description</u>: " + reservationList[j].description;
        // var waitingList = "<u>Waiting List:</u>:";
-        $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time + "</br>" + courseName + "</br>");
+        $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time + "</br>" + description + "</br>");
         
     }
     $(".glyphicon-remove").click();
@@ -200,7 +200,18 @@ function OnSuccess(data) {
     }
 
 }
-
+serverSession.client.populateReservations = function (reservationList) {
+    $(".reservations .reservation-content ").empty();
+    for(var i = 0; i<reservationList.length ; i++)
+    {
+        var resID = reservationList[i].reservationID;
+        var des = reservationList[i].description;
+        var firstTime = reservationList[i].initialTimeslot;
+        var secondTime = reservationList[i].finalTimeslot;
+        var roomID = reservationList[i].roomId;
+        buildNewReservationItem(resID, des, firstTime, secondTime, roomID)
+    }
+}
 
 function buildNewReservationItem(reservationId, description, initialTimeSlot, finalTimeslot , roomID ) //reservtion id goes in .$(".cancelReservation).data(reservationId)
 {
@@ -219,22 +230,19 @@ function buildNewReservationItem(reservationId, description, initialTimeSlot, fi
     $(".reservations .reservation-content ").append(reservationItem);
 }
 
-function getrReservationsFromDB() {
-
-
-}
 
 
 $(".showReservations").click(function () {
     $(".reservations").toggle(200);
     $(".showReservations").toggleClass('active');
+    $(".hiddenReservationButton").click();
 });
 
-serverSession.client.notLoggedIn(function () {
+
+serverSession.client.notLoggedIn = function () {
 
 
 
 
 
-
-});
+};
