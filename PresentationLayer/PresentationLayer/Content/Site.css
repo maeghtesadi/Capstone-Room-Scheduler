@@ -133,7 +133,7 @@ text-align:center;
 /*-----------------------------*/
 .reservations{
 width:340px;
-height:1080px;
+height:calc(100% - 90px);
 background-color:white;
 position:fixed;
 float:right;
@@ -263,6 +263,18 @@ background-color:#f7f7f7;
 transition: background-color 0.5s ease;
  }
 
+ .confirm
+ {
+ font-size:20px;
+ position:absolute;
+ height:48px;
+background-color: #27ae60;
+color: white;
+ padding:8px 3px;
+ background-color:green;
+ display:none;
+ }
+
 /*-----------------------------*/
 /*--------Footer---------------*/
 /*-----------------------------*/
@@ -299,3 +311,7 @@ background-color:white;
   transition: background-color 0.5s ease;
   transition:box-shadow 0.5s ease;
 }
+
+
+
+

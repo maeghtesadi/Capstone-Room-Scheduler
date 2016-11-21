@@ -300,3 +300,19 @@ function remakeCalendar() {
 
 }
 
+//Cancel reservations
+$(".reservation-content").on('click',"cancelReservation",function(){
+    $(".confirm").toggle(0);
+    $(".confirm").css('opacity', '0');
+    $(".confirm").position({
+        my: "left top",
+        at: "right top",
+        of: $(".cancelReservation"),
+        
+    });
+    $(".confirm").toggle(0);
+    $(".confirm").css('opacity', '1');
+    $(".confirm").toggle(300);
+    
+
+});
