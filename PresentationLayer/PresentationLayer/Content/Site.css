@@ -100,7 +100,7 @@ font-size:12px;
 padding: 2px 50px;
 width:20px;
 border-radius:0px;  
-color:black;
+color:white;
 text-align:center;
 }
 .login-popup .form-control::-webkit-input-placeholder { color: white; }
