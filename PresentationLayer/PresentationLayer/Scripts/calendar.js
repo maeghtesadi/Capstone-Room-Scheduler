@@ -170,9 +170,9 @@ serverSession.client.updateCalendar = function (reservationList) {
         $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").css('background-color', color[0]);
         //Second timeslot classtoggle=reservedd;
         var time = "<u>Time</u>: From " + reservationList[j].initialTimeslot + " to " + (parseInt(reservationList[j].finalTimeslot) + 1);
-        var courseName = "<u>Course Name</u>: " + reservationList[j].courseName;
+        var description = "<u>Description</u>: " + reservationList[j].description;
        // var waitingList = "<u>Waiting List:</u>:";
-        $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time + "</br>" + courseName + "</br>");
+        $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time + "</br>" + description + "</br>");
         
     }
     $(".glyphicon-remove").click();
