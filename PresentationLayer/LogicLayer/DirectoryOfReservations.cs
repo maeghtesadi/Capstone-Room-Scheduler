@@ -94,16 +94,6 @@ namespace LogicLayer
             }
             return listByuserId;
         }
-
-    public Boolean check4HourConstraint(int userID, DateTime date, int interval)
-    {
-        if ((TimeSlotMapper.getInstance().findHoursByReservationID(ReservationMapper.getInstance().findReservationID(userID, date)) + interval) < 4)
-            {
-                return true;
-            }
-        else
-            return false;
-    }
    
 
     public List<Reservation> filterByBlock(DateTime date)
@@ -117,6 +107,16 @@ namespace LogicLayer
                 }
             }
             return listByDate;
+        }
+
+        public Boolean check4HourConstraint(int userID, DateTime date, int interval)
+        {
+            if ((TimeSlotMapper.getInstance().findHoursByReservationID(ReservationMapper.getInstance().findReservationID(userID, date)) + interval) < 4)
+            {
+                return true;
+            }
+            else
+                return false;
         }
 
 

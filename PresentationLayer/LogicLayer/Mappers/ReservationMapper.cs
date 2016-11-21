@@ -120,24 +120,6 @@ namespace Mappers
 
         }
 
-        /**
-        * Retrieve all resevation IDs associated with the unique userID & date
-        * */
-        public List<int> findReservationID(int userID, DateTime date)
-        {
-            List<int> IDlist = new List<int>();
-            IDlist = ReservationIdentityMap.getInstance().findIDs(userID, date);
-
-            if (IDlist == null)
-            {
-                IDlist = tdgReservation.findById(userID, date);
-                if (IDlist == null)
-                {
-                    return null;
-                }
-            }
-            return IDlist;
-        }
 
         /**
          * Retrieve all resevations
@@ -267,6 +249,25 @@ namespace Mappers
             tdgReservation.deleteReservation(deleteList);
         }
 
+
+        /**
+       * Retrieve all resevation IDs associated with the unique userID & date
+       * */
+        public List<int> findReservationID(int userID, DateTime date)
+        {
+            List<int> IDlist = new List<int>();
+            IDlist = ReservationIdentityMap.getInstance().findIDs(userID, date);
+
+            if (IDlist == null)
+            {
+                IDlist = tdgReservation.findById(userID, date);
+                if (IDlist == null)
+                {
+                    return null;
+                }
+            }
+            return IDlist;
+        }
 
     }
 }
