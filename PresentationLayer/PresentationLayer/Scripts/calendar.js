@@ -36,6 +36,14 @@ $(".prev").click(function () {
 
 //Function is run when any of the timeslot li is clicked
 function timeslotClicked(event) {
+    if (!$(".custom-navbar-right .icon").hasClass("dropdownLogout"))
+    {
+        notLoggedIn();
+
+    } 
+    else {
+
+    
     var seconfuncCalled = false;
     var firstAndLastTimeslot = [0, 0];
     var thisElement = event;
@@ -133,7 +141,7 @@ function timeslotClicked(event) {
 
     });
 
-
+    }
 
 }
 $(".timeslots li ul li").on("click.firstFunction", function () {
@@ -182,14 +190,26 @@ serverSession.client.updateCalendar = function (reservationList) {
 
 //Login popup
 $(".dropdownLogin").click(function () {
+    $(".login-popup").toggle();
+    $(".login-popup").css('opacity', '0');
+    $(".login-popup").css('width', '500px');
+    $(".login-popup").toggle();
+    $(".login-popup").css('opacity', '1');
     $(".login-popup").toggle(300);
 });
-$(".userId").click(function () {
+$(".dropdownLogout").click(function () {
+    $(".login-popup").toggle();
+    $(".login-popup").css('opacity', '0');
+    $(".login-popup").css('width', '200px');
+    $(".login-popup").toggle();
+    $(".login-popup").css('opacity', '1');
     $(".login-popup").toggle(300);
     $("#username").remove();
     $("#password").remove();
     $("#failedMessage").remove();
     $("#loginButton").html("Log Out");
+
+
 });
 
 function OnSuccess(data) {
@@ -240,7 +260,9 @@ $(".showReservations").click(function () {
 });
 
 
-serverSession.client.notLoggedIn = function () {
+function notLoggedIn () {
+    $(".dropdownLogin").click();
+    $("#failedMessage").html("Sign in to continue")
 
 
 
