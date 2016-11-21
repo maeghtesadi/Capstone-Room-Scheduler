@@ -14,15 +14,19 @@ var colorPallette = [
 $(".reservation-popup-test").draggable();
 //header calendar 
 var date = new Date();
+setCalendarDate();
+$(".getNext").click();
 var months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 var days = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
+
 $(".next").click(function () {
     var day = parseInt($(".upper-header li .date .day").html());
     date.setDate(day + 1);
     $(".upper-header li .date .day").html(date.getDate());
     $(".upper-header li .date .month").html(months[date.getMonth()]);
     $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
-    updateCalendarDisplay();
+    setCalendarDate();
+    $(".getNext").click();
 });
 
 $(".prev").click(function () {
@@ -31,7 +35,7 @@ $(".prev").click(function () {
     $(".upper-header li .date .day").html(date.getDate());
     $(".upper-header li .date .month").html(months[date.getMonth()]);
     $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
-    setDate();
+    setCalendarDate();
     $(".getNext").click();
     
 });
