@@ -102,40 +102,61 @@ namespace TDG
         /**
          * Add new rooms to the database
          */
-        public void addRoom(List<Room> newList)
+        public Boolean addRoom(List<Room> newList)
         {
-            openConnection();
+            if (!openConnection())
+                return false;
             for (int i = 0; i < newList.Count; i++)
             {
-                createRoom(newList[i]);
+                if(!createRoom(newList[i]))
+                {
+                    closeConnection();
+                    return false;
+                }
+                    
             }
             closeConnection();
+            return true;
         }
 
         /**
          * Update rooms of the database
          */
-        public void updateRoom(List<Room> updateList)
+        public Boolean updateRoom(List<Room> updateList)
         {
-            openConnection();
+            if (!openConnection())
+                return false;
             for (int i = 0; i < updateList.Count; i++)
             {
-                updateRoom(updateList[i]);
+                if (!updateRoom(updateList[i]))
+                {
+                    closeConnection();
+                    return false;
+                }
+                    
             }
             closeConnection();
+            return true;
         }
 
         /**
          * Delete room(s) from the database
          */
-        public void deleteRoom(List<Room> deleteList)
+        public Boolean deleteRoom(List<Room> deleteList)
         {
-            openConnection();
+            if (!openConnection())
+                return false;
             for (int i = 0; i < deleteList.Count; i++)
             {
-                removeRoom(deleteList[i]);
+                if(!removeRoom(deleteList[i]))
+                {
+                    closeConnection();
+                    return false;
+                }
+
             }
             closeConnection();
+            return true;
         }
 
         /**
@@ -144,36 +165,58 @@ namespace TDG
         public Object[] get(int roomID)
         {
             // Open connection
-            openConnection();
+            if (!openConnection())
+                return null;
 
             // Write and execute the query
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + roomID;
             this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
+            MySqlDataReader reader = null;
+            Object[] record = null; // to be returned
 
-            // If no record is found, return null
-            if (!reader.HasRows)
-            {
-                return null;
-            }
+            bool successful = true;
 
-            // There is only one result since we find it by id
-            Object[] record = new Object[FIELDS.Length];
-            while (reader.Read())
+            try
             {
-                if(reader[0].GetType() == typeof(System.DBNull))
+                reader = cmd.ExecuteReader();
+
+                // If no record is found, return null
+                if (!reader.HasRows)
                 {
                     return null;
                 }
-                record[0] = reader[0];
-                record[1] = reader[1];
+
+                // There is only one result since we find it by id
+                record = new Object[FIELDS.Length];
+                while (reader.Read())
+                {
+                    if (reader[0].GetType() == typeof(System.DBNull))
+                    {
+                        return null;
+                    }
+                    record[0] = reader[0];
+                    record[1] = reader[1];
+                }
             }
-            reader.Close();
-            // Close connection
-            closeConnection();
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                successful = false;
+            }
+            finally
+            {
+                // Close reader
+                reader.Close();
+                // Close connection
+                closeConnection();
+            }
+
 
             // Format and return the result
-            return record;
+            if (successful)
+                return record;
+            else
+                return null;
         }
 
         /**
@@ -185,70 +228,134 @@ namespace TDG
         {
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
             // Open connection
-            openConnection();
+            if (!openConnection())
+                return null;
 
             // Write and execute the query
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
             this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
+            MySqlDataReader reader = null;
+            bool successful = true;
 
-            // If no record is found, return null
-            if (!reader.HasRows)
+            try
             {
-                return null;
-            }
+                reader = cmd.ExecuteReader();
 
-            // For each reader, add it to the dictionary
-            while (reader.Read())
-            {
-                if(reader[0].GetType() == typeof(System.DBNull))
+                // If no record is found, return null
+                if (!reader.HasRows)
                 {
                     return null;
                 }
-                Object[] attributes = new Object[FIELDS.Length];
-                attributes[0] = reader[0]; // roomID
-                attributes[1] = reader[1]; // roomNum
-                records.Add((int)reader[0], attributes);
+
+                // For each reader, add it to the dictionary
+                while (reader.Read())
+                {
+                    if (reader[0].GetType() == typeof(System.DBNull))
+                    {
+                        return null;
+                    }
+                    Object[] attributes = new Object[FIELDS.Length];
+                    attributes[0] = reader[0]; // roomID
+                    attributes[1] = reader[1]; // roomNum
+                    records.Add((int)reader[0], attributes);
+                }
             }
-            reader.Close();
-            // Close connection
-            closeConnection();
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                successful = false;
+            }
+            finally
+            {
+                // Close reader
+                reader.Close();
+                // Close connection
+                closeConnection();
+            }
 
             // Format and return the result
-            return records;
+            if (successful)
+                return records;
+            else
+                return null;
         }
 
         /**
          * Adds one room to the database
          */
-        private void createRoom(Room room)
+        private Boolean createRoom(Room room)
         {
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + room.roomID + ",'" + room.roomNum + "');";
             this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Close();
+            MySqlDataReader reader = null;
+            bool successful = true;
+            try
+            {
+                reader = cmd.ExecuteReader();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                successful = false;
+            }
+            finally
+            {
+                reader.Close();
+            }
+            return successful;
         }
 
         /**
          * Updates one room of the database
          */
-        private void updateRoom(Room room)
+        private Boolean updateRoom(Room room)
         {
             this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + "= '" + room.roomNum + "' WHERE " + FIELDS[0] + " = " + room.roomID + ";";
             this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Close();
+            MySqlDataReader reader = null;
+            bool successful = true;
+
+            try
+            {
+                reader = cmd.ExecuteReader();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                successful = false;
+            }
+            finally
+            {
+                reader.Close();
+            }
+            return successful;
         }
 
         /**
          * Removes one room from the database
          */
-        private void removeRoom(Room room)
+        private Boolean removeRoom(Room room)
         {
             this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + room.roomID + ";";
             this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Close();
+            MySqlDataReader reader = null;
+            bool successful = true;
+
+            try
+            {
+                reader = cmd.ExecuteReader();
+
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                successful = false;
+            }
+            finally
+            {
+                reader.Close();
+            }
+            return successful;
         }
 
         /**

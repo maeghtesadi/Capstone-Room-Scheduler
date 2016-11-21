@@ -100,28 +100,39 @@ namespace TDG
         /**
          * Add new timeslot(s) to the database
          */
-        public void addTimeSlot(List<TimeSlot> newList)
+        public Boolean addTimeSlot(List<TimeSlot> newList)
         {
-            openConnection();
+            if (!openConnection())
+                return false;
             for (int i = 0; i < newList.Count; i++)
             {
-                createTimeSlot(newList[i]);
+                if (!createTimeSlot(newList[i]) {
+                    closeConnection();
+                    return false;
+                }
             }
             closeConnection();
-
+            return true;
         }
 
         /**
          * Add new timeslot(s) to the database
          */
-        public void updateTimeSlot(List<TimeSlot> updateList)
+        public Boolean updateTimeSlot(List<TimeSlot> updateList)
         {
-            openConnection();
+            if (!openConnection())
+                return false;
             for (int i = 0; i < updateList.Count; i++)
             {
-                updateTimeSlot(updateList[i]);
+                if(!updateTimeSlot(updateList[i]))
+                {
+                    closeConnection();
+                    return false;
+                }
             }
             closeConnection();
+
+            return true;
 
         }
 
@@ -130,15 +141,21 @@ namespace TDG
          *
          * */
 
-        public void deleteTimeSlot(List<TimeSlot> deleteList)
+        public Boolean deleteTimeSlot(List<TimeSlot> deleteList)
         {
-            openConnection();
+            if (!openConnection())
+                return false;
             for (int i = 0; i < deleteList.Count; i++)
             {
-                removeTimeSlot(deleteList[i]);
+                if(!removeTimeSlot(deleteList[i]))
+                {
+                    closeConnection();
+                    return false;
+                }
+
             }
             closeConnection();
-
+            return true;
         }
 
         /**
@@ -148,39 +165,56 @@ namespace TDG
         public Object[] get(int timeslotID)
         {
             //Open connection
-            openConnection();
+            if (!openConnection())
+                return null;
+
+            bool successful = true;
 
             //Write and execute the query
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + timeslotID;
             this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
+            MySqlDataReader reader = null;
+            Object[] record = null; // to be returned
 
-
-            //If no record is found, return null
-            if (!reader.HasRows)
+            try
             {
-                return null;
-            }
-
-            //There is only one result since we find it by id
-            Object[] record = new Object[FIELDS.Length];
-            while (reader.Read())
-            {
-                if(reader[0].GetType() == typeof(System.DBNull))
+                reader = cmd.ExecuteReader();
+                //If no record is found, return null
+                if (!reader.HasRows)
                 {
                     return null;
                 }
-                record[0] = reader[0]; // timeslotID
-                record[1] = reader[1]; // reservationID
-                record[2] = reader[2]; // dateTime
+                //There is only one result since we find it by id
+                record = new Object[FIELDS.Length];
+                while (reader.Read())
+                {
+                    if (reader[0].GetType() == typeof(System.DBNull))
+                    {
+                        return null;
+                    }
+                    record[0] = reader[0]; // timeslotID
+                    record[1] = reader[1]; // reservationID
+                    record[2] = reader[2]; // dateTime
 
+                }
             }
-            //Close connection
-            reader.Close();
-            closeConnection();
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                successful = false;
+            }
+            finally
+            {
+                //Close connection
+                reader.Close();
+                closeConnection();
+            }
 
             //Format and return the result
-            return record;
+            if (successful)
+                return record;
+            else
+                return null;
         }
 
 
@@ -194,41 +228,59 @@ namespace TDG
         {
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
             //Open Connection
-            openConnection();
+            if (!openConnection())
+                return null;
+
+            bool successful = true;
 
             //Write and execute the query
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
             this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
+            MySqlDataReader reader = null;
 
-            //If no record is found, return null
-            if (!reader.HasRows)
+            try
             {
-                return null;
+                reader = cmd.ExecuteReader();
 
-            }
-
-            //For each reader, add it to the dictionary
-            while (reader.Read())
-            {
-                if (reader[0].GetType() == typeof(System.DBNull))
+                //If no record is found, return null
+                if (!reader.HasRows)
                 {
                     return null;
-                }
-                Object[] attributes = new Object[FIELDS.Length];
-                attributes[0] = reader[0]; // timeslotID
-                attributes[1] = reader[1]; // reservationID
-                attributes[2] = reader[2]; // hour
 
-                records.Add((int)reader[0], attributes);
+                }
+
+                //For each reader, add it to the dictionary
+                while (reader.Read())
+                {
+                    if (reader[0].GetType() == typeof(System.DBNull))
+                    {
+                        return null;
+                    }
+                    Object[] attributes = new Object[FIELDS.Length];
+                    attributes[0] = reader[0]; // timeslotID
+                    attributes[1] = reader[1]; // reservationID
+                    attributes[2] = reader[2]; // hour
+
+                    records.Add((int)reader[0], attributes);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                successful = false;
+            }
+            finally
+            {
+                //close connection
+                reader.Close();
+                closeConnection();
             }
 
-            //close connection
-            reader.Close();
-            closeConnection();
-
             //Format and return the result
-            return records;
+            if (successful)
+                return records;
+            else
+                return null;
         }
 
         /**
@@ -242,79 +294,141 @@ namespace TDG
         {
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
             //Open Connection
-            openConnection();
+            if (!openConnection())
+                return null;
+
+            bool successful = true;
 
             //Write and execute the query
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[1] + " = " + reservationID;
             this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
+            MySqlDataReader reader = null;
 
-            //If no record is found, return null
-            if (!reader.HasRows)
+            try
             {
-                return null;
-
-            }
-
-            //For each reader, add it to the dictionary
-            while (reader.Read())
-            {
-                if (reader[0].GetType() == typeof(System.DBNull))
+                reader = cmd.ExecuteReader();
+                //If no record is found, return null
+                if (!reader.HasRows)
                 {
                     return null;
-                }
-                Object[] attributes = new Object[FIELDS.Length];
-                attributes[0] = reader[0]; // timeslotID
-                attributes[1] = reader[1]; // reservationID
-                attributes[2] = reader[2]; // hour
 
-                records.Add((int)reader[0], attributes);
+                }
+
+                //For each reader, add it to the dictionary
+                while (reader.Read())
+                {
+                    if (reader[0].GetType() == typeof(System.DBNull))
+                    {
+                        return null;
+                    }
+                    Object[] attributes = new Object[FIELDS.Length];
+                    attributes[0] = reader[0]; // timeslotID
+                    attributes[1] = reader[1]; // reservationID
+                    attributes[2] = reader[2]; // hour
+
+                    records.Add((int)reader[0], attributes);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                successful = false;
+            }
+            finally
+            {
+                //close connection
+                reader.Close();
+                closeConnection();
             }
 
-            //close connection
-            reader.Close();
-            closeConnection();
-
             //Format and return the result
-            return records;
+            if (successful)
+                return records;
+            else
+                return null;
         }
 
         /**
          * Adds one timeslot to the database
          * */
-        private void createTimeSlot(TimeSlot timeslot)
+        private Boolean createTimeSlot(TimeSlot timeslot)
         {
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + timeslot.timeSlotID + "," +
                 timeslot.reservationID + "," + timeslot.hour + ");";
 
             this.cmd.Connection = this.conn;
 
-            MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Close();
+            bool successful = true;
+            MySqlDataReader reader = null;
+            try
+            {
+                reader = cmd.ExecuteReader();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                successful = false;
+            }
+            finally
+            {
+                reader.Close();
+            }
+            return successful;
         }
 
 
         /**
          * Updates one timeslot to the database
          * */
-        private void updateTimeSlot(TimeSlot timeslot)
+        private Boolean updateTimeSlot(TimeSlot timeslot)
         {
+            bool successful = true;
             this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + " = " + timeslot.reservationID + " WHERE " + FIELDS[0] + " = " + timeslot.timeSlotID;
             this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Close();
+
+            MySqlDataReader reader = null;
+
+            try
+            {
+                reader = cmd.ExecuteReader();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                successful = false;
+            }
+            finally
+            {
+                reader.Close();
+            }
+            return successful;
         }
 
         /**
          * Removes one timeslot from the database
          * */
 
-        private void removeTimeSlot(TimeSlot timeslot)
+        private Boolean removeTimeSlot(TimeSlot timeslot)
         {
+            bool successful = true;
             this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeslot.timeSlotID + ";";
             this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Close();
+            MySqlDataReader reader = null;
+
+            try
+            {
+                reader = cmd.ExecuteReader();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                successful = false;
+            }
+            finally
+            {
+                reader.Close();
+            }
+            return successful;
         }
 
         /**

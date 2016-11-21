@@ -90,50 +90,84 @@ namespace TDG
         public List<int> getAllUsers(int timeSlotID)
         {
             List<int> listOfUsers = new List<int>();
+            bool successful = true;
 
             // Open connection
-            openConnection();
+            if (!openConnection())
+            {
+                return null;
+            }
 
             // Write and execute the query
             this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlotID + " ORDER BY " + FIELDS[2] + ";";
             this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
 
-            // If no record is found, return null
-            if (!reader.HasRows)
+            // Try to perform read
+            MySqlDataReader reader = null;
+            try
             {
-                return listOfUsers;
-            }
+                reader = cmd.ExecuteReader();
 
-            // For each reader, add it to the dictionary
-            while (reader.Read())
-            {
-                if(reader[0].GetType() == typeof(System.DBNull))
+                // If no record is found, return null
+                if (!reader.HasRows)
                 {
                     return listOfUsers;
                 }
-                listOfUsers.Add((int)reader[0]); // Selecting only the userID
+
+                // For each reader, add it to the dictionary
+                while (reader.Read())
+                {
+                    if (reader[0].GetType() == typeof(System.DBNull))
+                    {
+                        return listOfUsers;
+                    }
+                    listOfUsers.Add((int)reader[0]); // Selecting only the userID
+                }
+            }
+            // Exception occurred
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                successful = false;
             }
 
-            // Close connection
-            reader.Close();
-            closeConnection();
-
-            // Format and return the result
-            return listOfUsers;
+            // Close reader and connection
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+                closeConnection();
+            }
+            
+            // If successful, return the list
+            if(successful)
+            {
+                return listOfUsers;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /**
          * 
          */
-        public void refreshWaitsFor(List<TimeSlot> listOfTimeSlots)
+        public Boolean refreshWaitsFor(List<TimeSlot> listOfTimeSlots)
         {
 
             // Open connection
-            openConnection();
+            if(!openConnection())
+            {
+                return false;
+            }
 
             Queue<int> waitlist;
             List<int> results;
+            bool successful = true;
+
             foreach (TimeSlot timeSlot in listOfTimeSlots)
             {
                 // The list is not empty, refresh the content of the database
@@ -142,36 +176,51 @@ namespace TDG
                     // Obtain all queuery for that timeSlot from the database
                     this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlot.timeSlotID;
                     this.cmd.Connection = this.conn;
-                    MySqlDataReader reader = cmd.ExecuteReader();
+                    MySqlDataReader reader = null;
 
-                    // Store the results
-                    results = new List<int>();
-                    while (reader.Read())
+                    // Try to exeucte the command and read
+
+                    try
                     {
-                        results.Add((int)reader[0]); // Selecting only the userID
-                    }
-                    reader.Close();
+                        reader = cmd.ExecuteReader();
 
-                    // Get the waitlist of the timeSlot that is refreshed
-                    waitlist = timeSlot.waitlist;
-
-                    // If a userID is found in the DB but not in the waitlist: remove from the DB
-                    foreach (int userID in results)
-                    {
-                        if (!waitlist.Contains(userID))
+                        // Store the results
+                        results = new List<int>();
+                        while (reader.Read())
                         {
-                            deleteWaitsFor(timeSlot.timeSlotID, userID);
+                            results.Add((int)reader[0]); // Selecting only the userID
+                        }
+
+                        // Get the waitlist of the timeSlot that is refreshed
+                        waitlist = timeSlot.waitlist;
+
+                        // If a userID is found in the DB but not in the waitlist: remove from the DB
+                        foreach (int userID in results)
+                        {
+                            if (!waitlist.Contains(userID))
+                            {
+                                deleteWaitsFor(timeSlot.timeSlotID, userID);
+                            }
+                        }
+
+                        // If a userID is found in the waitlist but not in the DB: add it to the DB
+                        foreach (int userID in waitlist)
+                        {
+                            if (!results.Contains(userID))
+                            {
+                                String currentDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                                createWaitsFor(timeSlot.timeSlotID, userID, currentDateTime);
+                            }
                         }
                     }
-
-                    // If a userID is found in the waitlist but not in the DB: add it to the DB
-                    foreach (int userID in waitlist)
+                    catch (Exception ex)
                     {
-                        if (!results.Contains(userID))
-                        {
-                            String currentDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                            createWaitsFor(timeSlot.timeSlotID, userID, currentDateTime);
-                        }
+                        Console.WriteLine(ex.Message);
+                        successful = false;
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
 
                 }
@@ -180,26 +229,69 @@ namespace TDG
                 {
                     this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + timeSlot.timeSlotID;
                     this.cmd.Connection = this.conn;
-                    MySqlDataReader reader = cmd.ExecuteReader();
-                    reader.Close();
+                    MySqlDataReader reader = null;
+
+                    try
+                    {
+                        reader = cmd.ExecuteReader();
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        successful = false;
+                    }
+                    finally
+                    {
+                        reader.Close();
+                    }
                 }
             }
+
+            return successful;
         }
 
-        private void createWaitsFor(int timeSlotID, int userID, String currentDateTime)
+        private Boolean createWaitsFor(int timeSlotID, int userID, String currentDateTime)
         {
             this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES ( " + timeSlotID + "," + userID + ", '" + currentDateTime + "');";
             this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Close();
+            MySqlDataReader reader = null;
+            bool successful = true;
+            try
+            {
+                reader = cmd.ExecuteReader();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                successful = false;
+            }
+            finally
+            {
+                reader.Close();
+            }
+            return successful;
         }
-        private void deleteWaitsFor(int timeSlotID, int userID)
+        private Boolean deleteWaitsFor(int timeSlotID, int userID)
         {
             this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlotID + " AND " + FIELDS[1] + " = " + userID;
             this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Close();
-        }
+            MySqlDataReader reader = null;
+            bool successful = true;
 
+            try
+            {
+                reader = cmd.ExecuteReader();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                successful = false;
+            }
+            finally
+            {
+                reader.Close();
+            }
+            return successful;
+        }
     }
 }

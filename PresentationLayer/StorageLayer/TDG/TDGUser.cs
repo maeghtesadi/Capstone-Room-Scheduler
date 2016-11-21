@@ -86,26 +86,48 @@ namespace TDG
         }
 
         // Updates the list of users in the DB
-        public void updateUser(List<User> updateList)
+        public Boolean updateUser(List<User> updateList)
         {
-
-            openConnection();
+            if(!openConnection())
+            {
+                return false;
+            }
             for (int i = 0; i < updateList.Count(); i++)
             {
-                updateUser(updateList[i]);
+                if(!updateUser(updateList[i]))
+                {
+                    closeConnection();
+                    return false;
+                }
             }
             closeConnection();
+            return true;
         }
 
         // SQL Statement to update an existing User/Row
-        private void updateUser(User user) {
+        private Boolean updateUser(User user) {
+           bool successful = true;
            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " \n" +
                    "SET " + FIELDS[1] + "='" + user.username + "'," + FIELDS[2] + "='" + user.password + "'," +
                    FIELDS[3] + "='" + user.name + ";\n" +
                    " WHERE " + FIELDS[0] + "=" + user.userID + ";";
            this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
-            reader.Close();
+            MySqlDataReader reader = null;
+
+            try
+            {
+                reader = cmd.ExecuteReader();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                successful = false;
+            }
+            finally
+            {
+                reader.Close();
+            }
+            return successful;
         }
 
         /**
@@ -113,36 +135,53 @@ namespace TDG
        */
         public Object[] get(int userID)
         {
+            bool successful = true;
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " \n" +
                     " WHERE " + FIELDS[0] + "=" + userID + ";";
             this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
+            MySqlDataReader reader = null;
+            Object[] record = null; // to be returned
 
-            // If no record is found, return null
-            if (!reader.HasRows)
+            try
             {
-                return null;
-            }
-            // There is only one result since we find it by id
-            Object[] record = new Object[FIELDS.Length];
-            while (reader.Read())
-            {
-                if (reader[0].GetType() == typeof(System.DBNull))
+                reader = cmd.ExecuteReader();
+                // If no record is found, return null
+                if (!reader.HasRows)
                 {
                     return null;
                 }
-                record[0] = reader[0];
-                record[1] = reader[1];
-                record[2] = reader[2];
-                record[3] = reader[3];
-               
+                // There is only one result since we find it by id
+                record = new Object[FIELDS.Length];
+                while (reader.Read())
+                {
+                    if (reader[0].GetType() == typeof(System.DBNull))
+                    {
+                        return null;
+                    }
+                    record[0] = reader[0];
+                    record[1] = reader[1];
+                    record[2] = reader[2];
+                    record[3] = reader[3];
+
+                }
             }
-            // Close connection
-            reader.Close();
-            closeConnection();
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                successful = false;
+            }
+            finally
+            {
+                // Close connection
+                reader.Close();
+                closeConnection();
+            }
 
             // Format and return the result
-            return record;
+            if (successful)
+                return record;
+            else
+                return null;
         }
 
       
@@ -154,43 +193,59 @@ namespace TDG
          */
         public Dictionary<int, Object[]> getAll()
         {
+            bool successful = true;
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
 
             // Open connection
-            openConnection();
+            if(!openConnection())
+                return null;
 
             // Write and execute the query
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
             this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
+            MySqlDataReader reader = null;
 
-            // If no record is found, return null
-            if (!reader.HasRows)
+            try
             {
-                return null;
-            }
+                reader = cmd.ExecuteReader();
 
-            // For each reader, add it to the dictionary
-            while (reader.Read())
-            {
-                if (reader[0].GetType() == typeof(System.DBNull))
+                // If no record is found, return null
+                if (!reader.HasRows)
                 {
                     return null;
                 }
-                Object[] attributes = new Object[FIELDS.Length];
-                attributes[0] = reader[0]; // userID
-                attributes[1] = reader[1]; // userName
-                attributes[2] = reader[2]; // password
-                attributes[3] = reader[3]; // name
-                records.Add((int)reader[0], attributes);
+
+                // For each reader, add it to the dictionary
+                while (reader.Read())
+                {
+                    if (reader[0].GetType() == typeof(System.DBNull))
+                    {
+                        return null;
+                    }
+                    Object[] attributes = new Object[FIELDS.Length];
+                    attributes[0] = reader[0]; // userID
+                    attributes[1] = reader[1]; // userName
+                    attributes[2] = reader[2]; // password
+                    attributes[3] = reader[3]; // name
+                    records.Add((int)reader[0], attributes);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                successful = false;
+            }
+            finally
+            {
+                reader.Close();
+                closeConnection();
             }
 
-            // Close connection
-            reader.Close();
-            closeConnection();
-
             // Format and return the result
-            return records;
+            if (successful)
+                return records;
+            else
+                return null;
         }
     }
 }
