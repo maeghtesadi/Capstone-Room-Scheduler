@@ -11,14 +11,17 @@ var colorPallette = [
     ['#7f8c8d', '#95a5a6']
 
 ];
+
+
 $(window).scroll(function () {
     $('.room').css('left', 0 - $(this).scrollLeft());
 });
 $(".reservation-popup-test").draggable();
 //header calendar 
 var date = new Date();
-setCalendarDate();
-$(".getNext").click();
+
+
+
 var months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 var days = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
 
@@ -203,11 +206,17 @@ function updateCalendar(reservationList) {
 
 
 };
+var serverSession;
 //Get reservation info from the server to populate the timeslots
 $.connection.hub.start().done(function () {
     console.log('Connection established')
+    var serverSession = $.connection.calendarHub;
+    setCalendarDate();
+    $(".getNext").click();
 });
-var serverSession = $.connection.calendarHub;
+
+//Manually attach updateCalendar
+
 //Jquery to update the timeslots
 
 
@@ -334,3 +343,5 @@ $(".reservation-content").on('click',".cancelReservation",function(){
     
 
 });
+
+
