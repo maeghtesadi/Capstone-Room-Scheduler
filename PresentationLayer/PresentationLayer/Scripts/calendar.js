@@ -203,9 +203,12 @@ serverSession.client.updateCalendar = function (reservationList) {
         $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time + "</br>" + description + "</br>");
         
     }
-    $(".glyphicon-remove").click();
+  
 
 };
+$("#submitButton").click(function () {
+    $(".glyphicon-remove").click();
+})
 
 //Login popup
 $(".dropdownLogin").click(function () {
