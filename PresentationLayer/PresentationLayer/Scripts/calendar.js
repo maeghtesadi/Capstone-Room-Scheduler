@@ -176,22 +176,19 @@ $(".reservation-popup-test .header span").click(function () {
     $(".timeslots .active").toggleClass("active");
 
 });
-
-//Get reservation info from the server to populate the timeslots
-$.connection.hub.start().done(function () {
-    serverSession.server.updateCalendar();
-});
 var serverSession = $.connection.calendarHub;
 //Jquery to update the timeslots
+serverSession.client.updateCalendar = updateCalendar;
 
-serverSession.client.updateCalendar = function (reservationList) {
+
+function updateCalendar(reservationList) {
     remakeCalendar();
     for (j = 0; j < reservationList.length; j++) {
         var color = colorPallette[Math.floor(Math.random() * colorPallette.length)];
         for (var i = reservationList[j].initialTimeslot; i <= reservationList[j].finalTimeslot; i++) {
             $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").addClass("reserved");
             $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").html("");
-            $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").css('background-color',color[1]);
+            $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").css('background-color', color[1]);
         }
         //First timeslot classtoggle=reservedHeader
         $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").addClass("reserved-header").html(reservationList[j].userName);
@@ -199,13 +196,21 @@ serverSession.client.updateCalendar = function (reservationList) {
         //Second timeslot classtoggle=reservedd;
         var time = "<u>Time</u>: From " + reservationList[j].initialTimeslot + " to " + (parseInt(reservationList[j].finalTimeslot) + 1);
         var description = "<u>Description</u>: " + reservationList[j].description;
-       // var waitingList = "<u>Waiting List:</u>:";
+        // var waitingList = "<u>Waiting List:</u>:";
         $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time + "</br>" + description + "</br>");
-        
+
     }
-  
+
 
 };
+//Get reservation info from the server to populate the timeslots
+$.connection.hub.start().done(function () {
+    console.log('Connection established')
+});
+var serverSession = $.connection.calendarHub;
+//Jquery to update the timeslots
+
+
 $("#submitButton").click(function () {
     $(".glyphicon-remove").click();
 })
@@ -239,7 +244,7 @@ function OnSuccess(data) {
         $("#failedMessage").html("Invalid credentials");
     }
     else {
-        location.reload();
+        location.reload(true);
     }
 
 }
