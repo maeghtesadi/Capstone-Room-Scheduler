@@ -11,6 +11,9 @@ var colorPallette = [
     ['#7f8c8d', '#95a5a6']
 
 ];
+$(window).scroll(function () {
+    $('.room').css('left', 0 - $(this).scrollLeft());
+});
 $(".reservation-popup-test").draggable();
 //header calendar 
 var date = new Date();
