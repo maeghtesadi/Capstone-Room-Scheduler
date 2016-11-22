@@ -18,7 +18,7 @@ namespace LogicLayer
         DirectoryOfRooms directoryOfRooms = new DirectoryOfRooms();
         DirectoryOfTimeSlots directoryOfTimeSlots = new DirectoryOfTimeSlots();
         UserCatalog userCatalog = new UserCatalog();
-        
+
         public static ReservationConsole getInstance()
         {
             return instance;
@@ -45,7 +45,7 @@ namespace LogicLayer
                 {
                     foreach (TimeSlot timeSlot in reservation.timeSlots)
                     {
-                        for (int i = firstHour; i <=lastHour; i++)
+                        for (int i = firstHour; i <= lastHour; i++)
                         {
                             if (timeSlot.hour == i)
                             {
@@ -70,7 +70,7 @@ namespace LogicLayer
                 {
                     TimeSlot timeSlot = TimeSlotMapper.getInstance().makeNew(res.reservationID, hours[i]);
                     //directoryOfTimeSlots.makeNewTimeSlot(res.reservationID, hours[i]);
-                    updateWaitList(userID, date, i);       
+                    updateWaitList(userID, date, i);
                 }
             }
 
@@ -117,11 +117,11 @@ namespace LogicLayer
 
         public void updateWaitList(int userID, DateTime date, int hour)
         {
-            foreach (TimeSlot timeSlot in directoryOfTimeSlots.timeSlotList)
+            foreach (TimeSlot timeSlot in directoryOfTimeSlots.timeSlotList) //CHANGE THIS IN MAPPER.
             {
                 // Obtain the date associated with that timeslot for the current reservation
                 DateTime timeSlotDate = ReservationMapper.getInstance().getReservation(timeSlot.reservationID).date;
-               // DateTime timeSlotDate = directoryOfReservations.getReservation(timeSlot.reservationID).date;
+                // DateTime timeSlotDate = directoryOfReservations.getReservation(timeSlot.reservationID).date;
 
                 // We only want to remove the user from the waitlist of timeslots of the same date and hour 
                 if (timeSlot.waitlist.Contains(userID) && timeSlotDate.Equals(date) && timeSlot.hour == hour)
@@ -172,7 +172,7 @@ namespace LogicLayer
                     {
                         //Else give new reservation to the first person in waitlist
                         int userID = resToModify.timeSlots[i].waitlist.Dequeue();
-                        Reservation res = ReservationMapper.getInstance().makeNew(userID, ReservationMapper.getInstance().getReservation(resID).roomID, 
+                        Reservation res = ReservationMapper.getInstance().makeNew(userID, ReservationMapper.getInstance().getReservation(resID).roomID,
                             "", ReservationMapper.getInstance().getReservation(resID).date);
                         ReservationMapper.getInstance().done();
                         updateWaitList(userID, ReservationMapper.getInstance().getReservation(resID).date, resToModify.timeSlots[i].hour);
@@ -229,7 +229,7 @@ namespace LogicLayer
             for (int i = firstHour; i < lastHour; i++)
                 hours.Add(i);
 
-            foreach (Reservation reservation in directoryOfReservations.reservationList)
+            foreach (Reservation reservation in directoryOfReservations.reservationList) //change this
             {
                 if (reservation.date == date && reservation.roomID == roomID)
                 {
@@ -242,7 +242,8 @@ namespace LogicLayer
                                 if (!timeSlot.waitlist.Contains(resToModify.userID) && reservation.userID != resToModify.userID)
                                 {
                                     timeSlot.waitlist.Enqueue(resToModify.userID);
-                                    directoryOfTimeSlots.addToWaitList(timeSlot.timeSlotID, timeSlot.reservationID, timeSlot.waitlist);
+                                    TimeSlotMapper.getInstance().setTimeSlot(timeSlot.timeSlotID, timeSlot.reservationID, timeSlot.waitlist);
+                                    //directoryOfTimeSlots.addToWaitList(timeSlot.timeSlotID, timeSlot.reservationID, timeSlot.waitlist);
                                 }
                                 hours.Remove(i);
                             }
@@ -256,23 +257,27 @@ namespace LogicLayer
                 for (int i = 0; i < hours.Count; i++)
                 {
                     updateWaitList(resToModify.userID, resToModify.date, i);
-                    directoryOfTimeSlots.makeNewTimeSlot(resToModify.reservationID, hours[i]);
+                    //directoryOfTimeSlots.makeNewTimeSlot(resToModify.reservationID, hours[i]);
+                    TimeSlotMapper.getInstance().makeNew(resToModify.reservationID, hours[i]);
                 }
             }
 
-            directoryOfTimeSlots.done();
-            directoryOfReservations.modifyReservation(resToModify.reservationID, roomID, desc, date);
-            directoryOfReservations.done();
-            udpateDirectories();
+            //directoryOfTimeSlots.done();
+            ReservationMapper.getInstance().modifyReservation(resToModify.reservationID, roomID, desc, date);
+            //directoryOfReservations.modifyReservation(resToModify.reservationID, roomID, desc, date);
+            ReservationMapper.getInstance().done();
+            //directoryOfReservations.done();
+            udpateDirectories(); //put these methods in their respective mappers :)
         }
 
         public void cancelReservation(int resID)
         {
             // Loop through each timeslot
-            for (int i = 0; i < directoryOfTimeSlots.timeSlotList.Count; i++)
+            for (int i = 0; i < directoryOfTimeSlots.timeSlotList.Count; i++) //make method in mappers that returns the count
             {
                 // For those who are belonging to the reservation to be cancelled:
-                if (directoryOfTimeSlots.timeSlotList[i].reservationID == resID)
+                //if (directoryOfTimeSlots.timeSlotList[i].reservationID == resID)
+                if (directoryOfTimeSlots.timeSlotList[i].reservationID == resID) //make a method in mappers that returns the respective directory lists
                 {
                     // If no one is waiting, delete it.
                     if (directoryOfTimeSlots.timeSlotList[i].waitlist.Count == 0)
