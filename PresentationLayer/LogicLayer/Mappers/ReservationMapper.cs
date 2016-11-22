@@ -165,15 +165,6 @@ namespace Mappers
         }
 
         /**
-         * Return all users waiting for a reservation given the
-         * reservation ID.
-         */
-        public List<int> getAllUsers(int reservationID)
-        {
-            return waitsForMapper.getAllUsers(reservationID);
-        }
-
-        /**
          * Set reservation attributes
          **/
 
@@ -253,14 +244,14 @@ namespace Mappers
         /**
        * Retrieve all resevation IDs associated with the unique userID & date
        * */
-        public List<int> findReservationID(int userID, DateTime date)
+        public List<int> findReservationIDs(int userID, DateTime date)
         {
             List<int> IDlist = new List<int>();
-            IDlist = ReservationIdentityMap.getInstance().findIDs(userID, date);
+            IDlist = ReservationIdentityMap.getInstance().findReservationIDs(userID, date);
 
             if (IDlist == null)
             {
-                IDlist = tdgReservation.findById(userID, date);
+                IDlist = tdgReservation.getReservationIDs(userID, date);
                 if (IDlist == null)
                 {
                     return null;

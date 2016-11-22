@@ -282,7 +282,7 @@ namespace Mappers
 
             if (hours == 0)
             {
-                hours = tdgTimeSlot.getTotalHoursforID(IDlist);
+                hours = tdgTimeSlot.getTotalHoursforReservationID(IDlist);
             }
 
             return hours;
