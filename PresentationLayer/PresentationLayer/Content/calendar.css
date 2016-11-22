@@ -209,6 +209,43 @@ font-size:12px;
 background-color:#3f4350
 }
 
+.modify-reservation{
+    width:700px;
+    height:165px;
+    background-color:white;
+     box-shadow: 0px 0px 9px grey;
+    position:absolute;
+    font-size:12px;
+    display:none;
+    z-index:60;
+   
+   
+
+}
+.modify-reservation ul{
+padding:0px;
+
+}
+.modify-reservation .header{
+    width:100%;
+    background-color:#3f4350;
+    padding-left:0px;
+    height:40px;
+    padding-left:20px;
+    line-height:37px;
+    font-size:14px;
+    color:white;
+}
+.modify-reservation .header span{
+   float:right;
+   margin-top:10px;
+   font-size:15px;
+}
+
+.modify-reservation ul li{
+margin-bottom:10px;
+}
+
 /* Add media queries for smaller screens */
 @media screen and (max-width:720px) {
     .weekdays li, .days li {width: 13.1%;}

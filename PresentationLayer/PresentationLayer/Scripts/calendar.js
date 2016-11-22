@@ -296,11 +296,13 @@ serverSession.client.populateReservations = function (reservationList) {
         var firstTime = reservationList[i].initialTimeslot;
         var secondTime = reservationList[i].finalTimeslot;
         var roomID = reservationList[i].roomId;
-        buildNewReservationItem(resID, des, firstTime, secondTime, roomID)
+        var date = reservationList[i].date;
+        date = date.substr(0, 9);
+        buildNewReservationItem(resID, des, firstTime, secondTime, roomID, date);
     }
 }
 
-function buildNewReservationItem(reservationId, description, initialTimeSlot, finalTimeslot , roomID ) //reservtion id goes in .$(".cancelReservation).data(reservationId)
+function buildNewReservationItem(reservationId, description, initialTimeSlot, finalTimeslot , roomID,date ) //reservtion id goes in .$(".cancelReservation).data(reservationId)
 {
     var reservationItem = 
         '<div class="reservation-item">' +
@@ -308,7 +310,8 @@ function buildNewReservationItem(reservationId, description, initialTimeSlot, fi
              '<div class="reservationDetails">'+
                 '<ul>'+
                 '    <li class="description">'+ description +'</li>'+
-                '    <li class="timeslot">From <span class="initialTimeslot">' + initialTimeSlot + '</span> to <span class="finalTimeslot">' + (finalTimeslot +1) + '</span></li>' +
+                '    <li class="timeslot">From <span class="initialTimeslot">' + initialTimeSlot + '</span> to <span class="finalTimeslot">' + (finalTimeslot + 1) + '</span></li>' +
+                '    <li class="date">'+date+'<li>' +
                 '</u>' +
              '</div>' +
              '<div data-reservationId ="' + reservationId + '"    class="cancelReservation"><span class="fa fa-times fa-lg"></span></div>'+
@@ -379,6 +382,19 @@ $(".reservation-content").on('click',".cancelReservation",function(){
     
     
 
+});
+$(".reservation-content").on('click', ".modifyReservation", function () {
+    var thisElement = $(this);
+    $(".modify-reservation").toggle(0);
+    $(".modify-reservation").css('opacity', '1');
+    $(".modify-reservation").position({
+        my: "right",
+        at: "left",
+        of: thisElement
+    });
+    $(".modify-reservation").toggle(0);
+    $(".modify-reservation").css('opacity', '1');
+    $(".modify-reservation").toggle(300);
 });
 
 
