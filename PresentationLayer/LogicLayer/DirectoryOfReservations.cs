@@ -95,55 +95,55 @@ namespace LogicLayer
             ReservationMapper.getInstance().done();
         }
 
-        public List<Reservation> findByDate(DateTime date)
-        {
-            List<Reservation> listByDate = new List<Reservation>();
-            foreach (Reservation reservation in reservationList)
-            {
-                if (reservation.date.Date == date.Date)
-                {
-                    listByDate.Add(reservation);
-                }
-            }
-            return listByDate;
-        }
+    //    public List<Reservation> findByDate(DateTime date)
+    //    {
+    //        List<Reservation> listByDate = new List<Reservation>();
+    //        foreach (Reservation reservation in reservationList)
+    //        {
+    //            if (reservation.date.Date == date.Date)
+    //            {
+    //                listByDate.Add(reservation);
+    //            }
+    //        }
+    //        return listByDate;
+    //    }
 
-        public List<Reservation> findByUser(int userID)
-        {
-            List<Reservation> listByuserId = new List<Reservation>();
-            foreach (Reservation reservation in reservationList)
-            {
-                if (reservation.userID == userID)
-                {
-                    listByuserId.Add(reservation);
-                }
-            }
-            return listByuserId;
-        }
+    //    public List<Reservation> findByUser(int userID)
+    //    {
+    //        List<Reservation> listByuserId = new List<Reservation>();
+    //        foreach (Reservation reservation in reservationList)
+    //        {
+    //            if (reservation.userID == userID)
+    //            {
+    //                listByuserId.Add(reservation);
+    //            }
+    //        }
+    //        return listByuserId;
+    //    }
    
 
-    public List<Reservation> filterByBlock(DateTime date)
-        {
-            List<Reservation> listByDate = new List<Reservation>();
-            foreach (Reservation reservation in reservationList)
-            {
-                if (reservation.date == date)
-                {
-                    listByDate.Add(reservation);
-                }
-            }
-            return listByDate;
-        }
+    //public List<Reservation> filterByBlock(DateTime date)
+    //    {
+    //        List<Reservation> listByDate = new List<Reservation>();
+    //        foreach (Reservation reservation in reservationList)
+    //        {
+    //            if (reservation.date == date)
+    //            {
+    //                listByDate.Add(reservation);
+    //            }
+    //        }
+    //        return listByDate;
+    //    }
 
-        public Boolean check4HourConstraint(int userID, DateTime date, int interval)
-        {
-            if ((TimeSlotMapper.getInstance().findHoursByReservationID(ReservationMapper.getInstance().findReservationID(userID, date)) + interval) < 4)
-            {
-                return true;
-            }
-            else
-                return false;
-        }
+    //    public Boolean check4HourConstraint(int userID, DateTime date, int interval)
+    //    {
+    //        if ((TimeSlotMapper.getInstance().findHoursByReservationID(ReservationMapper.getInstance().findReservationID(userID, date)) + interval) < 4)
+    //        {
+    //            return true;
+    //        }
+    //        else
+    //            return false;
+    //    }
 
 
     }

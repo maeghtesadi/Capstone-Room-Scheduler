@@ -46,13 +46,13 @@ namespace CapstoneRoomScheduler.Controllers
         {
            DateTime date = new DateTime(year, month, day);
            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-           hubContext.Clients.All.updateCalendar(convertToJsonObject(ReservationConsole.getInstance().getAllReservations().findByDate(date)));
+           hubContext.Clients.All.updateCalendar(convertToJsonObject(ReservationConsole.getInstance().findByDate(date)));
         }
         [LoggedIn]
         [HttpPost]
         public void getReservations() {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-            var JsonListofReservations = convertToJsonObject(ReservationConsole.getInstance().getAllReservations().findByUser(Int32.Parse(User.Identity.GetUserId())));
+            var JsonListofReservations = convertToJsonObject(ReservationConsole.getInstance().findByUser(Int32.Parse(User.Identity.GetUserId())));
             hubContext.Clients.All.populateReservations(JsonListofReservations); //returns a list of reservations in the js function
         }
 
@@ -74,7 +74,7 @@ namespace CapstoneRoomScheduler.Controllers
                     finalTimeslot = lastTimeSlot,
                     roomId = reservationList[i].roomID,
                     description = reservationList[i].description,
-                    userName =  ReservationConsole.getInstance().getUserCatalog().registeredUsers.First(x => x.userID == reservationList[i].userID).name,
+                    userName =  ReservationConsole.getInstance().getUserCatalog().First(x => x.userID == reservationList[i].userID).name,
                     reservationId = reservationList[i].reservationID
 
                 });

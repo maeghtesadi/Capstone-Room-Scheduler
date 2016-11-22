@@ -324,6 +324,27 @@ namespace LogicLayer
             udpateDirectories();
         }
 
+
+        public List<TimeSlot> getAllTimeSlots()
+        {
+            return TimeSlotMapper.getInstance().getListOfTimeSlots();
+        }
+
+        public List<Reservation> getAllReservations()
+        {
+            return ReservationMapper.getInstance().getListOfReservations(); 
+        }
+
+        public List<Room> getAllRooms()
+        {
+            return RoomMapper.getInstance().getListOfRooms();
+        }
+
+        public List<User> getUserCatalog()
+        {
+            return UserMapper.getInstance().getListOfUsers();
+        }
+
         //public DirectoryOfTimeSlots getAllTimeSlots()
         //{
         //    return directoryOfTimeSlots;
@@ -342,5 +363,57 @@ namespace LogicLayer
         //{
         //    return userCatalog;
         //}
+
+
+        public List<Reservation> findByDate(DateTime date)
+        {
+            List<Reservation> listByDate = new List<Reservation>();
+            foreach (Reservation reservation in ReservationMapper.getInstance().getListOfReservations())
+            {
+                if (reservation.date.Date == date.Date)
+                {
+                    listByDate.Add(reservation);
+                }
+            }
+            return listByDate;
+        }
+
+        public List<Reservation> findByUser(int userID)
+        {
+            List<Reservation> listByuserId = new List<Reservation>();
+            foreach (Reservation reservation in ReservationMapper.getInstance().getListOfReservations())
+            {
+                if (reservation.userID == userID)
+                {
+                    listByuserId.Add(reservation);
+                }
+            }
+            return listByuserId;
+        }
+
+
+        public List<Reservation> filterByBlock(DateTime date)
+        {
+            List<Reservation> listByDate = new List<Reservation>();
+            foreach (Reservation reservation in ReservationMapper.getInstance().getListOfReservations())
+            {
+                if (reservation.date == date)
+                {
+                    listByDate.Add(reservation);
+                }
+            }
+            return listByDate;
+        }
+
+        public Boolean check4HourConstraint(int userID, DateTime date, int interval)
+        {
+            if ((TimeSlotMapper.getInstance().findHoursByReservationID(ReservationMapper.getInstance().findReservationID(userID, date)) + interval) < 4)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+
     }
 }
