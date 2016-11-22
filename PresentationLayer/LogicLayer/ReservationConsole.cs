@@ -82,13 +82,14 @@ namespace LogicLayer
         {
             // Only Console has visibility over DirectoryOfTimeSlot, so this was loop was put here instead of DirectoryOfReservation
             // Updating timeSlots of each reservations
-            for (int i = 0; i < (directoryOfReservations.reservationList).Count; i++)
+            List<TimeSlot> timeSlotList = directoryOfTimeSlots.getAllTimeSlot().Values.ToList();
+            timeSlotList.Sort((x, y) => x.hour.CompareTo(y.hour));
+            for (int i = 0; i < directoryOfReservations.reservationList.Count; i++)
             {
-                foreach (KeyValuePair<int, TimeSlot> timeSlot in directoryOfTimeSlots.getAllTimeSlot())
-                {
-                    if (directoryOfReservations.reservationList[i].reservationID == timeSlot.Value.reservationID)
-                        directoryOfReservations.reservationList[i].timeSlots.Add(timeSlot.Value);
-                }
+                foreach (TimeSlot timeSlot in timeSlotList)
+                    if (directoryOfReservations.reservationList[i].reservationID == timeSlot.reservationID && !directoryOfReservations.reservationList[i].timeSlots.Contains(timeSlot))
+                        directoryOfReservations.reservationList[i].timeSlots.Add(timeSlot);
+
             }
 
             // Updating the waitList of each timeSlot
@@ -101,6 +102,7 @@ namespace LogicLayer
             }
 
             //Updating the reservations for each room
+            //directoryOfRooms.roomList.Clear();
             for (int i = 0; i < directoryOfRooms.roomList.Count; i++)
             {
                 foreach (KeyValuePair<int, Reservation> reservation in directoryOfReservations.getAllReservation())
