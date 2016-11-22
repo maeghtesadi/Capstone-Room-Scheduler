@@ -25,18 +25,18 @@ namespace LogicLayer
         }
 
         // Method to make a new room
-        public Room makeNewRoom(int roomID, string roomnum)
+        public Room makeNewRoom(int roomID, string roomNum)
         {
-            Room r = new Room(roomID, roomnum);
+            Room r = new Room(roomID, roomNum);
             return r;
         }
 
         // Method to delete a room from the list
-        public void deleteRoom(int rid)
+        public void deleteRoom(int roomID)
         {
             for (int i = 0; i < roomList.Count; i++)
             {
-                if (roomList[i].roomID == rid)
+                if (roomList[i].roomID == roomID)
                 {
                     roomList.Remove(roomList[i]);
                     break;

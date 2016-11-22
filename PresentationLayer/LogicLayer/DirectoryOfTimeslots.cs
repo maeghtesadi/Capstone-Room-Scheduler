@@ -26,9 +26,9 @@ namespace LogicLayer
         }
 
         // Method to make a new time slot
-        public TimeSlot makeNewTimeSlot(int timeslotID, int resID, int hour)
+        public TimeSlot makeNewTimeSlot(int timeslotID, int reservationID, int hour)
         {
-            TimeSlot timeSlot = new TimeSlot(timeslotID, resID, hour);
+            TimeSlot timeSlot = new TimeSlot(timeslotID, reservationID, hour);
             timeSlotList.Add(timeSlot);
             return timeSlot;
         }
@@ -50,10 +50,10 @@ namespace LogicLayer
         }
 
         // Method to delete a timeslot
-        public void deleteTimeSlot(int id)
+        public void deleteTimeSlot(int timeSlotID)
         {
             foreach (TimeSlot timeSlot in timeSlotList)
-                if (timeSlot.timeSlotID == id)
+                if (timeSlot.timeSlotID == timeSlotID)
                     timeSlotList.Remove(timeSlot);
         }
     }
