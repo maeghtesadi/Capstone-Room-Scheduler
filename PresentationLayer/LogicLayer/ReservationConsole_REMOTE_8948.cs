@@ -390,35 +390,6 @@ namespace LogicLayer
             }
             return false;
         }
-
-        /**
-         * method for the constraint of not exceeding 3 reservations per week per person
-         */
-        public Boolean weeklyConstraintCheck(int userID, DateTime date)
-        {
-            int counter = 0;
-            //numbercial value for day of the week
-            int currentDay = (int)date.DayOfWeek;
-            //list that will contain all the found reservation IDs
-            List<int> IDlist = new List<int>();
-            //if the day is sunday
-            if (currentDay == 0)
-            {
-                currentDay = 7;
-            }
-            //for every day of the week until current day
-            for (int i = 0; i < currentDay; i++)
-            {
-                counter += (directoryOfReservations.findReservationsByIDAndDate(userID, date.AddDays(-i))).Count;
-            } 
-            //return true if the user has made less than 3 reservations
-            if (counter < 3)
-            {
-                return true;
-            }
-            //otherwise return false
-            return false;
-        }
-
+       
     }
 }
