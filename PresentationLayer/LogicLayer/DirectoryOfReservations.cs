@@ -110,23 +110,12 @@ namespace LogicLayer
         }
 
 
-        public List<int> findReservations(int userID, DateTime date)
+        public List<int> findReservationsByIDAndDate(int userID, DateTime date)
         {
             List<int> IDlist = new List<int>();
             IDlist = ReservationMapper.getInstance().findReservationIDs(userID, date);
             return IDlist;
         }
-
-        //public Boolean checkConstraint(int userID, DateTime date, int interval)
-        //{
-        //    if ((TimeSlotMapper.getInstance().findHoursByReservationID(ReservationMapper.getInstance().findReservationID(userID, date)) + interval) < 4)
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //        return false;
-        //}
-
 
     }
 }
