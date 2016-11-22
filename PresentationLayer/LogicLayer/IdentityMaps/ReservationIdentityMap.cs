@@ -84,7 +84,7 @@ namespace CapstoneRoomScheduler.LogicLayer.IdentityMaps
         * Finds all reservation IDs associated with the unique combination of user ID and date
         * */
 
-        public List<int> findIDs(int userID, DateTime date)
+        public List<int> findReservationIDs(int userID, DateTime date)
         {
             //instantiate a new list to be returned
             List<int> IDlist = new List<int>();

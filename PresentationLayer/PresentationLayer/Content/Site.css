@@ -231,6 +231,11 @@ color:#868686;
 font-size:12px;
 line-height:6px;
 }
+.reservation-item .reservationDetails .date{
+color:#868686;
+font-size:11px;
+line-height:20px;
+}
 
  .reservation-item .cancelReservation {
  width:12%;
