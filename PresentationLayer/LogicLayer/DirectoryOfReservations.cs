@@ -28,7 +28,16 @@ namespace LogicLayer
         public Reservation makeNewReservation(int reservationid, int userID, int roomID, string desc, DateTime date)
         {
             Reservation reservation = new Reservation(reservationid, userID, roomID, desc, date);
-            reservationList.Add(reservation);
+            bool foundID = false;
+
+            for (int i = 0; i < reservationList.Count; i++)
+            {
+                if (reservationList[i].reservationID == reservationid)
+                    foundID = true;
+            }
+            if (!foundID)
+                reservationList.Add(reservation);
+
             return reservation;
         }
 

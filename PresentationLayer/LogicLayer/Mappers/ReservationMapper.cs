@@ -33,7 +33,8 @@ namespace Mappers
         {
             foreach (KeyValuePair<int, Reservation> reservation in getAllReservation())
             {
-                DirectoryOfReservations.getInstance().reservationList.Add(reservation.Value);
+                if (!DirectoryOfReservations.getInstance().reservationList.Contains(reservation.Value))
+                    DirectoryOfReservations.getInstance().reservationList.Add(reservation.Value);
             }
         }
         public static ReservationMapper getInstance()
@@ -130,7 +131,8 @@ namespace Mappers
                 if (!reservations.ContainsKey(record.Key))
                 {
 
-                    Reservation reservation = new Reservation((int)record.Key, (int)record.Value[1], (int)record.Value[2], (string)record.Value[3], (DateTime)record.Value[4]);
+                    Reservation reservation = DirectoryOfReservations.getInstance().makeNewReservation((int)record.Key, (int)record.Value[1], (int)record.Value[2], (string)record.Value[3], (DateTime)record.Value[4]);
+
                     reservationIdentityMap.addTo(reservation);
                     reservations.Add(reservation.reservationID, reservation);
                 }

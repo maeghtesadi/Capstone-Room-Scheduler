@@ -301,10 +301,22 @@ serverSession.client.populateReservations = function (reservationList) {
         buildNewReservationItem(resID, des, firstTime, secondTime, roomID, date);
     }
 }
+//adds a show waitlist button to timeslots with waitlists
 serverSession.client.updateWaitlist = function (timeslotList,reservationList) {
+    var roomId;
+    var userName;
     for (var i = 0; i < timeslotList.length; i++) {
+    
         if (timeslotList.waitlist.length != 0) {
-
+            for (var j = 0; j < reservationList.length; j++) {
+                if(timeslotList[i].reservationID == reservationList[j].reservationId)
+                {
+                    roomId = reservationList[j].roomId;
+                    userName = reservationList[j].userName;
+                }
+            }
+            $("li[data-timeslot='" + timeslotList[i].hour + "']li[data-room='" + roomId + "']").append('<div class="get-waitlist"></div>');;
+            
         }
     }
 
