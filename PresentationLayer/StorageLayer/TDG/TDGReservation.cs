@@ -330,7 +330,7 @@ namespace TDG
 
             //Write and execute the query
             this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE" + FIELDS[1] + "=" + userID + ";";
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE" + FIELDS[4] + "=" + date + ";";
+            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE" + FIELDS[4] + "=" + date.Date.ToString("yyyy-MM-dd") + ";";
             this.cmd.Connection = this.conn;
             MySqlDataReader reader = cmd.ExecuteReader();
 
