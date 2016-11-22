@@ -10,6 +10,8 @@ namespace LogicLayer
     public class DirectoryOfTimeSlots
     {
 
+        private static DirectoryOfTimeSlots instance = new DirectoryOfTimeSlots();
+
         public List<TimeSlot> timeSlotList { get; set; }
 
         public DirectoryOfTimeSlots()
@@ -20,6 +22,11 @@ namespace LogicLayer
             {
                 timeSlotList.Add(timeSlot.Value);
             }
+        }
+
+        public static DirectoryOfTimeSlots getInstance()
+        {
+            return instance;
         }
 
         public TimeSlot makeNewTimeSlot(int resID, int hour)

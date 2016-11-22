@@ -9,6 +9,9 @@ namespace LogicLayer
 {
     public class DirectoryOfRooms
     {
+
+        private static DirectoryOfRooms instance = new DirectoryOfRooms();
+
         public List<Room> roomList { get; set; }
 
         public DirectoryOfRooms()
@@ -19,6 +22,11 @@ namespace LogicLayer
             {
                 roomList.Add(room.Value);
             }           
+        }
+
+        public static DirectoryOfRooms getInstance()
+        {
+            return instance;
         }
 
         public Dictionary<int, Room> getAllRooms()

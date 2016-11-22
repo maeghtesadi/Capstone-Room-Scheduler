@@ -9,6 +9,9 @@ namespace LogicLayer
 {
     public class DirectoryOfReservations
     {
+
+        private static DirectoryOfReservations instance = new DirectoryOfReservations();
+
         public List<Reservation> reservationList { get; set; }
 
         public DirectoryOfReservations()
@@ -18,6 +21,11 @@ namespace LogicLayer
             {
                 reservationList.Add(reservation.Value);
             }
+        }
+
+        public static DirectoryOfReservations getInstance()
+        {
+            return instance;
         }
 
         public Reservation makeNewReservation(int roomID, int userID, string desc, DateTime date)
