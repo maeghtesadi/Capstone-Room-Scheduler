@@ -44,11 +44,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.1\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MySql.Data, Version=6.8.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.8.8\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -167,90 +179,160 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\ConsoleController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="LogicLayer\Authorization\AuthorizationManager.cs" />
+    <Compile Include="LogicLayer\DirectoryOfReservations.cs" />
+    <Compile Include="LogicLayer\DirectoryOfRooms.cs" />
+    <Compile Include="LogicLayer\DirectoryOfTimeSlots.cs" />
+    <Compile Include="LogicLayer\IdentityMaps\TimeSlotIdentityMap.cs" />
+    <Compile Include="LogicLayer\IdentityMaps\UserIdentityMap.cs" />
+    <Compile Include="LogicLayer\IdentityMaps\WaitsForIdentityMap.cs" />
+    <Compile Include="LogicLayer\Mappers\TimeSlotMapper.cs" />
+    <Compile Include="LogicLayer\Reservation.cs" />
+    <Compile Include="LogicLayer\ReservationConsole.cs" />
+    <Compile Include="LogicLayer\Mappers\ReservationMapper.cs" />
+    <Compile Include="LogicLayer\IdentityMaps\ReservationIdentityMap.cs" />
+    <Compile Include="LogicLayer\Room.cs" />
+    <Compile Include="LogicLayer\IdentityMaps\RoomIdentityMap.cs" />
+    <Compile Include="LogicLayer\Mappers\RoomMapper.cs" />
+    <Compile Include="LogicLayer\TimeSlot.cs" />
+    <Compile Include="LogicLayer\TimeSlotList.cs" />
+    <Compile Include="LogicLayer\UnitOfWork.cs" />
+    <Compile Include="LogicLayer\User.cs" />
+    <Compile Include="LogicLayer\UserCatalog.cs" />
+    <Compile Include="LogicLayer\Mappers\UserMapper.cs" />
+    <Compile Include="LogicLayer\Mappers\WaitsForMapper.cs" />
+    <Compile Include="PresentationLayer\Controllers\AccountController.cs" />
+    <Compile Include="PresentationLayer\Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="PresentationLayer\Hubs\CalendarHub.cs" />
+    <Compile Include="PresentationLayer\Models\AccountViewModels.cs" />
+    <Compile Include="PresentationLayer\Models\IdentityModels.cs" />
+    <Compile Include="PresentationLayer\Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="StorageLayer\TDG\TDGReservation.cs" />
+    <Compile Include="StorageLayer\TDG\TDGRoom.cs" />
+    <Compile Include="StorageLayer\TDG\TDGTimeSlot.cs" />
+    <Compile Include="StorageLayer\TDG\TDGUser.cs" />
+    <Compile Include="StorageLayer\TDG\TDGWaitsFor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-paper.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\calendar.css" />
-    <Content Include="Content\dashboard.css" />
+    <Content Include="PresentationLayer\Content\bootstrap-paper.css" />
+    <Content Include="PresentationLayer\Content\bootstrap.css" />
+    <Content Include="PresentationLayer\Content\bootstrap.min.css" />
+    <Content Include="PresentationLayer\Content\calendar.css" />
+    <Content Include="PresentationLayer\Content\dashboard.css" />
+    <Content Include="PresentationLayer\Content\themes\base\accordion.css" />
+    <Content Include="PresentationLayer\Content\themes\base\all.css" />
+    <Content Include="PresentationLayer\Content\themes\base\autocomplete.css" />
+    <Content Include="PresentationLayer\Content\themes\base\base.css" />
+    <Content Include="PresentationLayer\Content\themes\base\button.css" />
+    <Content Include="PresentationLayer\Content\themes\base\core.css" />
+    <Content Include="PresentationLayer\Content\themes\base\datepicker.css" />
+    <Content Include="PresentationLayer\Content\themes\base\dialog.css" />
+    <Content Include="PresentationLayer\Content\themes\base\draggable.css" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-icons_444444_256x240.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-icons_555555_256x240.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-icons_777620_256x240.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-icons_777777_256x240.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="PresentationLayer\Content\themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="PresentationLayer\Content\themes\base\jquery-ui.css" />
+    <Content Include="PresentationLayer\Content\themes\base\jquery-ui.min.css" />
+    <Content Include="PresentationLayer\Content\themes\base\menu.css" />
+    <Content Include="PresentationLayer\Content\themes\base\progressbar.css" />
+    <Content Include="PresentationLayer\Content\themes\base\resizable.css" />
+    <Content Include="PresentationLayer\Content\themes\base\selectable.css" />
+    <Content Include="PresentationLayer\Content\themes\base\selectmenu.css" />
+    <Content Include="PresentationLayer\Content\themes\base\slider.css" />
+    <Content Include="PresentationLayer\Content\themes\base\sortable.css" />
+    <Content Include="PresentationLayer\Content\themes\base\spinner.css" />
+    <Content Include="PresentationLayer\Content\themes\base\tabs.css" />
+    <Content Include="PresentationLayer\Content\themes\base\theme.css" />
+    <Content Include="PresentationLayer\Content\themes\base\tooltip.css" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="PresentationLayer\fonts\css\font-awesome.css" />
+    <Content Include="PresentationLayer\fonts\css\font-awesome.min.css" />
+    <Content Include="PresentationLayer\fonts\fonts\fontawesome-webfont.svg" />
+    <Content Include="PresentationLayer\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\calendar.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
-    <Content Include="Web.Debug.config">
+    <Content Include="PresentationLayer\Content\Site.css" />
+    <Content Include="PresentationLayer\Scripts\bootstrap.js" />
+    <Content Include="PresentationLayer\Scripts\bootstrap.min.js" />
+    <Content Include="PresentationLayer\Scripts\calendar.js" />
+    <Content Include="PresentationLayer\fonts\fonts\fontawesome-webfont.eot" />
+    <Content Include="PresentationLayer\fonts\fonts\fontawesome-webfont.ttf" />
+    <Content Include="PresentationLayer\fonts\fonts\fontawesome-webfont.woff" />
+    <Content Include="PresentationLayer\fonts\fonts\fontawesome-webfont.woff2" />
+    <Content Include="PresentationLayer\fonts\fonts\FontAwesome.otf" />
+    <None Include="PresentationLayer\Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="PresentationLayer\Scripts\jquery-3.1.1.js" />
+    <Content Include="PresentationLayer\Scripts\jquery-3.1.1.min.js" />
+    <Content Include="PresentationLayer\Scripts\jquery-3.1.1.slim.js" />
+    <Content Include="PresentationLayer\Scripts\jquery-3.1.1.slim.min.js" />
+    <Content Include="PresentationLayer\Scripts\jquery-3.1.1.slim.min.map" />
+    <Content Include="PresentationLayer\Scripts\jquery-3.1.1.min.map" />
+    <None Include="PresentationLayer\Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="PresentationLayer\Scripts\jquery-ui-1.12.1.js" />
+    <Content Include="PresentationLayer\Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="PresentationLayer\Scripts\jquery.signalR-2.2.1.js" />
+    <Content Include="PresentationLayer\Scripts\jquery.signalR-2.2.1.min.js" />
+    <Content Include="PresentationLayer\Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="PresentationLayer\Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="PresentationLayer\Scripts\jquery.validate.js" />
+    <Content Include="PresentationLayer\Scripts\jquery.validate.min.js" />
+    <Content Include="PresentationLayer\Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="PresentationLayer\Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="PresentationLayer\Scripts\modernizr-2.6.2.js" />
+    <Content Include="PresentationLayer\Scripts\respond.js" />
+    <Content Include="PresentationLayer\Scripts\respond.min.js" />
+    <Content Include="PresentationLayer\Scripts\_references.js" />
+    <None Include="web.config.old1" />
+    <None Include="Web.config" />
+    <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
+    </None>
+    <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Console\About.cshtml" />
-    <Content Include="Views\Console\Contact.cshtml" />
-    <Content Include="Views\Console\Calendar.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\SendCode.cshtml" />
-    <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
-    <Content Include="Views\Shared\Lockout.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Console\Reservations.cshtml" />
+    </None>
+    <None Include="PresentationLayer\Views\Web.Config" />
+    <Content Include="PresentationLayer\Views\_ViewStart.cshtml" />
+    <Content Include="PresentationLayer\Views\Shared\Error.cshtml" />
+    <Content Include="PresentationLayer\Views\Shared\_Layout.cshtml" />
+    <Content Include="PresentationLayer\Views\Home\Calendar.cshtml" />
+    <Content Include="PresentationLayer\Views\Account\Login.cshtml" />
+    <None Include="web.config.Debug.old1">
+      <DependentUpon>web.config.old1</DependentUpon>
+    </None>
+    <None Include="web.config.Release.old1">
+      <DependentUpon>web.config.old1</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\readwrite\" />
+    <Folder Include="PresentationLayer\Views\readwrite\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="PresentationLayer\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="PresentationLayer\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="PresentationLayer\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
