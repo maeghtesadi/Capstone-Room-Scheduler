@@ -57,11 +57,5 @@ namespace LogicLayer
                     timeSlotList.Remove(timeSlot);
         }
 
-
-        public int findHoursByReservationIDs(List<int> IDlist)
-        {
-            int hours = TimeSlotMapper.getInstance().findHoursByReservationID(IDlist);
-            return hours;
-        }
     }
 }
