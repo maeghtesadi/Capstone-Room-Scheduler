@@ -27,10 +27,17 @@ namespace Mappers
         private TimeSlotMapper()
         {
             this.lastID = tdgTimeSlot.getLastID();
+
         }
 
-
-        public static TimeSlotMapper getInstance()
+        public void initializeDirectoryOfTimeSlots() {
+            foreach (KeyValuePair<int, TimeSlot> timeSlot in getAllTimeSlot())
+            {
+                DirectoryOfTimeSlots.getInstance().timeSlotList.Add(timeSlot.Value);
+            }
+        }
+    // Get instance
+    public static TimeSlotMapper getInstance()
         {
             return instance;
         }
@@ -54,31 +61,21 @@ namespace Mappers
         /**
          * Handles the creation of a new object of type TimeSlot.
          **/
-
         public TimeSlot makeNew(int reservationID, int hour)
         {
             // TimeSlot ID
             int timeslotID = getNextID();
 
-            //Make a new TimeSlot object
-            TimeSlot timeslot = new TimeSlot();
+            // Make a new time slot
+            TimeSlot timeSlot = DirectoryOfTimeSlots.getInstance().makeNewTimeSlot(timeslotID, reservationID, hour);
 
-            timeslot = DirectoryOfTimeSlots.getInstance().makeNewTimeSlot(timeslotID, reservationID, hour, new Queue<int>());
-            //timeslot.timeSlotID = (timeslotID);
-            //timeslot.reservationID = reservationID;
-            //timeslot.hour = hour;
+            //Add new TimeSlot object to the identity map
+            timeSlotIdentityMap.addTo(timeSlot);
 
-            DirectoryOfTimeSlots.getInstance().addToListOfTimeSlots(timeslot);
+            //Add TimeSlot object to UoW
+            UnitOfWork.getInstance().registerNew(timeSlot);
 
-            //Add new TimeSlot object to the identity map, in Live memory.
-            timeSlotIdentityMap.addTo(timeslot);
-
-            //Add TimeSlot object to UoW registry (register as a new TIMESLOT).
-            //It will be  created in the DB once the user is ready to commit everything.
-            UnitOfWork.getInstance().registerNew(timeslot);
-
-            return timeslot;
-
+            return timeSlot;
         }
 
         /**
@@ -88,10 +85,9 @@ namespace Mappers
         public TimeSlot getTimeSlot(int timeSlotID)
         {
 
-            //Try to obtain the TimeSlot from the TimeSlot indentity map
+            //Try to obtain the TimeSlot from the TimeSlot identity map
             TimeSlot timeslot = timeSlotIdentityMap.find(timeSlotID);
             Object[] result = null;
-
 
             if (timeslot == null)
             {
@@ -100,23 +96,16 @@ namespace Mappers
 
                 if (result != null)
                 {
-                    /**The TimeSlot was obtained from the TDG.
-                     * The TDG got (retrieved) TimeSlot from the DB.
-                    **/
-
-                    //mapper must add TimeSlot to the TimeSlot IdentityMap
-                    timeslot = new TimeSlot();
-                    timeslot.timeSlotID = ((int)result[0]); //timeSlotID
-                    timeslot.reservationID = ((int)result[1]); //reservationID
-                    timeslot.hour = ((int)result[2]); //hour
+                    //The TimeSlot object was obtained from the TDG (and from the DB)
+                    //Instantiate the object by passing values to parameters
+                    DirectoryOfTimeSlots.getInstance().makeNewTimeSlot((int)result[0], (int)result[1], (int)result[2]);
+                    
+                    //Add TimeSlot to the TimeSlot IdentityMap
                     timeSlotIdentityMap.addTo(timeslot);
-
                 }
             }
-
             //Null is returned if it is not found in the TimeSlot identity map NOR in the DB
             return timeslot;
-
         }
 
         /**
@@ -143,13 +132,12 @@ namespace Mappers
                 //Create an instance, add it to the Time Slot indentity map and to the return variable
                 if (!timeslots.ContainsKey(record.Key))
                 {
-                    TimeSlot timeslot = new TimeSlot();
-                    timeslot.timeSlotID = ((int)record.Key); //timeslotID
-                    timeslot.reservationID = ((int)record.Value[1]); //reservationID
-                    timeslot.hour = ((int)record.Value[2]); //roomID
+                    TimeSlot timeSlot = DirectoryOfTimeSlots.getInstance().makeNewTimeSlot((int)record.Key, (int)record.Value[1], (int)record.Value[2]);
 
-                    timeSlotIdentityMap.addTo(timeslot);
-                    timeslots.Add(timeslot.timeSlotID, timeslot);
+                    // Add to IdentityMap
+                    timeSlotIdentityMap.addTo(timeSlot);
+
+                    timeslots.Add(timeSlot.timeSlotID, timeSlot);
                 }
             }
             return timeslots;
@@ -176,16 +164,12 @@ namespace Mappers
             foreach (KeyValuePair<int, Object[]> record in result)
             {
                 //The timeslot is not in the Time Slot identity map.
-                //Create an instance, add it to the Time Slot indentity map and to the return variable
+                //Create an instance, add it to the Time Slot identity map and to the return variable
                 if (!timeslots.ContainsKey(record.Key))
                 {
-                    TimeSlot timeslot = new TimeSlot();
-                    timeslot.timeSlotID = ((int)record.Key); //timeslotID
-                    timeslot.reservationID = ((int)record.Value[1]); //reservationID
-                    timeslot.hour = ((int)record.Value[2]); //roomID
-
-                    timeSlotIdentityMap.addTo(timeslot);
-                    timeslots.Add(timeslot.timeSlotID, timeslot);
+                    TimeSlot timeSlot = DirectoryOfTimeSlots.getInstance().makeNewTimeSlot((int)record.Key, (int)record.Value[1], (int)record.Value[2]);
+                    timeSlotIdentityMap.addTo(timeSlot);
+                    timeslots.Add(timeSlot.timeSlotID, timeSlot);
                 }
             }
             return timeslots;
@@ -205,14 +189,8 @@ namespace Mappers
          */
         public void setTimeSlot(int timeSlotID, int reservationID, Queue<int> waitList)
         {
-            // Get the timeslot that needs to be updated
-            TimeSlot timeSlot = getTimeSlot(timeSlotID);
-
             // Update the timeslot
-            DirectoryOfTimeSlots.getInstance().modifyTimeSlot(timeSlotID, reservationID, waitList);
-            //timeSlot.timeSlotID = timeSlotID;
-            //timeSlot.reservationID = reservationID;
-            //timeSlot.waitlist = waitList;
+            TimeSlot timeSlot = DirectoryOfTimeSlots.getInstance().modifyTimeSlot(timeSlotID, reservationID, waitList);
 
             // Register it to the unit of work
             UnitOfWork.getInstance().registerDirty(timeSlot); 
@@ -237,15 +215,12 @@ namespace Mappers
             }
 
 
-            //Register as deleted in the Unit Of Work. 
-            //Object will be deleted from the DB
+            //Register as deleted in the Unit Of Work
             UnitOfWork.getInstance().registerDeleted(timeSlot);
 
-            //DirectoryOfTimeSlots.getInstance().deleteTimeSlot(timeSlot.timeSlotID);
-
-            DirectoryOfTimeSlots.getInstance().deleteFromListOfTimeSlots(timeSlot.timeSlotID);
-
+            DirectoryOfTimeSlots.getInstance().deleteTimeSlot(timeSlot.timeSlotID);
         }
+
         /**
          * Done: commit
          * When it is time to commit, UoW writes changes to the DB
@@ -254,7 +229,6 @@ namespace Mappers
         public void done()
         {
             UnitOfWork.getInstance().commit();
-
         }
 
         //For Unit of Work: A list of timeslots to be added to the DB is passed to the TDG. 

@@ -13,13 +13,9 @@ namespace LogicLayer
 
         public List<User> registeredUsers { get; set; }
 
-        public UserCatalog()
+        private UserCatalog()
         {
             registeredUsers = new List<User>();
-            foreach (KeyValuePair<int, User> user in UserMapper.getInstance().getAllUser())
-            {
-                registeredUsers.Add(user.Value);
-            }
         }
 
         public UserCatalog(List<User> regusers)
@@ -32,5 +28,24 @@ namespace LogicLayer
             return instance;
         }
 
+        public User makeNewUser(int userID, String username, String password, String name)
+        {
+            User user = new User(userID, username, password, name);
+            return user;
+        }
+
+        public User modifyUser(int userID, String name)
+        {
+            for(int i = 0; i < registeredUsers.Count; i++)
+            {
+                if (registeredUsers[i].userID == userID)
+                {
+                    registeredUsers[i].userID = userID;
+                    registeredUsers[i].name = name;
+                    return registeredUsers[i];
+                }
+            }
+            return null;
+        }
     }
 }

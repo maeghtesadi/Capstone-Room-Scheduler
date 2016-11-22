@@ -3,60 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Mappers;
 
 namespace LogicLayer
 {
     public class DirectoryOfReservations
     {
-   
         private static DirectoryOfReservations instance = new DirectoryOfReservations();
         
         public List<Reservation> reservationList { get; set; }
 
-        public DirectoryOfReservations()
+        // Constructor
+        private DirectoryOfReservations()
         {
             reservationList = new List<Reservation>();
-            foreach (KeyValuePair<int, Reservation> reservation in getAllReservation())
-            {
-                reservationList.Add(reservation.Value);
-            }
         }
 
+        // Get the instance object
         public static DirectoryOfReservations getInstance()
         {
             return instance;
         }
 
-        public void addToListOfReservations(Reservation r)
+        // Method to make a new reservation
+        public Reservation makeNewReservation(int reservationid, int roomID, int userID, string desc, DateTime date)
         {
-            reservationList.Add(r);
-        }
-
-        public void deleteFromListOfReservations(int resid)
-        {
-            for (int i = 0; i < reservationList.Count; i++)
-            {
-                if (reservationList[i].reservationID == resid)
-                {
-                    reservationList.Remove(reservationList[i]);
-                    break;
-                }
-            }
-        }
-        
-        public Reservation makeNewReservation(int reservationid, int roomID, int userID, string desc, DateTime date, List<TimeSlot> tsl)
-        {
-            //Reservation reservation = ReservationMapper.getInstance().makeNew(userID, roomID, desc, date);
-            Reservation reservation = new Reservation(reservationid, userID, roomID, desc, date, tsl);
-            //reservationList.Add(reservation);
+            Reservation reservation = new Reservation(reservationid, userID, roomID, desc, date);
+            reservationList.Add(reservation);
             return reservation;
         }
 
+        // Method to modify a reservation
         public void modifyReservation(int reservationID, int roomID, string desc, DateTime date)
         {
-            //ReservationMapper.getInstance().modifyReservation(reservationID, roomID, desc, date);
-            
             foreach (Reservation reservation in reservationList)
             {
                 if (reservation.reservationID == reservationID)
@@ -68,31 +46,15 @@ namespace LogicLayer
             }
         }
 
+        // Method to cancel a reservation
         public void cancelReservation(int reservationID)
         {
-            //ReservationMapper.getInstance().delete(reservationID);
-
-            foreach (Reservation reservation in reservationList)
+            foreach (Reservation reservation in this.reservationList)
                 if (reservation.reservationID == reservationID)
                 {
                     reservationList.Remove(reservation);
                     return;
                 }
-        }
-
-        public Reservation getReservation(int reservationID)
-        {
-            return ReservationMapper.getInstance().getReservation(reservationID);
-        }
-
-        public Dictionary<int, Reservation> getAllReservation()
-        {
-            return ReservationMapper.getInstance().getAllReservation();
-        }
-
-        public void done()
-        {
-            ReservationMapper.getInstance().done();
         }
 
     //    public List<Reservation> findByDate(DateTime date)

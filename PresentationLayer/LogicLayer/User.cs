@@ -22,8 +22,6 @@ namespace LogicLayer
             username = "";
             password = "";
             name = "";
-           
-
         }
 
         public User (int idnumber, string un, string pw, string n)
@@ -32,7 +30,6 @@ namespace LogicLayer
             this.username = un;
             this.password = pw; 
             this.name = n;
-            
         }
 
     }
