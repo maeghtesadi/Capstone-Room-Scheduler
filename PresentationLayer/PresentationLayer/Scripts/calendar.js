@@ -370,6 +370,9 @@ $(".reservation-content").on('click',".reservation-item",function(){
     $("input[name='description']").val($(".reservation-item.active").find(".content-description").html());
     $("input[name='resid']").attr("value", $(".reservation-item.active").find(".content-room").data('resid'));
     setCalendarDate();
+
+    ddl_finalTimeslot_restriction();
+
 });
     
 $(".deleteReservation").on('click', function () {
@@ -409,12 +412,14 @@ $(".waitlist-tab").click(function () {
     }
 });
 
-{
+function ddl_finalTimeslot_restriction() {
+    $(".ddl-finalTimeslot").children().hide();
     var option = parseInt($('.ddl-initialTimeslot option:selected').val());
     for (var i = option + 1; i <= option + 4 ; i++) {
         $(".ddl-finalTimeslot").children("option[value=" + i + "]").show();
     }
 }
+ddl_finalTimeslot_restriction();
 
 $(".ddl-initialTimeslot").change(function () {
 
