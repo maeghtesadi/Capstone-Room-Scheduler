@@ -18,13 +18,6 @@ namespace Mappers
         private WaitsForMapper waitsForMapper = WaitsForMapper.getInstance();
 
 
-        DirectoryOfReservations directoryOfReservations = new DirectoryOfReservations();
-        DirectoryOfRooms directoryOfRooms = new DirectoryOfRooms();
-        DirectoryOfTimeSlots directoryOfTimeSlots = new DirectoryOfTimeSlots();
-        UserCatalog userCatalog = new UserCatalog();
-
-
-
         // The last ID that is used
         private int lastID;
 
@@ -79,10 +72,12 @@ namespace Mappers
             //Add new reservation object to the identity map, in Live memory.
             reservationIdentityMap.addTo(reservation);
 
+
             //Add reservation object to UoW registry (register as a new RESERVATION).
             //It will be  created in the DB once the user is ready to commit everything.
 
             UnitOfWork.getInstance().registerNew(reservation);
+
 
             return reservation;
 
