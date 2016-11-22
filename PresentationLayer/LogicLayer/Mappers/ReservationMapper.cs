@@ -244,14 +244,14 @@ namespace Mappers
         /**
        * Retrieve all resevation IDs associated with the unique userID & date
        * */
-        public List<int> findReservationID(int userID, DateTime date)
+        public List<int> findReservationIDs(int userID, DateTime date)
         {
             List<int> IDlist = new List<int>();
             IDlist = ReservationIdentityMap.getInstance().findReservationIDs(userID, date);
 
             if (IDlist == null)
             {
-                IDlist = tdgReservation.findByReservationId(userID, date);
+                IDlist = tdgReservation.getReservationIDs(userID, date);
                 if (IDlist == null)
                 {
                     return null;
