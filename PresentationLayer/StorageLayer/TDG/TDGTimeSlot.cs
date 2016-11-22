@@ -41,12 +41,6 @@ namespace TDG
         //Determine after how much time a command (query) should be timed out
         private const int COMMAND_TIMEOUT = 60;
 
-        //MySQL Connection
-        private MySqlConnection conn;
-
-        //Command object
-        private MySqlCommand cmd;
-
         /**
          * Returns the instance
          * */
@@ -62,38 +56,6 @@ namespace TDG
 
         private TDGTimeSlot()
         {
-            this.cmd = new MySqlCommand();
-            this.cmd.CommandTimeout = COMMAND_TIMEOUT;
-
-        }
-
-        /**
-         * Open connection to the database
-         * */
-        public Boolean openConnection()
-        {
-            try
-            {
-                this.conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
-                this.conn.Open();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-
-            }
-        }
-
-
-        /**
-         * Close connection to the database
-         * */
-
-        public void closeConnection()
-        {
-            this.conn.Close();
         }
 
 
@@ -102,13 +64,24 @@ namespace TDG
          */
         public void addTimeSlot(List<TimeSlot> newList)
         {
-            if (!openConnection())
-                return;
-            for (int i = 0; i < newList.Count; i++)
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
+
+            try
             {
-                createTimeSlot(newList[i]);
+                conn.Open();
+                for (int i = 0; i < newList.Count; i++)
+                {
+                    createTimeSlot(conn, newList[i]);
+                }
             }
-            closeConnection();
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
         /**
@@ -116,13 +89,24 @@ namespace TDG
          */
         public void updateTimeSlot(List<TimeSlot> updateList)
         {
-            if (!openConnection())
-                return;
-            for (int i = 0; i < updateList.Count; i++)
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
+
+            try
             {
-                updateTimeSlot(updateList[i]);
+                conn.Open();
+                for (int i = 0; i < updateList.Count; i++)
+                {
+                    updateTimeSlot(conn, updateList[i]);
+                }
             }
-            closeConnection();
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
         /**
@@ -132,13 +116,24 @@ namespace TDG
 
         public void deleteTimeSlot(List<TimeSlot> deleteList)
         {
-            if (!openConnection())
-                return;
-            for (int i = 0; i < deleteList.Count; i++)
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
+
+            try
             {
-                removeTimeSlot(deleteList[i]);
+                conn.Open();
+                for (int i = 0; i < deleteList.Count; i++)
+                {
+                    removeTimeSlot(conn, deleteList[i]);
+                }
             }
-            closeConnection();
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
 
@@ -148,22 +143,21 @@ namespace TDG
 
         public Object[] get(int timeslotID)
         {
-            //Open connection
-            if (!openConnection())
-                return null;
-
-            //Write and execute the query
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + timeslotID;
-            this.cmd.Connection = this.conn;
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
+            String commandLine = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + timeslotID;
             MySqlDataReader reader = null;
             Object[] record = null; // to be returned
 
             try
             {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand(commandLine, conn);
                 reader = cmd.ExecuteReader();
                 //If no record is found, return null
                 if (!reader.HasRows)
                 {
+                    reader.Close();
+                    conn.Close();
                     return null;
                 }
                 //There is only one result since we find it by id
@@ -172,6 +166,8 @@ namespace TDG
                 {
                     if (reader[0].GetType() == typeof(System.DBNull))
                     {
+                        reader.Close();
+                        conn.Close();
                         return null;
                     }
                     record[0] = reader[0]; // timeslotID
@@ -186,9 +182,9 @@ namespace TDG
             }
             finally
             {
-                //Close connection
-                reader.Close();
-                closeConnection();
+                if (reader != null)
+                    reader.Close();
+                conn.Close();
             }
 
             //Format and return the result
@@ -205,24 +201,23 @@ namespace TDG
         public Dictionary<int, Object[]> getAllTimeSlot()
         {
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
-            //Open Connection
-            if (!openConnection())
-                return records;
-
-            //Write and execute the query
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
-            this.cmd.Connection = this.conn;
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
             MySqlDataReader reader = null;
-
+            String commandLine = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
+            
             try
             {
+                conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand(commandLine, conn);
                 reader = cmd.ExecuteReader();
 
                 //If no record is found, return empty records
                 if (!reader.HasRows)
                 {
+                    reader.Close();
+                    conn.Close();
                     return records;
-
                 }
 
                 //For each reader, add it to the dictionary
@@ -230,6 +225,8 @@ namespace TDG
                 {
                     if (reader[0].GetType() == typeof(System.DBNull))
                     {
+                        reader.Close();
+                        conn.Close();
                         return records;
                     }
                     Object[] attributes = new Object[FIELDS.Length];
@@ -247,8 +244,9 @@ namespace TDG
             finally
             {
                 //close connection
-                reader.Close();
-                closeConnection();
+                if(reader!=null)
+                    reader.Close();
+                conn.Close();
             }
 
             //Format and return the result
@@ -265,23 +263,22 @@ namespace TDG
         public Dictionary<int, Object[]> getAllTimeSlot(int reservationID)
         {
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
-            //Open Connection
-            if (!openConnection())
-                return records;
-
-            //Write and execute the query
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[1] + " = " + reservationID;
-            this.cmd.Connection = this.conn;
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
+            String commandLine = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[1] + " = " + reservationID;
             MySqlDataReader reader = null;
 
             try
             {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand(commandLine, conn);
                 reader = cmd.ExecuteReader();
+
                 //If no record is found, return empty records
                 if (!reader.HasRows)
                 {
+                    reader.Close();
+                    conn.Close();
                     return records;
-
                 }
 
                 //For each reader, add it to the dictionary
@@ -289,6 +286,8 @@ namespace TDG
                 {
                     if (reader[0].GetType() == typeof(System.DBNull))
                     {
+                        reader.Close();
+                        conn.Close();
                         return records;
                     }
                     Object[] attributes = new Object[FIELDS.Length];
@@ -306,8 +305,9 @@ namespace TDG
             finally
             {
                 //close connection
-                reader.Close();
-                closeConnection();
+                if(reader!=null)
+                    reader.Close();
+                conn.Close();
             }
 
             //Format and return the result
@@ -317,14 +317,13 @@ namespace TDG
         /**
          * Adds one timeslot to the database
          * */
-        private void createTimeSlot(TimeSlot timeslot)
+        private void createTimeSlot(MySqlConnection conn, TimeSlot timeslot)
         {
-            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + timeslot.timeSlotID + "," +
+            String commandLine = "INSERT INTO " + TABLE_NAME + " VALUES (" + timeslot.timeSlotID + "," +
                 timeslot.reservationID + "," + timeslot.hour + ");";
-
-            this.cmd.Connection = this.conn;
-            
             MySqlDataReader reader = null;
+            MySqlCommand cmd = new MySqlCommand(commandLine, conn);
+
             try
             {
                 reader = cmd.ExecuteReader();
@@ -343,12 +342,11 @@ namespace TDG
         /**
          * Updates one timeslot to the database
          * */
-        private void updateTimeSlot(TimeSlot timeslot)
+        private void updateTimeSlot(MySqlConnection conn, TimeSlot timeslot)
         {
-            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + " = " + timeslot.reservationID + " WHERE " + FIELDS[0] + " = " + timeslot.timeSlotID;
-            this.cmd.Connection = this.conn;
-
+            String commandLine = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + " = " + timeslot.reservationID + " WHERE " + FIELDS[0] + " = " + timeslot.timeSlotID;
             MySqlDataReader reader = null;
+            MySqlCommand cmd = new MySqlCommand(commandLine, conn);
 
             try
             {
@@ -368,11 +366,11 @@ namespace TDG
          * Removes one timeslot from the database
          * */
 
-        private void removeTimeSlot(TimeSlot timeslot)
+        private void removeTimeSlot(MySqlConnection conn, TimeSlot timeslot)
         {
-            this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeslot.timeSlotID + ";";
-            this.cmd.Connection = this.conn;
+            String commandLine = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeslot.timeSlotID + ";";
             MySqlDataReader reader = null;
+            MySqlCommand cmd = new MySqlCommand(commandLine, conn);
 
             try
             {
@@ -395,28 +393,47 @@ namespace TDG
         {
             // lastID to be returned
             int lastID = 0;
-            openConnection();
+            bool success = true;
+
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
 
             // Get the max id from database
-            this.cmd.CommandText = "SELECT MAX(" + FIELDS[0] + ") FROM " + TABLE_NAME;
-            this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
+            String commandLine = "SELECT MAX(" + FIELDS[0] + ") FROM " + TABLE_NAME;
+            MySqlDataReader reader = null;
 
-            // read it, there should only be one
-            while (reader.Read())
+            try
             {
-                if(reader[0].GetType() != typeof(System.DBNull))
+                conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand(commandLine, conn);
+                reader = cmd.ExecuteReader();
+
+                // read it, there should only be one
+                while (reader.Read())
                 {
-                    lastID = (int)reader[0];
+                    if (reader[0].GetType() != typeof(System.DBNull))
+                    {
+                        lastID = (int)reader[0];
+                    }
                 }
             }
-
-            // Close connection
-            reader.Close();
-            closeConnection();
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                success = false;
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Close();
+                conn.Close();
+            }
 
             // return the last id
-            return lastID;
+            if (success)
+                return lastID;
+            else
+                return -2;
         }
 
         /**
@@ -425,21 +442,36 @@ namespace TDG
         public int getTotalHoursforReservationID(List<int> IDlist)
         {
             List<Object> hours = new List<Object>();
-            //Open connection
-            openConnection();
-
-            foreach (int reservationID in IDlist)
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
+            
+            try
             {
-                //Write and execute the query
-                this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[1] + " = " + reservationID;
-                this.cmd.Connection = this.conn;
-                MySqlDataReader reader = cmd.ExecuteReader();
+                conn.Open();
 
-                while (reader.Read())
+                foreach (int reservationID in IDlist)
                 {
-                    hours.Add(reader[2]);
+                    String commandLine = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[1] + " = " + reservationID;
+
+                    //Write and execute the query
+                    MySqlCommand cmd = new MySqlCommand(commandLine, conn);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        hours.Add(reader[2]);
+                    }
+                    reader.Close();
                 }
             }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            
             return hours.Count;
         }
 

@@ -82,7 +82,6 @@ namespace TDG
             catch(MySqlException e)
             {
                 Console.WriteLine(e.Message);
-                return;
             }
             finally
             {
@@ -111,7 +110,6 @@ namespace TDG
             catch (MySqlException e)
             {
                 Console.WriteLine(e.Message);
-                return;
             }
             finally
             {
@@ -141,7 +139,6 @@ namespace TDG
             catch (MySqlException e)
             {
                 Console.WriteLine(e.Message);
-                return;
             }
             finally
             {
@@ -170,6 +167,8 @@ namespace TDG
                 //If no record is found, return null
                 if (!reader.HasRows)
                 {
+                    reader.Close();
+                    conn.Close();
                     return null;
                 }
 
@@ -179,6 +178,8 @@ namespace TDG
                 {
                     if (reader[0].GetType() == typeof(System.DBNull))
                     {
+                        reader.Close();
+                        conn.Close();
                         return null;
                     }
 
@@ -193,7 +194,6 @@ namespace TDG
             catch(Exception e)
             {
                 Console.WriteLine(e.Message);
-                return null;
             }
             finally
             {
@@ -228,6 +228,8 @@ namespace TDG
                 //If no record is found, return empty records
                 if (!reader.HasRows)
                 {
+                    reader.Close();
+                    conn.Close();
                     return records;
 
                 }
@@ -237,6 +239,8 @@ namespace TDG
                 {
                     if (reader[0].GetType() == typeof(System.DBNull))
                     {
+                        reader.Close();
+                        conn.Close();
                         return records;
                     }
 
@@ -253,7 +257,6 @@ namespace TDG
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                return null;
             }
             finally
             {
@@ -394,7 +397,7 @@ namespace TDG
             if (success)
                 return lastID;
             else
-                return -1;
+                return -2;
         }
 
         /**
@@ -417,6 +420,8 @@ namespace TDG
 
                 if (!reader.HasRows)
                 {
+                    reader.Close();
+                    conn.Close();
                     return null;
                 }
 

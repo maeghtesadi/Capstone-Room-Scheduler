@@ -74,6 +74,8 @@ namespace TDG
                 // If no record is found, return empty list
                 if (!reader.HasRows)
                 {
+                    reader.Close();
+                    conn.Close();
                     return listOfUsers;
                 }
 
@@ -82,6 +84,8 @@ namespace TDG
                 {
                     if (reader[0].GetType() == typeof(System.DBNull))
                     {
+                        reader.Close();
+                        conn.Close();
                         return listOfUsers;
                     }
                     listOfUsers.Add((int)reader[0]); // Selecting only the userID
