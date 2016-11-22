@@ -352,9 +352,9 @@ namespace TDG
         /**
          * Get the summed up values of hours for the list of reservation IDs
          */
-        public int getTotalHoursforID(List<int> IDlist)
+        public int getTotalHoursforReservationID(List<int> IDlist)
         {
-            int hours = 0;
+            List<Object> hours = new List<Object>();
             //Open connection
             openConnection();
 
@@ -367,10 +367,10 @@ namespace TDG
 
                 while (reader.Read())
                 {
-                    hours += Convert.ToInt32(reader[2]);
+                    hours.Add(reader[2]);
                 }
             }
-            return hours;
+            return hours.Count;
         }
 
     }

@@ -256,11 +256,11 @@ namespace Mappers
         public List<int> findReservationID(int userID, DateTime date)
         {
             List<int> IDlist = new List<int>();
-            IDlist = ReservationIdentityMap.getInstance().findIDs(userID, date);
+            IDlist = ReservationIdentityMap.getInstance().findReservationIDs(userID, date);
 
             if (IDlist == null)
             {
-                IDlist = tdgReservation.findById(userID, date);
+                IDlist = tdgReservation.findByReservationId(userID, date);
                 if (IDlist == null)
                 {
                     return null;
