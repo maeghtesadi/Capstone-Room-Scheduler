@@ -409,7 +409,7 @@ namespace LogicLayer
             //for every day of the week until current day
             for (int i = 0; i < currentDay; i++)
             {
-                counter += (directoryOfReservations.findReservationsByIDAndDate(userID, date.AddDays(-i))).Count;
+                counter += (ReservationMapper.getInstance().findReservationIDs(userID, date.AddDays(-i))).Count;
             } 
             //return true if the user has made less than 3 reservations
             if (counter < 3)
