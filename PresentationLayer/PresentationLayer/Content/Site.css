@@ -142,7 +142,20 @@ right:0px;
 z-index:40;
 display:none;
 }
+.reservations-header{
+    box-shadow: inset 0px -1px 0 rgb(197, 197, 197);
+    width:100%;
+    background-color:white;
+    padding-left:0px;
+    height:60px;
+    padding-left:14px;
+    line-height:65px;
+    font-size:16px;
+      color:#2C7EDC;
+     
 
+
+}
 /*Tabs*/
 .tabs{
 height:60px;
@@ -161,6 +174,7 @@ height:inherit;
 
 }
 
+
 .reservation-tab.active,.waitlist-tab.active{
 box-shadow: inset 0px -3px 0 #4B91E1;
 color:#64666B;
@@ -174,9 +188,56 @@ width:90px;
 color:#b9b9b9;
 height:inherit;
 }
+/*Reservation Header stuff*/
+.reservations-header{
+font-size:12px;
+width:inherit;
+ box-shadow: inset 0px 0px 0 rgb(197, 197, 197);
+ color:#A6AEC4;
+}
+.header-room{
+float:left;
+width:10%;
 
+}
+.header-date{
+float:left;
+width:20%;
+}
+.header-description{
+float:left;
+width:40%;
+}
+.header-from{
+float:left;
+width:15%;
+}
+.header-to{
+float:left;
+width:15%;
+}
 /*Reservation Content stuff*/
+.content-room{
+float:left;
+width:10%;
 
+}
+.content-date{
+float:left;
+width:20%;
+}
+.content-description{
+float:left;
+width:40%;
+}
+.content-from{
+float:left;
+width:15%;
+}
+.content-to{
+float:left;
+width:15%;
+}
 .reservation-content{
 padding:30px;
 

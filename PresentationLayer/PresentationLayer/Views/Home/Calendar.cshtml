@@ -69,13 +69,17 @@
         <div class="reservation-tab active">Reservation</div>
         <div class="waitlist-tab">Waitlist</div>
     </div>
+    <div class="reservations-header">
+        <div class="header-room">Room</div><div class="header-date">Date</div><div class="header-description">Description</div><div class="header-from">From</div><div class="header-from">To</div>
+    </div>
     <div class="reservation-content">
-        
+        <div class="content-room">Room</div><div class="content-date">Date</div><div class="content-description">Description</div><div class="content-from">From</div><div class="content-from">To</div>
     </div>
     <div class="confirm"><div class="confirm-yes">Confrim</div>
     <div class="confirm-no">Cancel</div>
     </div>
 </div>
+
 @using (Ajax.BeginForm("modifyReservation", "Home", new AjaxOptions
 {
     HttpMethod = "Post",
@@ -164,7 +168,28 @@
                     <div class="form-group ">
                         <label for="modifyFinalTimeslot" class="col-lg-2 control-label">To</label>
                         <div class="col-lg-10">
-                            <input type="text" class="form-control input-sm" id="modifyFinalTimeslot" placeholder="Email">
+                            <select class="form-control input-sm" name="finalTimeslot">
+
+                                <option value="8">8:00</option>
+                                <option value="9">9:00</option>
+                                <option value="10">10:00</option>
+                                <option value="11">11:00</option>
+                                <option value="12">12:00</option>
+                                <option value="13">13:00</option>
+                                <option value="14">14:00</option>
+                                <option value="15">15:00</option>
+                                <option value="16">16:00</option>
+                                <option value="17">17:00</option>
+                                <option value="18">18:00</option>
+                                <option value="19">19:00</option>
+                                <option value="20">20:00</option>
+                                <option value="21">21:00</option>
+                                <option value="22">22:00</option>
+                                <option value="23">23:00</option>
+                                <option value="24">24:00</option>
+                                <option value="25">25:00</option>
+
+                            </select>
                         </div>
                     </div>
                 </fieldset>
