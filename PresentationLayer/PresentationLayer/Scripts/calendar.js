@@ -389,3 +389,28 @@ $(".waitlist-tab").click(function () {
 
     }
 });
+
+{
+    var option = parseInt($('.ddl-initialTimeslot option:selected').val());
+    for (var i = option + 1; i <= option + 4 ; i++) {
+        $(".ddl-finalTimeslot").children("option[value=" + i + "]").show();
+    }
+}
+
+$(".ddl-initialTimeslot").change(function () {
+
+    $(".ddl-finalTimeslot").children().hide();
+
+    var option = parseInt($('.ddl-initialTimeslot option:selected').val());
+    if (option > $(".ddl-finalTimeslot").val()) {
+        $(".ddl-finalTimeslot").val(option);
+    }
+    else if (option < $(".ddl-finalTimeslot").val() + 4) {
+        $(".ddl-finalTimeslot").val(option + 4);
+    }
+
+    for (var i = option+1; i <= option + 4 ; i++) {
+        $(".ddl-finalTimeslot").children("option[value=" + i + "]").show();
+    }
+});
+
