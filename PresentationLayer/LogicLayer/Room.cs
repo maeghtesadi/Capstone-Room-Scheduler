@@ -19,11 +19,11 @@ namespace LogicLayer
             roomReservations = new List<Reservation>();
         }
 
-        public Room(int roomID, string roomNum, List<Reservation> reservations)
+        public Room(int roomID, string roomNum)
         {
             this.roomID = roomID;
             this.roomNum = roomNum;
-            this.roomReservations = reservations;
+            this.roomReservations = new List<Reservation>();
         }
 
     }

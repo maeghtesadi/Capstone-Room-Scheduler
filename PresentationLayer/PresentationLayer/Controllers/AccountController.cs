@@ -100,7 +100,7 @@ namespace PresentationLayer.Controllers
         {
 
             //go through the usercatalog to find the user
-            foreach (User user in ReservationConsole.getInstance().getUserCatalog().registeredUsers)
+            foreach (User user in ReservationConsole.getInstance().getUserCatalog())
             {
                 if (user.username == username && user.password == password)
                 {

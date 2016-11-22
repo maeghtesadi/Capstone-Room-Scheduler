@@ -21,12 +21,12 @@ namespace LogicLayer
             waitlist = new Queue<int>();
         }
 
-        public TimeSlot(int timeSlotID, int resID, int hour, Queue<int> wlist)
+        public TimeSlot(int timeSlotID, int resID, int hour)
         {
             this.timeSlotID = timeSlotID;
             this.reservationID = resID;
             this.hour = hour;
-            this.waitlist = wlist;
+            this.waitlist = new Queue<int>();
         }
     }
 }

@@ -210,42 +210,73 @@ background-color:#3f4350
 }
 
 .modify-reservation{
-    width:700px;
-    height:165px;
+    width:400px;
+    height:100%;
     background-color:white;
-     box-shadow: 0px 0px 9px grey;
     position:absolute;
-    font-size:12px;
-    display:none;
+    font-size:13px;
     z-index:60;
+    position:fixed;
+    top:50px;
+    height:calc(100% - 90px);
+    right:500px;
+    box-shadow: inset -1px 0px 0 rgb(197, 197, 197);
+    display:none;
+
    
    
 
 }
-.modify-reservation ul{
-padding:0px;
 
-}
 .modify-reservation .header{
+    box-shadow: inset 0px -1px 0 rgb(197, 197, 197);
     width:100%;
-    background-color:#3f4350;
+    background-color:white;
     padding-left:0px;
-    height:40px;
-    padding-left:20px;
-    line-height:37px;
-    font-size:14px;
-    color:white;
+    height:60px;
+    padding-left:14px;
+    line-height:65px;
+    font-size:16px;
+      color:#2C7EDC;
+     
 }
-.modify-reservation .header span{
-   float:right;
-   margin-top:10px;
-   font-size:15px;
+.modify-reservation .modify-sub-header {
+    padding:14px;
+ 
+}
+.modify-reservation .modify-row {
+
+ box-shadow: inset 0px -1px 0 rgb(197, 197, 197);
+    
+}
+.modify-reservation .modify-label {
+ font-size:12px;
+ line-height:35px;
+display:inline-block;
+width:20%;
+padding-left:14px;
+
+
+    
 }
 
-.modify-reservation ul li{
-margin-bottom:10px;
-}
+.modify-reservation .col-lg-10 {
+float:right;
+width:70%;
+margin-right:40px;
 
+ }
+ .modify-reservation .modify-buttons {
+ position:absolute;
+ bottom:20px;
+ left:20px;
+
+ }
+ .modify-buttons button{
+ margin:10px;
+ border-radius:0px;
+ box-shadow:none;
+ }
 /* Add media queries for smaller screens */
 @media screen and (max-width:720px) {
     .weekdays li, .days li {width: 13.1%;}

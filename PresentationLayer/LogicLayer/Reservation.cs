@@ -25,15 +25,17 @@ namespace LogicLayer
             timeSlots = new List<TimeSlot>(); 
         }
 
-        public Reservation(int reservationID, int userID, int roomID, string desc, DateTime date, List<TimeSlot> timeslotlist)
+        public Reservation(int reservationID, int userID, int roomID, string desc, DateTime date)
         {
             this.reservationID = reservationID;
             this.description = desc;
             this.userID = userID;
             this.roomID = roomID;
             this.date = date;
-            this.timeSlots = timeslotlist;
+            this.timeSlots = new List<TimeSlot>();
         }
+
+
 
     }
 }

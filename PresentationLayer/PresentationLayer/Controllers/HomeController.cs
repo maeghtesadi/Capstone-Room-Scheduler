@@ -27,11 +27,14 @@ namespace CapstoneRoomScheduler.Controllers
             updateCalendar(year, month, day);
         }
         [HttpPost]
-        public void modifyReservation(string resid,int day,int month, int year)
+        public void modifyReservation(int roomId,string date,int initialTimeslot,int finalTimeslot,int resid,int day,int month,int year,string description)
         {
-
-            ReservationConsole.getInstance();
+            string[] dateArray=date.Split('-');
+        
+            ReservationConsole.getInstance().modifyReservation(resid, roomId, description,new DateTime(Int32.Parse(dateArray[0]), Int32.Parse(dateArray[1]), Int32.Parse(dateArray[2])), initialTimeslot, finalTimeslot);
+            getReservations();
             updateCalendar(year, month, day);
+
         }
         [HttpPost]
         public void cancelReservation(string resid,int day, int month, int year)
@@ -48,13 +51,13 @@ namespace CapstoneRoomScheduler.Controllers
         {
            DateTime date = new DateTime(year, month, day);
            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-           hubContext.Clients.All.updateCalendar(convertToJsonObject(ReservationConsole.getInstance().getAllReservations().findByDate(date)));
+           hubContext.Clients.All.updateCalendar(convertToJsonObject(ReservationConsole.getInstance().findByDate(date)));
         }
         [LoggedIn]
         [HttpPost]
         public void getReservations() {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-            var JsonListofReservations = convertToJsonObject(ReservationConsole.getInstance().getAllReservations().findByUser(Int32.Parse(User.Identity.GetUserId())));
+            var JsonListofReservations = convertToJsonObject(ReservationConsole.getInstance().findByUser(Int32.Parse(User.Identity.GetUserId())));
             hubContext.Clients.All.populateReservations(JsonListofReservations); //returns a list of reservations in the js function
         }
 
@@ -76,7 +79,7 @@ namespace CapstoneRoomScheduler.Controllers
                     finalTimeslot = lastTimeSlot,
                     roomId = reservationList[i].roomID,
                     description = reservationList[i].description,
-                    userName = ReservationConsole.getInstance().getUserCatalog().registeredUsers.First(x => x.userID == reservationList[i].userID).name,
+                    userName = ReservationConsole.getInstance().getUserCatalog().First(x => x.userID == reservationList[i].userID).name,
                     reservationId = reservationList[i].reservationID,
                     userId = reservationList[i].userID,
                     date = reservationList[i].date.Date
