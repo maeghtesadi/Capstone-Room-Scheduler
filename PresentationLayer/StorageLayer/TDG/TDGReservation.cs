@@ -41,12 +41,6 @@ namespace TDG
         //Determine after how much time a command (query) should be timed out
         private const int COMMAND_TIMEOUT = 60;
 
-        //MySQL Connection
-        private MySqlConnection conn;
-
-        //Command object
-        private MySqlCommand cmd;
-
         /**
          * Returns the instance
          * */
@@ -62,38 +56,7 @@ namespace TDG
 
         private TDGReservation()
         {
-            this.cmd = new MySqlCommand();
-            this.cmd.CommandTimeout = COMMAND_TIMEOUT;
 
-        }
-
-        /**
-         * Open connection to the database
-         * */
-        public Boolean openConnection()
-        {
-            try
-            {
-                this.conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
-                this.conn.Open();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-
-            }
-        }
-
-
-        /**
-         * Close connection to the database
-         * */
-
-        public void closeConnection()
-        {
-            this.conn.Close();
         }
 
 
@@ -104,13 +67,27 @@ namespace TDG
 
         public void addReservation(List<Reservation> newList)
         {
-            if (!openConnection())
-                return;
-            for (int i = 0; i < newList.Count; i++)
+            
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
+
+            // Attempt to open the connection and create many reservations
+            try
             {
-                createReservation(newList[i]);
+                conn.Open();
+                for (int i = 0; i < newList.Count; i++)
+                {
+                    createReservation(conn, newList[i]);
+                }
             }
-            closeConnection();
+            catch(MySqlException e)
+            {
+                Console.WriteLine(e.Message);
+                return;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
 
@@ -120,13 +97,26 @@ namespace TDG
 
         public void updateReservation(List<Reservation> updateList)
         {
-            if (!openConnection())
-                return;
-            for (int i = 0; i < updateList.Count; i++)
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
+
+            // Attempt to open the connection and update many reservations
+            try
             {
-                updateReservation(updateList[i]);
+                conn.Open();
+                for (int i = 0; i < updateList.Count; i++)
+                {
+                    updateReservation(conn, updateList[i]);
+                }
             }
-            closeConnection();
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e.Message);
+                return;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
 
@@ -137,14 +127,26 @@ namespace TDG
 
         public void deleteReservation(List<Reservation> deleteList)
         {
-            if (!openConnection())
-                return;
-            for (int i = 0; i < deleteList.Count; i++)
-            {
-                removeReservation(deleteList[i]);
-            }
-            closeConnection();
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
 
+            // Attempt to open the connection and update many reservations
+            try
+            {
+                conn.Open();
+                for (int i = 0; i < deleteList.Count; i++)
+                {
+                    removeReservation(conn, deleteList[i]);
+                }
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e.Message);
+                return;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
 
@@ -154,20 +156,17 @@ namespace TDG
 
         public Object[] get(int reservationID)
         {
-            //Open connection
-            if (!openConnection())
-                return null;
-
-            //Write and execute the query
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + reservationID;
-            this.cmd.Connection = this.conn;
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
+            String commandLine = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + reservationID;
+            Object[] record = null; // to be returned
             MySqlDataReader reader = null;
 
-            Object[] record = null; // to be returned
             try
             {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand(commandLine, conn);
                 reader = cmd.ExecuteReader();
-
+                
                 //If no record is found, return null
                 if (!reader.HasRows)
                 {
@@ -191,18 +190,17 @@ namespace TDG
 
                 }
             }
-            catch(Exception ex)
+            catch(Exception e)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(e.Message);
+                return null;
             }
             finally
             {
-                // Close reader
-                reader.Close();
-                //Close connection
-                closeConnection();
+                if (reader != null)
+                    reader.Close();
+                conn.Close();
             }
-
             //Format and return the result
             return record;
         }
@@ -216,19 +214,15 @@ namespace TDG
 
         public Dictionary<int, Object[]> getAll()
         {
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
+            String commandLine = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
-            //Open Connection
-            if (!openConnection())
-                return records;
-
-            //Write and execute the query
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
-            this.cmd.Connection = this.conn;
             MySqlDataReader reader = null;
-
 
             try
             {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand(commandLine, conn);
                 reader = cmd.ExecuteReader();
 
                 //If no record is found, return empty records
@@ -252,23 +246,20 @@ namespace TDG
                     attributes[2] = reader[2]; //roomID
                     attributes[3] = reader[3]; //desc
                     attributes[4] = reader[4]; //date
-
-
+                    
                     records.Add((int)reader[0], attributes);
-
-
                 }
             }
-            catch(Exception ex)
+            catch (Exception e)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(e.Message);
+                return null;
             }
             finally
             {
-                // Close reader
-                reader.Close();
-                //close connection
-                closeConnection();
+                if (reader != null)
+                    reader.Close();
+                conn.Close();
             }
 
             //Format and return the result
@@ -278,27 +269,26 @@ namespace TDG
         /**
          * Adds one reservation to the database
          * */
-        private void createReservation(Reservation reservation)
+        private void createReservation(MySqlConnection conn, Reservation reservation)
         {
             String mySqlDate = reservation.date.Date.ToString("yyyy-MM-dd");
-            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES (" + reservation.reservationID + "," +
-                reservation.userID + "," + reservation.roomID + ",'" + reservation.description + "', '" + 
+            String commandLine = "INSERT INTO " + TABLE_NAME + " VALUES (" + reservation.reservationID + "," +
+                reservation.userID + "," + reservation.roomID + ",'" + reservation.description + "', '" +
                 mySqlDate + " ');";
-
-            this.cmd.Connection = this.conn;
+            MySqlCommand cmd = new MySqlCommand(commandLine, conn);
             MySqlDataReader reader = null;
-
             try
             {
                 reader = cmd.ExecuteReader();
             }
-            catch(Exception ex)
+            catch(Exception e)
             {
-                Console.WriteLine(ex.Message);
+                throw;
             }
             finally
             {
-                reader.Close();
+                if(reader != null)
+                    reader.Close();
             }
         }
 
@@ -306,14 +296,15 @@ namespace TDG
          * Updates one reservation of the database
          * */
 
-        private void updateReservation(Reservation reservation)
+        private void updateReservation(MySqlConnection conn, Reservation reservation)
         {
             String mySqlDate = reservation.date.Date.ToString("yyyy-MM-dd");
-            this.cmd.CommandText = "UPDATE " + TABLE_NAME + " SET " +
+            String commandLine = "UPDATE " + TABLE_NAME + " SET " +
                 FIELDS[4] + " = '" + mySqlDate + "', " + FIELDS[3] + " = '" + reservation.description + "', " +
                 FIELDS[2] + " = " + reservation.roomID + ", " + FIELDS[1] + " = " + reservation.userID + " WHERE " +
                 FIELDS[0] + " = " + reservation.reservationID + ";";
-            this.cmd.Connection = this.conn;
+            
+            MySqlCommand cmd = new MySqlCommand(commandLine, conn);
             MySqlDataReader reader = null;
 
             try
@@ -322,11 +313,12 @@ namespace TDG
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                throw;
             }
             finally
             {
-                reader.Close();
+                if(reader != null)
+                    reader.Close();
             }
         }
 
@@ -335,10 +327,10 @@ namespace TDG
          * Removes one reservation from the database
          * */
 
-        private void removeReservation(Reservation reservation)
+        private void removeReservation(MySqlConnection conn, Reservation reservation)
         {
-            this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservation.reservationID + ";";
-            this.cmd.Connection = this.conn;
+            String commandLine = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservation.reservationID + ";";
+            MySqlCommand cmd = new MySqlCommand(commandLine, conn);
             MySqlDataReader reader = null;
 
             try
@@ -351,7 +343,8 @@ namespace TDG
             }
             finally
             {
-                reader.Close();
+                if(reader != null)
+                    reader.Close();
             }
         }
 
@@ -362,27 +355,46 @@ namespace TDG
         {
             // lastID to be returned
             int lastID = 0;
-            openConnection();
-                
-            // Get the max id from database
-            this.cmd.CommandText = "SELECT MAX(" + FIELDS[0] + ") FROM " + TABLE_NAME;
-            this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
+            bool success = true;
 
-            // read it, there should only be one
-            while(reader.Read())
+            String commandLine = "SELECT MAX(" + FIELDS[0] + ") FROM " + TABLE_NAME;
+            MySqlDataReader reader = null;
+            
+
+            // Attempt to open connection
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
+            try
             {
-                if (reader[0].GetType() != typeof(System.DBNull))
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand(commandLine, conn);
+                reader = cmd.ExecuteReader();
+
+                // read it, there should only be one
+                while (reader.Read())
                 {
-                    lastID = (int)reader[0];
+                    if (reader[0].GetType() != typeof(System.DBNull))
+                    {
+                        lastID = (int)reader[0];
+                    }
                 }
             }
-            reader.Close();
-            // Close connection
-            closeConnection();
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                success = false;
+            }
+            finally
+            {
+                if(reader!=null)
+                    reader.Close();
+                conn.Close();
+            }
 
             // return the last id
-            return lastID;
+            if (success)
+                return lastID;
+            else
+                return -1;
         }
 
         /**
@@ -391,31 +403,39 @@ namespace TDG
         public List<int> findById(int userID, DateTime date)
         {
             List<int> IDlist = new List<int>();
-            //Open connection
-            openConnection();
+            String mySqlDate = date.Date.ToString("yyyy-MM-dd");
+            String commandLine = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIELDS[1] + " = " + userID + " AND " + FIELDS[4] + " = '" + mySqlDate + "';";
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
+            MySqlDataReader reader = null;
 
-            //Write and execute the query
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE" + FIELDS[1] + "=" + userID + ";";
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE" + FIELDS[4] + "=" + date + ";";
-            this.cmd.Connection = this.conn;
-            MySqlDataReader reader = cmd.ExecuteReader();
-
-            if (!reader.HasRows)
+            //Open connection and execute query
+            try
             {
-                return null;
-            }
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand(commandLine, conn);
+                reader = cmd.ExecuteReader();
 
-            //For each reader, add it to the dictionary
-            while (reader.Read())
+                if (!reader.HasRows)
+                {
+                    return null;
+                }
+
+                //For each reader, add it to the dictionary
+                while (reader.Read())
+                {
+                    IDlist.Add(Convert.ToInt32(reader[0]));
+                }
+            }
+            catch(Exception e)
             {
-                Object[] attributes = new Object[FIELDS.Length];
-                attributes[4] = reader[4];
-                IDlist.Add(Convert.ToInt32(reader[4]));
+                Console.WriteLine(e.Message);
             }
-
-            reader.Close();
-            //close connection
-            closeConnection();
+            finally
+            {
+                conn.Close();
+                if (reader != null)
+                    reader.Close();
+            }
 
             //Format and return the result
             return IDlist;
