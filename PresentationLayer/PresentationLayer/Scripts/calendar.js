@@ -305,7 +305,7 @@ serverSession.client.populateReservations = function (reservationList) {
 function buildNewReservationItem(reservationId, description, initialTimeSlot, finalTimeslot , roomID,date ) //reservtion id goes in .$(".cancelReservation).data(reservationId)
 {
     var reservationItem = 
-       '<div class="reservation-item"><div data-resid="' + reservationId + '" class="content-room">' + roomID + '</div><div class="content-date">' + date + '</div><div class="content-description">-' + description + '</div><div class="content-from">' + initialTimeSlot + '</div><div class="content-to">' + finalTimeslot + '</div></div>';
+       '<div class="reservation-item"><div data-resid="' + reservationId + '" class="content-room">' + roomID + '</div><div class="content-date">' + date + '</div><div class="content-description">-' + description + '</div><div class="content-from">' + initialTimeSlot + '</div><div class="content-to">' + parseInt(finalTimeslot)+1 + '</div></div>';
 
     $(".reservations .reservation-content ").append(reservationItem);
 }

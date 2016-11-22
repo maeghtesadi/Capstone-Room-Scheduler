@@ -107,12 +107,33 @@ background-color:#ec644b;
 content:"WaitList";
 
 }
+
+
 .timeslots li ul li.reserved-header{
   background-color:#5c8194;
   color:white;
   text-align:center;
   padding-left:0px;
   line-height:300%;
+}
+
+get-waitlist{
+    height: 40px;
+    width: 15px;
+    float: right;
+    background-color: #64d40b;
+}
+.get-waitlist:before {
+    right: 12px;
+    bottom: 4px;
+    position: relative;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid #64d40b;
+    content: " ";
+    font-size: 1px;
 }
 .calendar-buttons {
     font-size: 20px;
