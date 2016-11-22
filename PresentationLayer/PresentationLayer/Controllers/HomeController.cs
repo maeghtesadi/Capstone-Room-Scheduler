@@ -32,6 +32,7 @@ namespace CapstoneRoomScheduler.Controllers
             string[] dateArray=date.Split('-');
         
             ReservationConsole.getInstance().modifyReservation(resid, roomId, description,new DateTime(Int32.Parse(dateArray[0]), Int32.Parse(dateArray[1]), Int32.Parse(dateArray[2])), initialTimeslot, finalTimeslot);
+            getReservations();
             updateCalendar(year, month, day);
 
         }
