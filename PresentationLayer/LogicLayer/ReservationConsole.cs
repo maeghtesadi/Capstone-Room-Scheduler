@@ -80,12 +80,14 @@ namespace LogicLayer
         public void updateDirectories()
         {
             // Updating timeSlots of each reservations
-            for (int i = 0; i < (ReservationMapper.getInstance().getListOfReservations()).Count; i++)
+            List<TimeSlot> timeSlotList = TimeSlotMapper.getInstance().getAllTimeSlot().Values.ToList();
+            timeSlotList.Sort((x, y) => x.hour.CompareTo(y.hour));
+            for (int i = 0; i < ReservationMapper.getInstance().getListOfReservations().Count; i++)
             {
-                foreach (KeyValuePair<int, TimeSlot> timeSlot in TimeSlotMapper.getInstance().getAllTimeSlot())
+                foreach (TimeSlot timeSlot in timeSlotList)
                 {
-                    if (ReservationMapper.getInstance().getListOfReservations()[i].reservationID == timeSlot.Value.reservationID)
-                        ReservationMapper.getInstance().getListOfReservations()[i].timeSlots.Add(timeSlot.Value);
+                    if (ReservationMapper.getInstance().getListOfReservations()[i].reservationID == timeSlot.reservationID && !ReservationMapper.getInstance().getListOfReservations()[i].timeSlots.Contains(timeSlot))
+                        ReservationMapper.getInstance().getListOfReservations()[i].timeSlots.Add(timeSlot);
                 }
             }
 
@@ -95,7 +97,8 @@ namespace LogicLayer
                 List<int> waitList = TimeSlotMapper.getInstance().getAllUsers(TimeSlotMapper.getInstance().getListOfTimeSlots()[i].timeSlotID);
                 if (waitList != null)
                     for (int j = 0; j < waitList.Count; j++)
-                        TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist.Enqueue(waitList[j]);
+                        if (!TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist.Contains(waitList[j]))
+                             TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist.Enqueue(waitList[j]);
             }
 
             // Updating the reservations for each room
@@ -202,7 +205,7 @@ namespace LogicLayer
                         int userID = resToModify.timeSlots[i].waitlist.Dequeue();
                         int myroomid = ReservationMapper.getInstance().getReservation(resID).roomID;
                         DateTime mydate = ReservationMapper.getInstance().getReservation(resID).date;
-                        Reservation res = ReservationMapper.getInstance().makeNew(myroomid, userID, "", mydate);
+                        Reservation res = ReservationMapper.getInstance().makeNew(userID, myroomid, "", mydate);
                         //Reservation res = directoryOfReservations.makeNewReservation(directoryOfReservations.getReservation(reservationID).roomID, userID, "",
                         //   directoryOfReservations.getReservation(reservationID).date);
                         ReservationMapper.getInstance().done();
@@ -270,6 +273,7 @@ namespace LogicLayer
                     if (TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist.Count == 0)
                     {
                         TimeSlotMapper.getInstance().delete(TimeSlotMapper.getInstance().getListOfTimeSlots()[i].timeSlotID);
+                        i--;
                         TimeSlotMapper.getInstance().done();
                     }
 

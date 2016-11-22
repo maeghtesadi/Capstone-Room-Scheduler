@@ -67,7 +67,7 @@ namespace Mappers
             int reservationID = getNextID();
 
             //Make a new reservation object
-            Reservation reservation = DirectoryOfReservations.getInstance().makeNewReservation(reservationID, roomID, userID, desc, date);
+            Reservation reservation = DirectoryOfReservations.getInstance().makeNewReservation(reservationID, userID, roomID, desc, date);
 
             //Add new reservation to identity map
             reservationIdentityMap.addTo(reservation);
