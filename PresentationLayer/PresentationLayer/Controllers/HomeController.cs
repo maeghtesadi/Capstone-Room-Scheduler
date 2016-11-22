@@ -29,9 +29,9 @@ namespace CapstoneRoomScheduler.Controllers
         [HttpPost]
         public void modifyReservation(int roomId,string date,int initialTimeslot,int finalTimeslot,int resid)
         {
-            //string[] dateArray=date.Split("-");
+            string[] dateArray=date.Split('-');
         
-            //ReservationConsole.getInstance().modifyReservation(resid, roomId, "Hard coded for now",new DateTime(Int32.Parse(dateArray[0]), Int32.Parse(dateArray[1]), Int32.Parse(dateArray[2]), initialTimeslot, finalTimeslot);
+            ReservationConsole.getInstance().modifyReservation(resid, roomId, "Hard coded for now",new DateTime(Int32.Parse(dateArray[0]), Int32.Parse(dateArray[1]), Int32.Parse(dateArray[2])), initialTimeslot, finalTimeslot);
             
         }
         [HttpPost]
