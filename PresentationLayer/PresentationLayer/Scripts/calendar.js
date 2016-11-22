@@ -301,11 +301,18 @@ serverSession.client.populateReservations = function (reservationList) {
         buildNewReservationItem(resID, des, firstTime, secondTime, roomID, date);
     }
 }
+serverSession.client.updateWaitlist = function (timeslotList,reservationList) {
+    for (var i = 0; i < timeslotList.length; i++) {
+        if (timeslotList.waitlist.length != 0) {
 
+        }
+    }
+
+}
 function buildNewReservationItem(reservationId, description, initialTimeSlot, finalTimeslot , roomID,date ) //reservtion id goes in .$(".cancelReservation).data(reservationId)
 {
     var reservationItem = 
-       '<div class="reservation-item"><div data-resid="' + reservationId + '" class="content-room">' + roomID + '</div><div class="content-date">' + date + '</div><div class="content-description">-' + description + '</div><div class="content-from">' + initialTimeSlot + '</div><div class="content-to">' + parseInt(finalTimeslot)+1 + '</div></div>';
+       '<div class="reservation-item"><div data-resid="' + reservationId + '" class="content-room">' + roomID + '</div><div class="content-date">' + date + '</div><div class="content-description">-' + description + '</div><div class="content-from">' + initialTimeSlot + '</div><div class="content-to">' + (parseInt(finalTimeslot)+1) + '</div></div>';
 
     $(".reservations .reservation-content ").append(reservationItem);
 }
