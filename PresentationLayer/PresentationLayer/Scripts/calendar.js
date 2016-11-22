@@ -297,7 +297,7 @@ serverSession.client.populateReservations = function (reservationList) {
         var secondTime = reservationList[i].finalTimeslot;
         var roomID = reservationList[i].roomId;
         var date = reservationList[i].date;
-        date = date.substr(0, 9);
+        date = date.substr(0, 10);
         buildNewReservationItem(resID, des, firstTime, secondTime, roomID, date);
     }
 }
@@ -305,18 +305,7 @@ serverSession.client.populateReservations = function (reservationList) {
 function buildNewReservationItem(reservationId, description, initialTimeSlot, finalTimeslot , roomID,date ) //reservtion id goes in .$(".cancelReservation).data(reservationId)
 {
     var reservationItem = 
-        '<div class="reservation-item">' +
-             '<div class="roomNumber"><span class="fa fa-stack fa-lg"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack number">' + roomID + '</i></span></div>' +
-             '<div class="reservationDetails">'+
-                '<ul>'+
-                '    <li class="description">'+ description +'</li>'+
-                '    <li class="timeslot">From <span class="initialTimeslot">' + initialTimeSlot + '</span> to <span class="finalTimeslot">' + (finalTimeslot + 1) + '</span></li>' +
-                '    <li class="date">'+date+'<li>' +
-                '</u>' +
-             '</div>' +
-             '<div data-reservationId ="' + reservationId + '"    class="cancelReservation"><span class="fa fa-times fa-lg"></span></div>'+
-             '<div data-reservationId ="' + reservationId + '"    class="modifyReservation"><span class="fa fa-pencil fa-lg"></span></div>' +
-        '</div>';
+       '<div class="reservation-item"><div data-resid="' + reservationId + '" class="content-room">' + roomID + '</div><div class="content-date">' + date + '</div><div class="content-description">' + description + '</div><div class="content-from">' + initialTimeSlot + '</div><div class="content-to">' + finalTimeslot + '</div></div>';
 
     $(".reservations .reservation-content ").append(reservationItem);
 }
@@ -351,38 +340,20 @@ function remakeCalendar() {
 }
 
 //Cancel reservations
-$(".reservation-content").on('click',".cancelReservation",function(){
-    var thisElement=$(this);
-    $(".confirm").toggle(0);
-    $(".confirm").css('opacity', '0');
-    $(".confirm").position({
-        my: "center+120 top+3 ",
-        at: "bottom",
-        of: thisElement,
-
-    });
-    $(".confirm").toggle(0);
-    $(".confirm").css('opacity', '1');
-    $(".confirm").toggle(300);
-    $(".confirm-yes").on('click', function () {
-        setCalendarDate();
-        $("input[name='resid']").attr("value", thisElement.data("reservationid"));
-        $(".cancelReservationAjax").click();
-        $(".confirm-yes").off('click');
-        $(".confirm").toggle('blind', 300);
-        $(".reservation-content").click();
-        
-    });
-    $(".confirm-no").on('click', function () {
-        $(".confirm-yes").off('click');
-        $(".confirm").toggle('blind', 300);
-        $(".confirm-no").off('click');
-       
-    });
-    
-    
+$(".reservation-content").on('click',".reservation-item",function(){
+    $(".reservation-item.active").toggleClass('active');
+    $(this).toggleClass('active');
+    var activeElement = $(".reservation-item.active");
+    $("select[name='roomId']").val($(".reservation-item.active").find(".content-room").html());
+    $("select[name='initialTimeslot']").val($(".reservation-item.active").find(".content-from").html().split(":")[0]);
+    $("select[name='finalTimeslot']").val($(".reservation-item.active").find(".content-to").html().split(":")[0]);
+    $("input[name='date']").val($(".reservation-item.active").find(".content-date"));
 
 });
+    
+    
+
+
 $(".reservation-content").on('click', ".modifyReservation", function () {
   
     $(".modify-reservation").toggle(300);

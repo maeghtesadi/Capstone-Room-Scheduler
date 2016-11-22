@@ -219,7 +219,7 @@ background-color:#3f4350
     position:fixed;
     top:50px;
     height:calc(100% - 90px);
-    right:400px;
+    right:500px;
     box-shadow: inset -1px 0px 0 rgb(197, 197, 197);
 
    
@@ -248,12 +248,34 @@ background-color:#3f4350
  box-shadow: inset 0px -1px 0 rgb(197, 197, 197);
     
 }
-.modify-reservation label {
+.modify-reservation .modify-label {
  font-size:12px;
  line-height:35px;
+display:inline-block;
+width:20%;
+padding-left:14px;
+
+
     
 }
 
+.modify-reservation .col-lg-10 {
+float:right;
+width:70%;
+margin-right:40px;
+
+ }
+ .modify-reservation .modify-buttons {
+ position:absolute;
+ bottom:20px;
+ left:20px;
+
+ }
+ .modify-buttons button{
+ margin:10px;
+ border-radius:0px;
+ box-shadow:none;
+ }
 /* Add media queries for smaller screens */
 @media screen and (max-width:720px) {
     .weekdays li, .days li {width: 13.1%;}

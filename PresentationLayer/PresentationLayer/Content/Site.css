@@ -132,7 +132,7 @@ text-align:center;
 /*--------Reservation----------*/
 /*-----------------------------*/
 .reservations{
-width:400px;
+width:500px;
 height:calc(100% - 90px);
 background-color:white;
 position:fixed;
@@ -144,14 +144,15 @@ display:none;
 }
 .reservations-header{
     box-shadow: inset 0px -1px 0 rgb(197, 197, 197);
-    width:100%;
+
     background-color:white;
-    padding-left:0px;
-    height:60px;
-    padding-left:14px;
-    line-height:65px;
-    font-size:16px;
-      color:#2C7EDC;
+
+    height:50px;
+     margin:0px 14px;
+    line-height:64px;
+      font-size:12px;
+ box-shadow: inset 0px 0px 0 rgb(197, 197, 197);
+ color:#A6AEC4;
      
 
 
@@ -163,7 +164,8 @@ font-size:15px;
 text-align:center;
 vertical-align:middle;
 box-shadow: inset 0px -1px 0 rgb(197, 197, 197);
-padding-left:60px;
+padding-left:20px;
+padding-right:240px;
 }
 .reservation-tab{
 padding-top:15px;
@@ -187,14 +189,10 @@ display:inline-block;
 width:90px;
 color:#b9b9b9;
 height:inherit;
+
 }
 /*Reservation Header stuff*/
-.reservations-header{
-font-size:12px;
-width:inherit;
- box-shadow: inset 0px 0px 0 rgb(197, 197, 197);
- color:#A6AEC4;
-}
+
 .header-room{
 float:left;
 width:10%;
@@ -218,6 +216,7 @@ width:15%;
 }
 /*Reservation Content stuff*/
 .content-room{
+padding-left:14px;
 float:left;
 width:10%;
 
@@ -239,96 +238,26 @@ float:left;
 width:15%;
 }
 .reservation-content{
-padding:30px;
+    padding: 10px 0px;
 
 
 
 }
 .reservation-item{
-margin:30px 0px;
-height:60px;
-border-style:solid;
-border-color:#eeeeee;
-border-radius:5px;
-border-width:2px;
-background-color:white;
-
-}
-.reservation-item .roomNumber{
-width:15%;
-background-color:#f7f7f7;
-height:56px;
-float:left;
-text-align:center;
-padding-top:16px;
-color:#3fa9e2;
-font-size:17px;
-border-radius:4px 0px 0px 4px;
-}
-.reservation-item .roomNumber .number{
-color:white;
-font-size:16px;
-line-height:22px;
-}
-.reservation-item .roomNumber span{
-line-height:25px;
-}
-
-.reservation-item .reservationDetails {
-width:53%;
-background-color:white;
-float:left;
-padding-top:4px;
-}
-
-.reservation-item .reservationDetails ul {
-padding-left:10px;
-}
-.reservation-item .reservationDetails .description{
-color:#3fa9e2;
-font-size:17px;
-}
-.reservation-item .reservationDetails .timeslot{
-color:#868686;
+margin:8px 14px;
+background-color:#F6F7FA;
+height:30px;
 font-size:12px;
-line-height:6px;
-}
-.reservation-item .reservationDetails .date{
-color:#868686;
-font-size:11px;
-line-height:20px;
-}
+line-height:27px;
+border-radius:5px;
 
- .reservation-item .cancelReservation {
- width:12%;
-border-left:solid 2px #eeeeee;
-height:56px;
-float:right;
-text-align:center;
-padding-top:14px;
-padding-left:4px;
-color:#3fa9e2;
-font-size:15px;
- }
- .reservation-item .modifyReservation {
- width:12%;
-border-left:solid 2px #eeeeee;
-height:56px;
-float:right;
-text-align:center;
-padding-top:14px;
-padding-left:4px;
-color:#3fa9e2;
-font-size:15px;
- }
-  .reservation-item .cancelReservation:hover {
-background-color:#f7f7f7;
-transition: background-color 0.5s ease;
- }
-   .reservation-item .modifyReservation:hover {
-background-color:#f7f7f7;
-transition: background-color 0.5s ease;
- }
+}
+.reservation-item.active{
+color:white;
+background-color:#50C14E;
+
+
+}
 
  .confirm
  {
