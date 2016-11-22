@@ -14,7 +14,15 @@ namespace LogicLayer
         //Instance of ReservationConsole class
         private static ReservationConsole instance = new ReservationConsole();
 
+<<<<<<< HEAD
+        DirectoryOfReservations directoryOfReservations = new DirectoryOfReservations();
+        DirectoryOfRooms directoryOfRooms = new DirectoryOfRooms();
+        DirectoryOfTimeSlots directoryOfTimeSlots = new DirectoryOfTimeSlots();
+        UserCatalog userCatalog = new UserCatalog();
+       
+=======
         //Get instance
+>>>>>>> e15d3fd4f7f6ad96140f90ae3f0143c532f9acc3
         public static ReservationConsole getInstance()
         {
             return instance;
@@ -286,7 +294,7 @@ namespace LogicLayer
                     {
                         //int userID = directoryOfTimeSlots.timeSlotList[i].waitlist.Dequeue();
                         int userID = TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist.Dequeue();
-                        Reservation res = ReservationMapper.getInstance().makeNew(userID, ReservationMapper.getInstance().getReservation(reservationID).roomID, 
+                        Reservation res = ReservationMapper.getInstance().makeNew(ReservationMapper.getInstance().getReservation(reservationID).roomID, userID, 
                             "", ReservationMapper.getInstance().getReservation(reservationID).date);
 
                         ReservationMapper.getInstance().done();
@@ -409,7 +417,7 @@ namespace LogicLayer
             //for every day of the week until current day
             for (int i = 0; i < currentDay; i++)
             {
-                counter += (ReservationMapper.getInstance().findReservationIDs(userID, date.AddDays(-i))).Count;
+                counter += (directoryOfReservations.findReservationsByIDAndDate(userID, date.AddDays(-i))).Count;
             } 
             //return true if the user has made less than 3 reservations
             if (counter < 3)
