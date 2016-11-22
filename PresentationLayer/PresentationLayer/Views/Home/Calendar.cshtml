@@ -82,17 +82,17 @@
     </div>
 </div>
 
-@using (Ajax.BeginForm("modifyReservation", "Home", new AjaxOptions
-{
-    HttpMethod = "Post",
-    UpdateTargetId = "result"
-}))
-{
+
     <div class="modify-reservation">
 
         <div class="header">Modify</div>
         <div class="modify-sub-header"><b>Details</b></div>
-       
+   @using (Ajax.BeginForm("modifyReservation", "Home", new AjaxOptions
+   {
+       HttpMethod = "Post",
+       UpdateTargetId = "result"
+   }))
+   {
             <form class="form-horizontal">
                 <fieldset>
                     
@@ -162,7 +162,7 @@
 
                             </select>
                         </div>
-              
+                    <input type="hidden" name="resid" value="0" />
                     <div class="modify-label">To</div>
                         <div class="col-lg-10">
                             <select class="form-control input-sm" name="finalTimeslot">
@@ -204,7 +204,7 @@
         
 
 
-    </div>
+  
 }
 
 
