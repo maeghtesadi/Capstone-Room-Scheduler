@@ -45,18 +45,18 @@ namespace LogicLayer
             }
         }
         
-        public Reservation makeNewReservation(int roomID, int userID, string desc, DateTime date)
+        public Reservation makeNewReservation(int reservationid, int roomID, int userID, string desc, DateTime date, List<TimeSlot> tsl)
         {
-            Reservation reservation = ReservationMapper.getInstance().makeNew(userID, roomID, desc, date);
+            //Reservation reservation = ReservationMapper.getInstance().makeNew(userID, roomID, desc, date);
+            Reservation reservation = new Reservation(reservationid, userID, roomID, desc, date, tsl);
             reservationList.Add(reservation);
             return reservation;
         }
-        //we do NOT need these anymore.
 
         public void modifyReservation(int reservationID, int roomID, string desc, DateTime date)
         {
-            ReservationMapper.getInstance().modifyReservation(reservationID, roomID, desc, date);
-
+            //ReservationMapper.getInstance().modifyReservation(reservationID, roomID, desc, date);
+            
             foreach (Reservation reservation in reservationList)
             {
                 if (reservation.reservationID == reservationID)

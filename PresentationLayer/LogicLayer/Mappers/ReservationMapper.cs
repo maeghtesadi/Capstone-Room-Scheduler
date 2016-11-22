@@ -63,12 +63,12 @@ namespace Mappers
             //Make a new reservation object
             Reservation reservation = new Reservation();
 
-            //reservation = DirectoryOfReservations.getInstance().makeNewReservation(roomID, userID, desc, date);
-            reservation.reservationID = (reservationID);
-            reservation.roomID = roomID;
-            reservation.userID = userID;
-            reservation.description = desc;
-            reservation.date = date;
+            reservation = DirectoryOfReservations.getInstance().makeNewReservation(reservationID, roomID, userID, desc, date, new List<TimeSlot>());
+            //reservation.reservationID = (reservationID);
+            //reservation.roomID = roomID;
+            //reservation.userID = userID;
+            //reservation.description = desc;
+            //reservation.date = date;
 
             DirectoryOfReservations.getInstance().addToListOfReservations(reservation);
 
@@ -184,13 +184,14 @@ namespace Mappers
             //Get the reservation that needs to be updated
             Reservation reservation = getReservation(reservationID);
 
+            DirectoryOfReservations.getInstance().modifyReservation(reservationID, roomID, desc, date);
             //Update the reservation
 
-            //reservation.reservationUserID = (userID); //mutator function to set the NEW userID
-            reservation.roomID = (roomID); //mutator function to set the NEW roomID
-            reservation.description = (desc); //mutator function to set the NEW description
-            reservation.date = (date); //mutator function to set the NEW date
-            //reservation.reservationDate = new DateTime(reservation.reservationDate.Year, reservation.reservationDate.Month, reservation.reservationDate.Day, reservation.reservationDate.Hour, 0, 0); //mutator function to set the NEW hour
+            ////reservation.reservationUserID = (userID); //mutator function to set the NEW userID
+            //reservation.roomID = (roomID); //mutator function to set the NEW roomID
+            //reservation.description = (desc); //mutator function to set the NEW description
+            //reservation.date = (date); //mutator function to set the NEW date
+            ////reservation.reservationDate = new DateTime(reservation.reservationDate.Year, reservation.reservationDate.Month, reservation.reservationDate.Day, reservation.reservationDate.Hour, 0, 0); //mutator function to set the NEW hour
 
             //Register instances as Dirty in the Unit Of Work since the object has been modified.
             UnitOfWork.getInstance().registerDirty(reservation);
