@@ -8,6 +8,9 @@ namespace LogicLayer
 {
     public class UserCatalog
     {
+
+        private static UserCatalog instance = new UserCatalog();
+
         public List<User> registeredUsers { get; set; }
 
         public UserCatalog()
@@ -22,6 +25,11 @@ namespace LogicLayer
         public UserCatalog(List<User> regusers)
         {
             this.registeredUsers = regusers;
+        }
+
+        public static UserCatalog getInstance()
+        {
+            return instance;
         }
 
     }

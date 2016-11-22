@@ -9,9 +9,9 @@ namespace LogicLayer
 {
     public class DirectoryOfReservations
     {
-
+   
         private static DirectoryOfReservations instance = new DirectoryOfReservations();
-
+        
         public List<Reservation> reservationList { get; set; }
 
         public DirectoryOfReservations()

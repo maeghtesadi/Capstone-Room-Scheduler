@@ -197,5 +197,13 @@ namespace Mappers
         {
             tdgRoom.deleteRoom(deleteList);
         }
+
+
+        public List<Room> getListOfRooms()
+        {
+            return (DirectoryOfRooms.getInstance().roomList);
+        }
+
+
     }
 }

@@ -278,7 +278,11 @@ namespace Mappers
         }
 
 
-    }
+        public List<Reservation> getListOfReservations()
+        {
+            return (DirectoryOfReservations.getInstance().reservationList);
+        }
 
+    }
 
 }

@@ -288,5 +288,10 @@ namespace Mappers
             return hours;
         }
 
+        public List<TimeSlot> getListOfTimeSlots()
+        {
+            return (DirectoryOfTimeSlots.getInstance().timeSlotList);
+        }
+
     }
 }

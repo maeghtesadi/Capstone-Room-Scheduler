@@ -124,5 +124,10 @@ namespace Mappers
         }
 
 
+        public List<User> getListOfUsers()
+        {
+            return (UserCatalog.getInstance().registeredUsers);
+        }
+
     }
 }
