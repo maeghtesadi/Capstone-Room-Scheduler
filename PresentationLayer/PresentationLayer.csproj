@@ -195,7 +195,6 @@
     <Compile Include="LogicLayer\IdentityMaps\RoomIdentityMap.cs" />
     <Compile Include="LogicLayer\Mappers\RoomMapper.cs" />
     <Compile Include="LogicLayer\TimeSlot.cs" />
-    <Compile Include="LogicLayer\TimeSlotList.cs" />
     <Compile Include="LogicLayer\UnitOfWork.cs" />
     <Compile Include="LogicLayer\User.cs" />
     <Compile Include="LogicLayer\UserCatalog.cs" />
