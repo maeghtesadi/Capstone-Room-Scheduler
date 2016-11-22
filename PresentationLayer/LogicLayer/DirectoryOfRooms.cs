@@ -29,6 +29,23 @@ namespace LogicLayer
             return instance;
         }
 
+        public void addToListOfRooms(Room r)
+        {
+            roomList.Add(r);
+        }
+
+        public void deleteFromListOfRooms(int rid)
+        {
+            for (int i = 0; i < roomList.Count; i++)
+            {
+                if (roomList[i].roomID == rid)
+                {
+                    roomList.Remove(roomList[i]);
+                    break;
+                }
+            }
+        }
+
         public Dictionary<int, Room> getAllRooms()
         {
             return RoomMapper.getInstance().getAllRooms();

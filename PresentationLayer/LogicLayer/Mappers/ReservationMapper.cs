@@ -63,9 +63,14 @@ namespace Mappers
             //Make a new reservation object
             Reservation reservation = new Reservation();
 
-            reservation = DirectoryOfReservations.getInstance().makeNewReservation(roomID, userID, desc, date);
+            //reservation = DirectoryOfReservations.getInstance().makeNewReservation(roomID, userID, desc, date);
             reservation.reservationID = (reservationID);
+            reservation.roomID = roomID;
+            reservation.userID = userID;
+            reservation.description = desc;
+            reservation.date = date;
 
+            DirectoryOfReservations.getInstance().addToListOfReservations(reservation);
 
             //Add new reservation object to the identity map, in Live memory.
             reservationIdentityMap.addTo(reservation);
@@ -213,7 +218,9 @@ namespace Mappers
             //Object will be deleted from the DB
             UnitOfWork.getInstance().registerDeleted(reservation);
 
-            DirectoryOfReservations.getInstance().cancelReservation(reservationID);
+            DirectoryOfReservations.getInstance().deleteFromListOfReservations(reservationID);
+
+            //DirectoryOfReservations.getInstance().cancelReservation(reservationID);
         }
         /**
          * Done: commit

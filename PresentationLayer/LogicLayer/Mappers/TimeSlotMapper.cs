@@ -63,8 +63,12 @@ namespace Mappers
             //Make a new TimeSlot object
             TimeSlot timeslot = new TimeSlot();
 
-            timeslot = DirectoryOfTimeSlots.getInstance().makeNewTimeSlot(reservationID, hour);
+            //timeslot = DirectoryOfTimeSlots.getInstance().makeNewTimeSlot(reservationID, hour);
             timeslot.timeSlotID = (timeslotID);
+            timeslot.reservationID = reservationID;
+            timeslot.hour = hour;
+
+            DirectoryOfTimeSlots.getInstance().addToListOfTimeSlots(timeslot);
 
             //Add new TimeSlot object to the identity map, in Live memory.
             timeSlotIdentityMap.addTo(timeslot);
@@ -237,7 +241,9 @@ namespace Mappers
             //Object will be deleted from the DB
             UnitOfWork.getInstance().registerDeleted(timeSlot);
 
-            DirectoryOfTimeSlots.getInstance().deleteTimeSlot(timeSlot.timeSlotID);
+            //DirectoryOfTimeSlots.getInstance().deleteTimeSlot(timeSlot.timeSlotID);
+
+            DirectoryOfTimeSlots.getInstance().deleteFromListOfTimeSlots(timeSlotID);
 
         }
         /**

@@ -60,6 +60,8 @@ namespace Mappers
             room.roomID = nextID;
             room.roomNum = roomNum;
 
+            DirectoryOfRooms.getInstance().addToListOfRooms(room);
+
             // Add it to the identity map
             roomIdentityMap.addTo(room);
 
@@ -161,6 +163,9 @@ namespace Mappers
 
             // Register as deleted
             UnitOfWork.getInstance().registerDeleted(room);
+
+            DirectoryOfRooms.getInstance().deleteFromListOfRooms(roomID);
+
         } 
 
         /**

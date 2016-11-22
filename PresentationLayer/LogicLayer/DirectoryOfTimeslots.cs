@@ -29,6 +29,23 @@ namespace LogicLayer
             return instance;
         }
 
+        public void addToListOfTimeSlots(TimeSlot ts)
+        {
+            timeSlotList.Add(ts);
+        }
+
+        public void deleteFromListOfTimeSlots(int timeSlotID)
+        {
+            for (int i = 0; i < timeSlotList.Count; i++)
+            {
+                if (timeSlotList[i].timeSlotID == timeSlotID)
+                {
+                    timeSlotList.Remove(timeSlotList[i]);
+                    break;
+                }
+            }
+        }
+
         public TimeSlot makeNewTimeSlot(int resID, int hour)
         {
             TimeSlot timeSlot = TimeSlotMapper.getInstance().makeNew(resID, hour);

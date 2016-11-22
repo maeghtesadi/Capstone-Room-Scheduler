@@ -28,12 +28,30 @@ namespace LogicLayer
             return instance;
         }
 
+        public void addToListOfReservations(Reservation r)
+        {
+            reservationList.Add(r);
+        }
+
+        public void deleteFromListOfReservations(int resid)
+        {
+            for (int i = 0; i < reservationList.Count; i++)
+            {
+                if (reservationList[i].reservationID == resid)
+                {
+                    reservationList.Remove(reservationList[i]);
+                    break;
+                }
+            }
+        }
+        
         public Reservation makeNewReservation(int roomID, int userID, string desc, DateTime date)
         {
             Reservation reservation = ReservationMapper.getInstance().makeNew(userID, roomID, desc, date);
             reservationList.Add(reservation);
             return reservation;
         }
+        //we do NOT need these anymore.
 
         public void modifyReservation(int reservationID, int roomID, string desc, DateTime date)
         {

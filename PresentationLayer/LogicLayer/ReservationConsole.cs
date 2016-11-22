@@ -14,10 +14,10 @@ namespace LogicLayer
         //Instance of ReservationConsole class
         private static ReservationConsole instance = new ReservationConsole();
 
-        DirectoryOfReservations directoryOfReservations = new DirectoryOfReservations();
-        DirectoryOfRooms directoryOfRooms = new DirectoryOfRooms();
-        DirectoryOfTimeSlots directoryOfTimeSlots = new DirectoryOfTimeSlots();
-        UserCatalog userCatalog = new UserCatalog();
+        //DirectoryOfReservations directoryOfReservations = new DirectoryOfReservations();
+        //DirectoryOfRooms directoryOfRooms = new DirectoryOfRooms();
+        //DirectoryOfTimeSlots directoryOfTimeSlots = new DirectoryOfTimeSlots();
+        //UserCatalog userCatalog = new UserCatalog();
 
         public static ReservationConsole getInstance()
         {
@@ -38,7 +38,8 @@ namespace LogicLayer
             for (int i = firstHour; i <= lastHour; i++)
                 hours.Add(i);
 
-            foreach (Reservation reservation in directoryOfReservations.reservationList)
+            //foreach (Reservation reservation in directoryOfReservations.reservationList)
+            foreach (Reservation reservation in ReservationMapper.getInstance().getListOfReservations())
             {
                 // Compare if the date (not the time portion) are the same and the rooms are the same
                 if (reservation.date.Date == date.Date && reservation.roomID == roomID)
@@ -52,7 +53,8 @@ namespace LogicLayer
                                 if (!timeSlot.waitlist.Contains(userID) && reservation.userID != userID)
                                 {
                                     timeSlot.waitlist.Enqueue(userID);
-                                    directoryOfTimeSlots.addToWaitList(timeSlot.timeSlotID, timeSlot.reservationID, timeSlot.waitlist);
+                                    TimeSlotMapper.getInstance().setTimeSlot(timeSlot.timeSlotID, timeSlot.reservationID, timeSlot.waitlist);
+                                    //directoryOfTimeSlots.addToWaitList(timeSlot.timeSlotID, timeSlot.reservationID, timeSlot.waitlist);
                                 }
                                 hours.Remove(i);
                             }
@@ -84,40 +86,40 @@ namespace LogicLayer
 
         public void udpateDirectories()
         {
-            // Only Console has visibility over DirectoryOfTimeSlot, so this was loop was put here instead of DirectoryOfReservation
+            
             // Updating timeSlots of each reservations
-            for (int i = 0; i < (directoryOfReservations.reservationList).Count; i++)
+            for (int i = 0; i < (ReservationMapper.getInstance().getListOfReservations()).Count; i++)
             {
-                foreach (KeyValuePair<int, TimeSlot> timeSlot in directoryOfTimeSlots.getAllTimeSlot())
+                foreach (KeyValuePair<int, TimeSlot> timeSlot in TimeSlotMapper.getInstance().getAllTimeSlot())
                 {
-                    if (directoryOfReservations.reservationList[i].reservationID == timeSlot.Value.reservationID)
-                        directoryOfReservations.reservationList[i].timeSlots.Add(timeSlot.Value);
+                    if (ReservationMapper.getInstance().getListOfReservations()[i].reservationID == timeSlot.Value.reservationID)
+                        ReservationMapper.getInstance().getListOfReservations()[i].timeSlots.Add(timeSlot.Value);
                 }
             }
 
             // Updating the waitList of each timeSlot
-            for (int i = 0; i < directoryOfTimeSlots.timeSlotList.Count; i++)
+            for (int i = 0; i < TimeSlotMapper.getInstance().getListOfTimeSlots().Count; i++)
             {
-                List<int> waitList = directoryOfTimeSlots.getAllUsers(directoryOfTimeSlots.timeSlotList[i].timeSlotID);
+                List<int> waitList = TimeSlotMapper.getInstance().getAllUsers(TimeSlotMapper.getInstance().getListOfTimeSlots()[i].timeSlotID);
                 if (waitList != null)
                     for (int j = 0; j < waitList.Count; j++)
-                        directoryOfTimeSlots.timeSlotList[i].waitlist.Enqueue(waitList[j]);
+                        TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist.Enqueue(waitList[j]);
             }
 
             //Updating the reservations for each room
-            for (int i = 0; i < directoryOfRooms.roomList.Count; i++)
+            for (int i = 0; i < RoomMapper.getInstance().getListOfRooms().Count; i++)
             {
-                foreach (KeyValuePair<int, Reservation> reservation in directoryOfReservations.getAllReservation())
+                foreach (KeyValuePair<int, Reservation> reservation in ReservationMapper.getInstance().getAllReservation())
                 {
-                    if (reservation.Value.roomID == directoryOfRooms.roomList[i].roomID)
-                        directoryOfRooms.roomList[i].roomReservations.Add(reservation.Value);
+                    if (reservation.Value.roomID == RoomMapper.getInstance().getListOfRooms()[i].roomID)
+                        RoomMapper.getInstance().getListOfRooms()[i].roomReservations.Add(reservation.Value);
                 }
             }
         }
 
         public void updateWaitList(int userID, DateTime date, int hour)
         {
-            foreach (TimeSlot timeSlot in directoryOfTimeSlots.timeSlotList) //CHANGE THIS IN MAPPER.
+            foreach (TimeSlot timeSlot in TimeSlotMapper.getInstance().getListOfTimeSlots()) //CHANGE THIS IN MAPPER.
             {
                 // Obtain the date associated with that timeslot for the current reservation
                 DateTime timeSlotDate = ReservationMapper.getInstance().getReservation(timeSlot.reservationID).date;
@@ -151,10 +153,10 @@ namespace LogicLayer
         public void modifyReservation(int resID, int roomID, string desc, DateTime date, int firstHour, int lastHour)
         {
             Reservation resToModify = new Reservation();
-            for (int i = 0; i < directoryOfReservations.reservationList.Count; i++)
+            for (int i = 0; i < ReservationMapper.getInstance().getListOfReservations().Count; i++)
             {
-                if (resID == directoryOfReservations.reservationList[i].reservationID)
-                    resToModify = directoryOfReservations.reservationList[i];
+                if (resID == ReservationMapper.getInstance().getListOfReservations()[i].reservationID)
+                    resToModify = ReservationMapper.getInstance().getListOfReservations()[i];
             }
 
             if (resToModify.date.Date != date.Date || resToModify.roomID != roomID)
@@ -217,9 +219,10 @@ namespace LogicLayer
                         //directoryOfReservations.done();
                         ReservationMapper.getInstance().done();
 
-                        updateWaitList(userID, directoryOfReservations.getReservation(resID).date, resToModify.timeSlots[i].hour);
-                        directoryOfTimeSlots.addToWaitList(resToModify.timeSlots[i].timeSlotID, res.reservationID, resToModify.timeSlots[i].waitlist);
-                        directoryOfTimeSlots.done();
+                        updateWaitList(userID, ReservationMapper.getInstance().getReservation(resID).date, resToModify.timeSlots[i].hour);
+                        TimeSlotMapper.getInstance().setTimeSlot(resToModify.timeSlots[i].timeSlotID, res.reservationID, resToModify.timeSlots[i].waitlist);
+                        //directoryOfTimeSlots.done();
+                        TimeSlotMapper.getInstance().done();
                     }
                 }
             }
@@ -229,7 +232,7 @@ namespace LogicLayer
             for (int i = firstHour; i < lastHour; i++)
                 hours.Add(i);
 
-            foreach (Reservation reservation in directoryOfReservations.reservationList) //change this
+            foreach (Reservation reservation in ReservationMapper.getInstance().getListOfReservations()) //change this
             {
                 if (reservation.date == date && reservation.roomID == roomID)
                 {
@@ -273,17 +276,19 @@ namespace LogicLayer
         public void cancelReservation(int resID)
         {
             // Loop through each timeslot
-            for (int i = 0; i < directoryOfTimeSlots.timeSlotList.Count; i++) //make method in mappers that returns the count
+            for (int i = 0; i < TimeSlotMapper.getInstance().getListOfTimeSlots().Count; i++) //make method in mappers that returns the count
             {
                 // For those who are belonging to the reservation to be cancelled:
                 //if (directoryOfTimeSlots.timeSlotList[i].reservationID == resID)
-                if (directoryOfTimeSlots.timeSlotList[i].reservationID == resID) //make a method in mappers that returns the respective directory lists
+                if (TimeSlotMapper.getInstance().getListOfTimeSlots()[i].reservationID == resID) //make a method in mappers that returns the respective directory lists
                 {
                     // If no one is waiting, delete it.
-                    if (directoryOfTimeSlots.timeSlotList[i].waitlist.Count == 0)
+                    if (TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist.Count == 0)
                     {
-                        directoryOfTimeSlots.deleteTimeSlot(directoryOfTimeSlots.timeSlotList[i].timeSlotID);
-                        directoryOfTimeSlots.done();
+                        //directoryOfTimeSlots.deleteTimeSlot(directoryOfTimeSlots.timeSlotList[i].timeSlotID);
+                        //directoryOfTimeSlots.done();
+                        TimeSlotMapper.getInstance().delete(TimeSlotMapper.getInstance().getListOfTimeSlots()[i].timeSlotID);
+                        TimeSlotMapper.getInstance().done();
                     }
 
                     // Otherwise:
@@ -293,40 +298,49 @@ namespace LogicLayer
                     // - Update the timeslot from old reservation to the new one. (done - timeslot)
                     else
                     {
-                        int userID = directoryOfTimeSlots.timeSlotList[i].waitlist.Dequeue();
-                        Reservation res = directoryOfReservations.makeNewReservation(directoryOfReservations.getReservation(resID).roomID, userID, "", directoryOfReservations.getReservation(resID).date);
-                        directoryOfReservations.done();
+                        //int userID = directoryOfTimeSlots.timeSlotList[i].waitlist.Dequeue();
+                        int userID = TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist.Dequeue();
+                        Reservation res = ReservationMapper.getInstance().makeNew(ReservationMapper.getInstance().getReservation(resID).roomID, userID, 
+                            "", ReservationMapper.getInstance().getReservation(resID).date);
 
-                        directoryOfTimeSlots.addToWaitList(directoryOfTimeSlots.timeSlotList[i].timeSlotID, res.reservationID, directoryOfTimeSlots.timeSlotList[i].waitlist);
-                        updateWaitList(userID, res.date, directoryOfTimeSlots.timeSlotList[i].hour);
-                        directoryOfTimeSlots.done();
+                        //directoryOfReservations.done();
+                        ReservationMapper.getInstance().done();
+
+                        TimeSlotMapper.getInstance().setTimeSlot(TimeSlotMapper.getInstance().getListOfTimeSlots()[i].timeSlotID, res.reservationID,
+                            TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist);
+
+                        updateWaitList(userID, res.date, TimeSlotMapper.getInstance().getListOfTimeSlots()[i].hour);
+                        //directoryOfTimeSlots.done();
+                        TimeSlotMapper.getInstance().done();
                     }
                 }
             }
 
             // Completely done with this reservation, delete it.
-            directoryOfReservations.cancelReservation(resID);
-            directoryOfReservations.done();
+            ReservationMapper.getInstance().delete(resID);
+            ReservationMapper.getInstance().done();
+            //directoryOfReservations.cancelReservation(resID);
+            //directoryOfReservations.done();
             udpateDirectories();
         }
 
-        public DirectoryOfTimeSlots getAllTimeSlots()
-        {
-            return directoryOfTimeSlots;
-        }
+        //public DirectoryOfTimeSlots getAllTimeSlots()
+        //{
+        //    return directoryOfTimeSlots;
+        //}
 
-        public DirectoryOfReservations getAllReservations()
-        {
-            return directoryOfReservations;
-        }
+        //public DirectoryOfReservations getAllReservations()
+        //{
+        //    return directoryOfReservations;
+        //}
 
-        public DirectoryOfRooms getAllRooms()
-        {
-            return directoryOfRooms;
-        }
-        public UserCatalog getUserCatalog()
-        {
-            return userCatalog;
-        }
+        //public DirectoryOfRooms getAllRooms()
+        //{
+        //    return directoryOfRooms;
+        //}
+        //public UserCatalog getUserCatalog()
+        //{
+        //    return userCatalog;
+        //}
     }
 }
