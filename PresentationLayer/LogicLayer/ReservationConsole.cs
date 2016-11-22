@@ -364,10 +364,11 @@ namespace LogicLayer
             }
             return listByDate;
         }
-        public UserCatalog getUserCatalog()
-        {
-            return userCatalog;
-        }
+
+        //public UserCatalog getUserCatalog()
+        //{
+        //    return userCatalog;
+        //}
 
         /**
          * method for the constraint of not exceeding a reservation of 4 hours per day per person
@@ -377,13 +378,12 @@ namespace LogicLayer
             //interval of hours for the desired reservvation
             int newHours = lastHour - firstHour + 1;
             //number of hours of reservation currently for chosen day
-            int currentHours = directoryOfTimeSlots.findHoursByReservationIDs(directoryOfReservations.findReservationsByIDAndDate(userID, date));
+            int currentHours = TimeSlotMapper.getInstance().findHoursByReservationID(ReservationMapper.getInstance().findReservationIDs(userID, date));
             //checks of reservation is possible according to constraint
             if (currentHours + newHours < 4)
             {
                 return true;
             }
-        
             return false;
         }
        

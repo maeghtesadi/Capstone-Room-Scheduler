@@ -77,7 +77,7 @@ namespace CapstoneRoomScheduler.Controllers
                     finalTimeslot = lastTimeSlot,
                     roomId = reservationList[i].roomID,
                     description = reservationList[i].description,
-                    userName = ReservationConsole.getInstance().getUserCatalog().registeredUsers.First(x => x.userID == reservationList[i].userID).name,
+                    userName = ReservationConsole.getInstance().getUserCatalog().First(x => x.userID == reservationList[i].userID).name,
                     reservationId = reservationList[i].reservationID,
                     userId = reservationList[i].userID,
                     date = reservationList[i].date.Date
