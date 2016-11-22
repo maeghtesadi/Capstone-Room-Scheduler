@@ -52,7 +52,7 @@ namespace LogicLayer
 
         public void cancelReservation(int reservationID)
         {
-            ReservationMapper.getInstance().delete(reservationID);
+            //ReservationMapper.getInstance().delete(reservationID);
 
             foreach (Reservation reservation in reservationList)
                 if (reservation.reservationID == reservationID)

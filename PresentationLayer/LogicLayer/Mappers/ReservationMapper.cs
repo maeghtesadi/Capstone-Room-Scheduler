@@ -15,8 +15,7 @@ namespace Mappers
 
         private TDGReservation tdgReservation = TDGReservation.getInstance();
         private ReservationIdentityMap reservationIdentityMap = ReservationIdentityMap.getInstance();
-        private WaitsForMapper waitsForMapper = WaitsForMapper.getInstance();
-
+        //private WaitsForMapper waitsForMapper = WaitsForMapper.getInstance();
 
         // The last ID that is used
         private int lastID;
@@ -64,23 +63,18 @@ namespace Mappers
             //Make a new reservation object
             Reservation reservation = new Reservation();
             reservation.reservationID = (reservationID);
-            reservation.userID = (userID);
-            reservation.roomID = (roomID);
-            reservation.description = (desc);
-            reservation.date = (date);
+
+            DirectoryOfReservations.getInstance().makeNewReservation(roomID, userID, desc, date);
 
             //Add new reservation object to the identity map, in Live memory.
             reservationIdentityMap.addTo(reservation);
-
 
             //Add reservation object to UoW registry (register as a new RESERVATION).
             //It will be  created in the DB once the user is ready to commit everything.
 
             UnitOfWork.getInstance().registerNew(reservation);
 
-
             return reservation;
-
         }
 
         /**
@@ -93,7 +87,6 @@ namespace Mappers
             //Try to obtain the reservation from the Reservation indentity map
             Reservation reservation = reservationIdentityMap.find(reservationID);
             Object[] result = null;
-
 
             if (reservation == null)
             {
@@ -171,10 +164,10 @@ namespace Mappers
          * Return all users waiting for a reservation given the
          * reservation ID.
          */
-        public List<int> getAllUsers(int reservationID)
-        {
-            return waitsForMapper.getAllUsers(reservationID);
-        }
+        //public List<int> getAllUsers(int reservationID)
+        //{
+        //    return waitsForMapper.getAllUsers(reservationID);
+        //}
 
         /**
          * Set reservation attributes
@@ -219,6 +212,7 @@ namespace Mappers
             //Object will be deleted from the DB
             UnitOfWork.getInstance().registerDeleted(reservation);
 
+            DirectoryOfReservations.getInstance().cancelReservation(reservationID);
         }
         /**
          * Done: commit
