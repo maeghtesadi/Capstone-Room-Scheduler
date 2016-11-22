@@ -117,16 +117,5 @@ namespace LogicLayer
             return IDlist;
         }
 
-        //public Boolean checkConstraint(int userID, DateTime date, int interval)
-        //{
-        //    if ((TimeSlotMapper.getInstance().findHoursByReservationID(ReservationMapper.getInstance().findReservationID(userID, date)) + interval) < 4)
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //        return false;
-        //}
-
-
     }
 }
