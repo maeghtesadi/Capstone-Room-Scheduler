@@ -90,7 +90,7 @@ namespace CapstoneRoomScheduler.LogicLayer.IdentityMaps
             List<int> IDlist = new List<int>();
             foreach (KeyValuePair<int, Reservation> pair in reservationList_ActiveMemory)
             {
-                if (pair.Value.userID.Equals(userID) && pair.Value.date.Equals(date))
+                if (pair.Value.userID.Equals(userID) && pair.Value.date.Equals(date.Date.ToString("yyyy-MM-dd")))
                 {
                     //add the found IDs to the list
                     IDlist.Add(pair.Value.reservationID);

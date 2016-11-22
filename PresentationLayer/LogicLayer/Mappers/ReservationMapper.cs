@@ -67,7 +67,7 @@ namespace Mappers
             int reservationID = getNextID();
 
             //Make a new reservation object
-            Reservation reservation = DirectoryOfReservations.getInstance().makeNewReservation(reservationID, roomID, userID, desc, date);
+            Reservation reservation = DirectoryOfReservations.getInstance().makeNewReservation(reservationID, userID, roomID, desc, date);
 
             //Add new reservation to identity map
             reservationIdentityMap.addTo(reservation);
@@ -130,7 +130,7 @@ namespace Mappers
                 if (!reservations.ContainsKey(record.Key))
                 {
 
-                    Reservation reservation = DirectoryOfReservations.getInstance().makeNewReservation((int)record.Key, (int)record.Value[1], (int)record.Value[2], (string)record.Value[3], (DateTime)record.Value[4]);
+                    Reservation reservation = new Reservation((int)record.Key, (int)record.Value[1], (int)record.Value[2], (string)record.Value[3], (DateTime)record.Value[4]);
                     reservationIdentityMap.addTo(reservation);
                     reservations.Add(reservation.reservationID, reservation);
                 }

@@ -31,7 +31,7 @@ namespace CapstoneRoomScheduler.Controllers
         {
             string[] dateArray=date.Split('-');
         
-            ReservationConsole.getInstance().modifyReservation(resid, roomId, description,new DateTime(Int32.Parse(dateArray[0]), Int32.Parse(dateArray[1]), Int32.Parse(dateArray[2])), initialTimeslot, finalTimeslot);
+            ReservationConsole.getInstance().modifyReservation(resid, roomId, description,new DateTime(Int32.Parse(dateArray[0]), Int32.Parse(dateArray[1]), Int32.Parse(dateArray[2])), initialTimeslot, finalTimeslot-1);
             getReservations();
             updateCalendar(year, month, day);
 
@@ -49,6 +49,7 @@ namespace CapstoneRoomScheduler.Controllers
         [HttpPost]
         public void updateCalendar(int year, int month, int day)
         {
+            //ReservationConsole.getInstance().getAllTimeSlots().
            DateTime date = new DateTime(year, month, day);
            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
            hubContext.Clients.All.updateCalendar(convertToJsonObject(ReservationConsole.getInstance().findByDate(date)));
