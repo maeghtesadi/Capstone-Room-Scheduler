@@ -132,7 +132,7 @@ text-align:center;
 /*--------Reservation----------*/
 /*-----------------------------*/
 .reservations{
-width:340px;
+width:400px;
 height:calc(100% - 90px);
 background-color:white;
 position:fixed;
@@ -145,32 +145,33 @@ display:none;
 
 /*Tabs*/
 .tabs{
-height:50px;
-font-size:13px;
+height:60px;
+font-size:15px;
 text-align:center;
 vertical-align:middle;
-
+box-shadow: inset 0px -1px 0 rgb(197, 197, 197);
+padding-left:60px;
 }
 .reservation-tab{
 padding-top:15px;
 float:left;
-width:50%;
-background-color:#eeeeee;
+width:90px;
+color:#b9b9b9;
 height:inherit;
 
 }
 
 .reservation-tab.active,.waitlist-tab.active{
-background-color:white;
-color:#b9b9b9;
+box-shadow: inset 0px -3px 0 #4B91E1;
+color:#64666B;
 
 }
 
 .waitlist-tab{
 padding-top:15px;
 display:inline-block;
-width:50%;
-background-color:#eeeeee;
+width:90px;
+color:#b9b9b9;
 height:inherit;
 }
 

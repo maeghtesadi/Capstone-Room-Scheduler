@@ -384,17 +384,9 @@ $(".reservation-content").on('click',".cancelReservation",function(){
 
 });
 $(".reservation-content").on('click', ".modifyReservation", function () {
-    var thisElement = $(this);
-    $(".modify-reservation").toggle(0);
-    $(".modify-reservation").css('opacity', '1');
-    $(".modify-reservation").position({
-        my: "right",
-        at: "left",
-        of: thisElement
-    });
-    $(".modify-reservation").toggle(0);
-    $(".modify-reservation").css('opacity', '1');
+  
     $(".modify-reservation").toggle(300);
+
 });
 
 
