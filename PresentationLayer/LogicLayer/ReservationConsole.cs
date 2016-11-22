@@ -167,8 +167,6 @@ namespace LogicLayer
                         //If waitList for timeSlots is empty, delete from db
                         TimeSlotMapper.getInstance().delete(resToModify.timeSlots[i].timeSlotID);
                         TimeSlotMapper.getInstance().done();
-                        //directoryOfTimeSlots.deleteTimeSlot(resToModify.timeSlots[i].timeSlotID);
-                        //directoryOfTimeSlots.done();
                     }
                     else
                     {
@@ -176,15 +174,9 @@ namespace LogicLayer
                         int userID = resToModify.timeSlots[i].waitlist.Dequeue();
                         Reservation res = ReservationMapper.getInstance().makeNew(userID, ReservationMapper.getInstance().getReservation(resID).roomID, 
                             "", ReservationMapper.getInstance().getReservation(resID).date);
-                        //Reservation res = directoryOfReservations.makeNewReservation(directoryOfReservations.getReservation(resID).roomID, userID, "",
-                        // directoryOfReservations.getReservation(resID).date);
                         ReservationMapper.getInstance().done();
-                        //directoryOfReservations.done();
-                        //updateWaitList(userID, directoryOfReservations.getReservation(resID).date, resToModify.timeSlots[i].hour);
                         updateWaitList(userID, ReservationMapper.getInstance().getReservation(resID).date, resToModify.timeSlots[i].hour);
-                        //directoryOfTimeSlots.addToWaitList(resToModify.timeSlots[i].timeSlotID, res.reservationID, resToModify.timeSlots[i].waitlist);
                         TimeSlotMapper.getInstance().setTimeSlot(resToModify.timeSlots[i].timeSlotID, res.reservationID, resToModify.timeSlots[i].waitlist);
-                        //directoryOfTimeSlots.done();
                         TimeSlotMapper.getInstance().done();
                     }
                 }
@@ -207,16 +199,23 @@ namespace LogicLayer
                     if (resToModify.timeSlots[i].waitlist.Count == 0)
                     {
                         //If waitList for timeSlots is empty, delete from db
-                        directoryOfTimeSlots.deleteTimeSlot(resToModify.timeSlots[i].timeSlotID);
-                        directoryOfTimeSlots.done();
+                        TimeSlotMapper.getInstance().delete(resToModify.timeSlots[i].timeSlotID);
+                        TimeSlotMapper.getInstance().done();
+                        //directoryOfTimeSlots.deleteTimeSlot(resToModify.timeSlots[i].timeSlotID);
+                        //directoryOfTimeSlots.done();
                     }
                     else
                     {
                         //Else give new reservation to the first person in waitlist
                         int userID = resToModify.timeSlots[i].waitlist.Dequeue();
-                        Reservation res = directoryOfReservations.makeNewReservation(directoryOfReservations.getReservation(resID).roomID, userID, "",
-                            directoryOfReservations.getReservation(resID).date);
-                        directoryOfReservations.done();
+                        int myroomid = ReservationMapper.getInstance().getReservation(resID).roomID;
+                        DateTime mydate = ReservationMapper.getInstance().getReservation(resID).date;
+
+                        Reservation res = ReservationMapper.getInstance().makeNew(myroomid, userID, "", mydate);
+                        //Reservation res = directoryOfReservations.makeNewReservation(directoryOfReservations.getReservation(resID).roomID, userID, "",
+                        //   directoryOfReservations.getReservation(resID).date);
+                        //directoryOfReservations.done();
+                        ReservationMapper.getInstance().done();
 
                         updateWaitList(userID, directoryOfReservations.getReservation(resID).date, resToModify.timeSlots[i].hour);
                         directoryOfTimeSlots.addToWaitList(resToModify.timeSlots[i].timeSlotID, res.reservationID, resToModify.timeSlots[i].waitlist);
