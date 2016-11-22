@@ -96,7 +96,7 @@ namespace LogicLayer
         }
    
 
-    public List<Reservation> filterByBlock(DateTime date)
+        public List<Reservation> filterByBlock(DateTime date)
         {
             List<Reservation> listByDate = new List<Reservation>();
             foreach (Reservation reservation in reservationList)
@@ -109,16 +109,13 @@ namespace LogicLayer
             return listByDate;
         }
 
-        //public Boolean check4HourConstraint(int userID, DateTime date, int interval)
-        //{
-        //    if ((TimeSlotMapper.getInstance().findHoursByReservationID(ReservationMapper.getInstance().findReservationID(userID, date)) + interval) < 4)
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //        return false;
-        //}
 
+        public List<int> findReservationsByIDAndDate(int userID, DateTime date)
+        {
+            List<int> IDlist = new List<int>();
+            IDlist = ReservationMapper.getInstance().findReservationIDs(userID, date);
+            return IDlist;
+        }
 
     }
 }
