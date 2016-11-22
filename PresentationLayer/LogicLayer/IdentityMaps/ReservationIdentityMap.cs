@@ -56,9 +56,10 @@ namespace CapstoneRoomScheduler.LogicLayer.IdentityMaps
             return null;
         }
 
+
         /**
-         * Finds all rooms that are currently in the active memory
-         * */
+       * Finds all rooms that are currently in the active memory
+       * */
 
         public Dictionary<int, Reservation> findAll()
         {
@@ -78,6 +79,28 @@ namespace CapstoneRoomScheduler.LogicLayer.IdentityMaps
             return newDictionary;
 
         }
+
+        /**
+        * Finds all reservation IDs associated with the unique combination of user ID and date
+        * */
+
+        public List<int> findIDs(int userID, DateTime date)
+        {
+            //instantiate a new list to be returned
+            List<int> IDlist = new List<int>();
+            foreach (KeyValuePair<int, Reservation> pair in reservationList_ActiveMemory)
+            {
+                if (pair.Value.userID.Equals(userID) && pair.Value.date.Equals(date))
+                {
+                    //add the found IDs to the list
+                    IDlist.Add(pair.Value.reservationID);
+                }
+            }
+            //return list
+            return IDlist;
+        }
+
+
 
     }
 }

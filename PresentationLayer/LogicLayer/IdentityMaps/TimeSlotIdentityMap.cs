@@ -51,6 +51,7 @@ namespace CapstoneRoomScheduler.LogicLayer.IdentityMaps
             return null;
         }
 
+
         /**
          * Finds all timeslots that are currently in the active memory
          * */
@@ -90,6 +91,27 @@ namespace CapstoneRoomScheduler.LogicLayer.IdentityMaps
             return newDictionary;
 
         }
+
+        /**
+         * Finds all hours associated with reservation IDs provided and sums them up, that are currently in the active memory
+         * */
+
+        public int findTotalHours(List<int> IDlist)
+        {
+            int hours = 0;
+            foreach (KeyValuePair<int, TimeSlot> pair in timeSlotList_ActiveMemory)
+            {
+                foreach (int reservationID in IDlist)
+                {
+                    if (pair.Value.reservationID.Equals(reservationID))
+                    {
+                        hours += pair.Value.hour;
+                    }
+                }
+            }
+            return hours;
+        }
+
 
     }
 }
