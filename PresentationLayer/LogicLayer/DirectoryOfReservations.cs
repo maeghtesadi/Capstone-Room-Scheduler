@@ -110,7 +110,7 @@ namespace LogicLayer
         }
 
 
-        public List<int> findReservations(int userID, DateTime date)
+        public List<int> findReservationsByIDAndDate(int userID, DateTime date)
         {
             List<int> IDlist = new List<int>();
             IDlist = ReservationMapper.getInstance().findReservationIDs(userID, date);
