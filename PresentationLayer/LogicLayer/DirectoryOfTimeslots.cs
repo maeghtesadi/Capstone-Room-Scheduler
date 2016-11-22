@@ -36,7 +36,7 @@ namespace LogicLayer
             foreach (TimeSlot timeSlot in timeSlotList)
                 if (timeSlot.timeSlotID == id) {
                     timeSlotList.Remove(timeSlot);
-                    break;
+                    return;
                 }
                     
         }
