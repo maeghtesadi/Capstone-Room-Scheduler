@@ -221,6 +221,7 @@ background-color:#3f4350
     height:calc(100% - 90px);
     right:500px;
     box-shadow: inset -1px 0px 0 rgb(197, 197, 197);
+    display:none;
 
    
    

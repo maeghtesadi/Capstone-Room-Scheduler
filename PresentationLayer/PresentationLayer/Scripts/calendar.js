@@ -313,7 +313,8 @@ function buildNewReservationItem(reservationId, description, initialTimeSlot, fi
 
 
 $(".showReservations").click(function () {
-    $(".reservations").toggle(200);
+    $(".reservations").toggle('fade',200);
+    $(".modify-reservation").toggle('fade', 200);
     $(".showReservations").toggleClass('active');
     $(".reservationButton").click();
 });
@@ -339,7 +340,6 @@ function remakeCalendar() {
 
 }
 
-//Cancel reservations
 $(".reservation-content").on('click',".reservation-item",function(){
     $(".reservation-item.active").toggleClass('active');
     $(this).toggleClass('active');
@@ -347,11 +347,16 @@ $(".reservation-content").on('click',".reservation-item",function(){
     $("select[name='roomId']").val($(".reservation-item.active").find(".content-room").html());
     $("select[name='initialTimeslot']").val($(".reservation-item.active").find(".content-from").html().split(":")[0]);
     $("select[name='finalTimeslot']").val($(".reservation-item.active").find(".content-to").html().split(":")[0]);
-    $("input[name='date']").val($(".reservation-item.active").find(".content-date"));
+    $("input[name='date']").val($(".reservation-item.active").find(".content-date").html());
 
 });
     
-    
+$(".deleteReservation").on('click', function () {
+
+    $("input[name='resid']").attr("value", $(".reservation-item.active").find(".content-room").data('resid'));
+    setCalendarDate();
+    $(".cancelReservationAjax").click();
+});
 
 
 $(".reservation-content").on('click', ".modifyReservation", function () {
