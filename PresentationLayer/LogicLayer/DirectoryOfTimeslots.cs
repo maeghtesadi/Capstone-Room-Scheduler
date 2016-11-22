@@ -50,7 +50,7 @@ namespace LogicLayer
         {
             //TimeSlot timeSlot = TimeSlotMapper.getInstance().makeNew(resID, hour);
             TimeSlot timeSlot = new TimeSlot(timeslotID, resID, hour, wlist);
-            timeSlotList.Add(timeSlot);
+            //timeSlotList.Add(timeSlot);
             return timeSlot;
         }
 

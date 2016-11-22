@@ -54,11 +54,12 @@ namespace Mappers
         {
 
             int nextID = getNextID();
+            Room room = DirectoryOfRooms.getInstance().makeNewRoom(nextID, roomNum, new List<Reservation>());
 
             // Make a new room object
-            Room room = new Room();
-            room.roomID = nextID;
-            room.roomNum = roomNum;
+            //Room room = new Room();
+            //room.roomID = nextID;
+            //room.roomNum = roomNum;
 
             DirectoryOfRooms.getInstance().addToListOfRooms(room);
 
@@ -135,13 +136,16 @@ namespace Mappers
         /**
          * Set room attributes
          */
-        public void setRoom(int roomID, String RoomNum)
+        public void setRoom(int roomID, String roomNum, List<Reservation> listres)
         {
             // Get the room that needs to be updated
-            Room room = getRoom(roomID);
+            //Room room = getRoom(roomID);
+
+            DirectoryOfRooms.getInstance().modifyRoom(roomID, roomNum, listres);
+            Room room = DirectoryOfRooms.getInstance().findRoom(roomID);
 
             // Update the room
-            room.roomNum = (RoomNum);
+            //room.roomNum = (RoomNum);
 
             // Register it to the unit of work
             UnitOfWork.getInstance().registerDirty(room);

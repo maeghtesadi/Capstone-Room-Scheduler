@@ -49,7 +49,7 @@ namespace LogicLayer
         {
             //Reservation reservation = ReservationMapper.getInstance().makeNew(userID, roomID, desc, date);
             Reservation reservation = new Reservation(reservationid, userID, roomID, desc, date, tsl);
-            reservationList.Add(reservation);
+            //reservationList.Add(reservation);
             return reservation;
         }
 

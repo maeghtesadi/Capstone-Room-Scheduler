@@ -65,6 +65,26 @@ namespace LogicLayer
             return room;
         }
 
+        public Room makeNewRoom(int roomID, string roomnum, List<Reservation> reservations)
+        {
+            Room r = new Room(roomID, roomnum, reservations);
+            return r;
+        }
+
+        public void modifyRoom(int roomID, string roomNum, List<Reservation> reservations)
+        {
+            for (int i = 0; i < roomList.Count; i++)
+            {
+                if (roomList[i].roomID == roomID)
+                {
+                    roomList[i].roomID = roomID;
+                    roomList[i].roomNum = roomNum;
+                    roomList[i].roomReservations = reservations;
+                    break;
+                }
+            }
+        }
+
 
 
     }
