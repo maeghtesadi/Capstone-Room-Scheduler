@@ -94,6 +94,7 @@ namespace LogicLayer
             }
             return listByuserId;
         }
+   
 
         public List<Reservation> filterByBlock(DateTime date)
         {
@@ -108,6 +109,13 @@ namespace LogicLayer
             return listByDate;
         }
 
+
+        public List<int> findReservationsByIDAndDate(int userID, DateTime date)
+        {
+            List<int> IDlist = new List<int>();
+            IDlist = ReservationMapper.getInstance().findReservationIDs(userID, date);
+            return IDlist;
+        }
 
     }
 }

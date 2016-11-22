@@ -33,20 +33,27 @@ body {font-family: Verdana,sans-serif;}
     padding-right:0px;
     height:40px;
 
+    width:6250px;
+    position:absolute;
+    
+    
 }
+
 
 .room li {
     display: inline-block;
-    width: 20%;
+    width: 250px;
     color: #666;
     text-align: center;
 margin-right:-5px;
+
 }
 
 .timeslots {
+ width:6250px;
     margin: 0;
     padding: 0px;
-  
+
     background-color: #ddd;
     padding-bottom:0px;
     margin-top:150px;
@@ -54,7 +61,7 @@ margin-right:-5px;
 
 .timeslots li {
     display: inline-block;
-    width: 20%;
+    width: 250px;
     color: #666;
     text-align: center;
 margin-right:-5px;
@@ -195,10 +202,48 @@ padding:0px;
 .reservation-popup-test ul li{
 margin-bottom:10px;
 }
+
 #submitButton{
 border-radius:0px;
 font-size:12px;
 background-color:#3f4350
+}
+
+.modify-reservation{
+    width:700px;
+    height:165px;
+    background-color:white;
+     box-shadow: 0px 0px 9px grey;
+    position:absolute;
+    font-size:12px;
+    display:none;
+    z-index:60;
+   
+   
+
+}
+.modify-reservation ul{
+padding:0px;
+
+}
+.modify-reservation .header{
+    width:100%;
+    background-color:#3f4350;
+    padding-left:0px;
+    height:40px;
+    padding-left:20px;
+    line-height:37px;
+    font-size:14px;
+    color:white;
+}
+.modify-reservation .header span{
+   float:right;
+   margin-top:10px;
+   font-size:15px;
+}
+
+.modify-reservation ul li{
+margin-bottom:10px;
 }
 
 /* Add media queries for smaller screens */
@@ -218,6 +263,17 @@ background-color:#3f4350
 	background-color :#3b98ca;
 }
 
-.hiddenReservationButton {
-	style="display: none;"
+.hiddenButton {
+	display: none;
+}
+
+.Single-Timeslot-Reserve {
+	 width:300px;
+    height:165px;
+    background-color:white;
+     box-shadow: 0px 0px 9px grey;
+    position:absolute;
+    font-size:12px;
+    display:none;
+
 }

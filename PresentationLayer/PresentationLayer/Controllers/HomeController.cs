@@ -20,14 +20,33 @@ namespace CapstoneRoomScheduler.Controllers
         }
         [LoggedIn]
         [HttpPost]
-        public void acceptTimeSlots(int room,string description,int day,int month,int year,int firstTimeSlot, int lastTimeSlot)
+        public void makeReservation(int room,string description,int day,int month,int year,int firstTimeSlot, int lastTimeSlot)
         {
        
             ReservationConsole.getInstance().makeReservation(Int32.Parse(User.Identity.GetUserId()),room,description,new DateTime(year,month,day),firstTimeSlot,lastTimeSlot);
-            updateCalendar(new DateTime(year, month, day));
+            updateCalendar(year, month, day);
         }
-        public void updateCalendar(DateTime date)
+        [HttpPost]
+        public void modifyReservation(string resid,int day,int month, int year)
         {
+
+            ReservationConsole.getInstance();
+            updateCalendar(year, month, day);
+        }
+        [HttpPost]
+        public void cancelReservation(string resid,int day, int month, int year)
+        {
+
+            ReservationConsole.getInstance().cancelReservation(Int32.Parse(resid));
+            getReservations();
+            updateCalendar(year, month, day);
+           
+        }
+
+        [HttpPost]
+        public void updateCalendar(int year, int month, int day)
+        {
+           DateTime date = new DateTime(year, month, day);
            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
            hubContext.Clients.All.updateCalendar(convertToJsonObject(ReservationConsole.getInstance().getAllReservations().findByDate(date)));
         }
@@ -50,15 +69,17 @@ namespace CapstoneRoomScheduler.Controllers
             {
                 firstTimeSlot = reservationList[i].timeSlots[0].hour;
                 
-                lastTimeSlot = reservationList[i].timeSlots[reservationList[i].timeSlots.Count()-1].hour+1;
+                lastTimeSlot = reservationList[i].timeSlots[reservationList[i].timeSlots.Count()-1].hour;
                 list.Add(new
                 {
                     initialTimeslot = firstTimeSlot,
                     finalTimeslot = lastTimeSlot,
                     roomId = reservationList[i].roomID,
                     description = reservationList[i].description,
-                    userName =  ReservationConsole.getInstance().getUserCatalog().registeredUsers.First(x => x.userID == reservationList[i].userID).name,
-                    reservationId = reservationList[i].reservationID
+                    userName = ReservationConsole.getInstance().getUserCatalog().registeredUsers.First(x => x.userID == reservationList[i].userID).name,
+                    reservationId = reservationList[i].reservationID,
+                    userId = reservationList[i].userID,
+                    date = reservationList[i].date.Date
 
                 });
 

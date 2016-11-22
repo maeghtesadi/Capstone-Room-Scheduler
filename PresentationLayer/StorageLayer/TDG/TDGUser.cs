@@ -45,17 +45,9 @@ namespace TDG
         // Determine after how much time a command (query) should be timed out
         private const int COMMAND_TIMEOUT = 60;
 
-        // MySQL Connection
-        private MySqlConnection conn;
-
-        // Command object
-        private MySqlCommand cmd;
-
         // Constructor
         public TDGUser()
         {
-            this.cmd = new MySqlCommand();
-            this.cmd.CommandTimeout = COMMAND_TIMEOUT;
         }
 
         public static TDGUser getInstance()
@@ -63,50 +55,38 @@ namespace TDG
             return instance;
         }
 
-        // Open the database connection to the database
-        public bool openConnection()
-        {
-            try
-            {
-                this.conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
-                this.conn.Open();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-        }
-
-        // Close the connection to the DB
-        public void closeConnection()
-        {
-            this.conn.Close();
-        }
-
         // Updates the list of users in the DB
         public void updateUser(List<User> updateList)
         {
-            if(!openConnection())
-                return;
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
 
-            for (int i = 0; i < updateList.Count(); i++)
+            // Attempt to open the connection and update many reservations
+            try
             {
-                updateUser(updateList[i]);
+                conn.Open();
+                for (int i = 0; i < updateList.Count; i++)
+                {
+                    updateUser(conn, updateList[i]);
+                }
             }
-            closeConnection();
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
         // SQL Statement to update an existing User/Row
-        private void updateUser(User user) {
-           this.cmd.CommandText = "UPDATE " + TABLE_NAME + " \n" +
+        private void updateUser(MySqlConnection conn, User user) {
+           String commandLine = "UPDATE " + TABLE_NAME + " \n" +
                    "SET " + FIELDS[1] + "='" + user.username + "'," + FIELDS[2] + "='" + user.password + "'," +
                    FIELDS[3] + "='" + user.name + ";\n" +
                    " WHERE " + FIELDS[0] + "=" + user.userID + ";";
-           this.cmd.Connection = this.conn;
             MySqlDataReader reader = null;
-
+            MySqlCommand cmd = new MySqlCommand(commandLine, conn);
             try
             {
                 reader = cmd.ExecuteReader();
@@ -126,18 +106,23 @@ namespace TDG
        */
         public Object[] get(int userID)
         {
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " \n" +
+            String commandLine = "SELECT * FROM " + TABLE_NAME + " \n" +
                     " WHERE " + FIELDS[0] + "=" + userID + ";";
-            this.cmd.Connection = this.conn;
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
             MySqlDataReader reader = null;
             Object[] record = null; // to be returned
 
             try
             {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand(commandLine, conn);
                 reader = cmd.ExecuteReader();
+
                 // If no record is found, return null
                 if (!reader.HasRows)
                 {
+                    reader.Close();
+                    conn.Close();
                     return null;
                 }
                 // There is only one result since we find it by id
@@ -146,6 +131,8 @@ namespace TDG
                 {
                     if (reader[0].GetType() == typeof(System.DBNull))
                     {
+                        reader.Close();
+                        conn.Close();
                         return null;
                     }
                     record[0] = reader[0];
@@ -162,8 +149,9 @@ namespace TDG
             finally
             {
                 // Close connection
-                reader.Close();
-                closeConnection();
+                if(reader!=null)
+                    reader.Close();
+                conn.Close();
             }
 
             // Format and return the result
@@ -180,23 +168,22 @@ namespace TDG
         public Dictionary<int, Object[]> getAll()
         {
             Dictionary<int, Object[]> records = new Dictionary<int, Object[]>();
-
-            // Open connection
-            if(!openConnection())
-                return records;
-
-            // Write and execute the query
-            this.cmd.CommandText = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
-            this.cmd.Connection = this.conn;
             MySqlDataReader reader = null;
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
+            String commandLine = "SELECT * FROM " + TABLE_NAME + " WHERE 1;";
+            
 
             try
             {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand(commandLine, conn);
                 reader = cmd.ExecuteReader();
 
                 // If no record is found, return empty records
                 if (!reader.HasRows)
                 {
+                    reader.Close();
+                    conn.Close();
                     return records;
                 }
 
@@ -205,6 +192,8 @@ namespace TDG
                 {
                     if (reader[0].GetType() == typeof(System.DBNull))
                     {
+                        reader.Close();
+                        conn.Close();
                         return records;
                     }
                     Object[] attributes = new Object[FIELDS.Length];
@@ -221,8 +210,9 @@ namespace TDG
             }
             finally
             {
-                reader.Close();
-                closeConnection();
+                if(reader!=null)
+                    reader.Close();
+                conn.Close();
             }
 
             // Format and return the result

@@ -9,20 +9,29 @@ var colorPallette = [
     ['#d35400', '#e67e22'],
     ['#c0392b', '#e74c3c'],
     ['#7f8c8d', '#95a5a6']
-
 ];
+
+
+$(window).scroll(function () {
+    $('.room').css('left', 0 - $(this).scrollLeft());
+});
 $(".reservation-popup-test").draggable();
 //header calendar 
 var date = new Date();
+
+
+
 var months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
-var days = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]
+var days = ["SUNDAY","MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
+
 $(".next").click(function () {
     var day = parseInt($(".upper-header li .date .day").html());
     date.setDate(day + 1);
     $(".upper-header li .date .day").html(date.getDate());
     $(".upper-header li .date .month").html(months[date.getMonth()]);
     $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
-
+    setCalendarDate();
+    $(".getNext").click();
 });
 
 $(".prev").click(function () {
@@ -31,22 +40,40 @@ $(".prev").click(function () {
     $(".upper-header li .date .day").html(date.getDate());
     $(".upper-header li .date .month").html(months[date.getMonth()]);
     $(".upper-header li .dayOfTheWeek").html(days[date.getDay()]);
-    //
+    setCalendarDate();
+    $(".getNext").click();
+    
 });
+
+function setCalendarDate() {
+    $("input[name='day']").attr("value", (date.getDate()));
+    $("input[name='month']").attr("value", (date.getMonth() + 1));
+    $("input[name='year']").attr("value", (date.getFullYear()));
+    
+}
+
+
+
+function rendercalendar(){
+}
 
 //Function is run when any of the timeslot li is clicked
 function timeslotClicked(event) {
+    if (!$(".custom-navbar-right .icon").hasClass("dropdownLogout"))
+    {
+        notLoggedIn();
+
+    } 
+    else {
+
+    
     var seconfuncCalled = false;
-    var firstAndLastTimeslot = [0, 0];
     var thisElement = event;
     var room = $(event).data("room");
     $("input[name='room']").attr("value", room);
-    $("input[name='day']").attr("value", date.getDate());
-    $("input[name='month']").attr("value", date.getMonth()+1);
-    $("input[name='year']").attr("value", date.getFullYear());
-
+    setCalendarDate();
     var timeslot = $(event).data("timeslot");
-    firstAndLastTimeslot[0] = timeslot;
+    var firstAndLastTimeslot = [timeslot, timeslot];
     $("#firstTimeslot").html(firstAndLastTimeslot[0]);
     $("#lastTimeslot").html(firstAndLastTimeslot[0] + 1);
     funcCalled = true;
@@ -66,11 +93,12 @@ function timeslotClicked(event) {
     $(".timeslots li ul li").on("click.secondFunction", function () {
 
         var timeslot2 = $(this).data("timeslot");
-
+/*
         if (seconfuncCalled == false) {
             firstAndLastTimeslot[1] = firstAndLastTimeslot[0];
             seconfuncCalled = true;
         }
+*/
         if ($(this).attr('data-room') == room) {
             //if timeslot selected at the begining or after the range
             if (firstAndLastTimeslot[1] <= timeslot2 ) {
@@ -109,8 +137,6 @@ function timeslotClicked(event) {
                         }
                     }
                 }
-                
-                
                     //if timeslot selected is between the range that was already selected
                 else {
                     for (var i = parseInt(timeslot2) + 1; i <= parseInt(firstAndLastTimeslot[1]) ; i++) {
@@ -121,21 +147,29 @@ function timeslotClicked(event) {
 
             }
 
-
             //firstAndLastTimeslot[1] = $(this).data("timeslot");
+            $("#firstTimeslot").html(firstAndLastTimeslot[0]);
+            $("input[name='firstTimeslot']").attr("value", firstAndLastTimeslot[0]);
+
+            $("#lastTimeslot").html(firstAndLastTimeslot[1] + 1);
+            $("input[name='lastTimeslot']").attr("value", firstAndLastTimeslot[1]);
+
 
         }
-        $("#firstTimeslot").html(firstAndLastTimeslot[0]);
-        $("input[name='firstTimeslot']").attr("value", firstAndLastTimeslot[0]);
-
-        $("#lastTimeslot").html(firstAndLastTimeslot[1] + 1);
-        $("input[name='lastTimeslot']").attr("value", firstAndLastTimeslot[1]);
-
     });
 
+    
+    $("#firstTimeslot").html(firstAndLastTimeslot[0]);
+    $("input[name='firstTimeslot']").attr("value", firstAndLastTimeslot[0]);
 
+    $("#lastTimeslot").html(firstAndLastTimeslot[1] + 1);
+    $("input[name='lastTimeslot']").attr("value", firstAndLastTimeslot[1]);
+
+
+    }
 
 }
+
 $(".timeslots li ul li").on("click.firstFunction", function () {
     timeslotClicked(this);
 });
@@ -150,46 +184,98 @@ $(".reservation-popup-test .header span").click(function () {
     $(".timeslots .active").toggleClass("active");
 
 });
-
-//Get reservation info from the server to populate the timeslots
-$.connection.hub.start().done(function () {
-    serverSession.server.updateCalendar();
-});
 var serverSession = $.connection.calendarHub;
 //Jquery to update the timeslots
+serverSession.client.updateCalendar = updateCalendar;
 
-serverSession.client.updateCalendar = function (reservationList) {
+
+function updateCalendar(reservationList) {
+    remakeCalendar();
     for (j = 0; j < reservationList.length; j++) {
-        var color = colorPallette[Math.floor(Math.random() * colorPallette.length)];
+        var color = colorPallette[reservationList[j].userId];
         for (var i = reservationList[j].initialTimeslot; i <= reservationList[j].finalTimeslot; i++) {
             $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").addClass("reserved");
             $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").html("");
-            $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").css('background-color',color[1]);
+            $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").css('background-color', color[1]);
         }
         //First timeslot classtoggle=reservedHeader
         $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").addClass("reserved-header").html(reservationList[j].userName);
         $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").css('background-color', color[0]);
         //Second timeslot classtoggle=reservedd;
-        var time = "<u>Time</u>: From " + reservationList[j].initialTimeslot + " to " + (parseInt(reservationList[j].finalTimeslot) + 1);
-        var description = "<u>Description</u>: " + reservationList[j].description;
-       // var waitingList = "<u>Waiting List:</u>:";
-        $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time + "</br>" + description + "</br>");
-        
+        if (reservationList[j].initialTimeslot === reservationList[j].finalTimeslot) {
+            $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").addClass("openSingleTimeslotReserve");
+        }
+        else{
+            var time = "<u>Time</u>: From " + reservationList[j].initialTimeslot + " to " + (parseInt(reservationList[j].finalTimeslot) + 1);
+            var description = "<u>Description</u>: " + reservationList[j].description;
+            // var waitingList = "<u>Waiting List:</u>:";
+            $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time + "</br>" + description + "</br>");
+        }
     }
-    $(".glyphicon-remove").click();
+
 
 };
 
+$(".openSingleTimeslotReserve").hover(function () {
+
+
+    $(".Single-Timeslot-Reserve").toggle(0);
+    $(".Single-Timeslot-Reserve").css('opacity', '0');
+    $(".Single-Timeslot-Reserve").position({
+        my: "left top",
+        at: "right+7 top+-7",
+        of: $(this),
+    });
+    $(".Single-Timeslot-Reserve").toggle(0);
+    $(".Single-Timeslot-Reserve").css('opacity', '1');
+    $(".Single-Timeslot-Reserve").toggle(300);
+
+
+},function(){
+  $(".Single-Timeslot-Reserve").toggle(300);
+
+});
+
+var serverSession;
+//Get reservation info from the server to populate the timeslots
+$.connection.hub.start().done(function () {
+    console.log('Connection established')
+    var serverSession = $.connection.calendarHub;
+    setCalendarDate();
+    $(".getNext").click();
+});
+
+//Manually attach updateCalendar
+
+//Jquery to update the timeslots
+
+
+$("#submitButton").click(function () {
+    $(".glyphicon-remove").click();
+})
+
 //Login popup
 $(".dropdownLogin").click(function () {
+    $(".login-popup").toggle();
+    $(".login-popup").css('opacity', '0');
+    $(".login-popup").css('width', '500px');
+    $(".login-popup").toggle();
+    $(".login-popup").css('opacity', '1');
     $(".login-popup").toggle(300);
 });
-$(".userId").click(function () {
+$(".dropdownLogout").click(function () {
+    $(".login-popup").toggle();
+    $(".login-popup").css('opacity', '0');
+    $(".login-popup").css('width', '200px');
+    $(".login-popup").toggle();
+    $(".login-popup").css('opacity', '1');
     $(".login-popup").toggle(300);
     $("#username").remove();
     $("#password").remove();
     $("#failedMessage").remove();
     $("#loginButton").html("Log Out");
+
+
 });
 
 function OnSuccess(data) {
@@ -197,7 +283,7 @@ function OnSuccess(data) {
         $("#failedMessage").html("Invalid credentials");
     }
     else {
-        location.reload();
+        location.reload(true);
     }
 
 }
@@ -205,16 +291,18 @@ serverSession.client.populateReservations = function (reservationList) {
     $(".reservations .reservation-content ").empty();
     for(var i = 0; i<reservationList.length ; i++)
     {
-        var resID = reservationList[i].reservationID;
+        var resID = reservationList[i].reservationId;
         var des = reservationList[i].description;
         var firstTime = reservationList[i].initialTimeslot;
         var secondTime = reservationList[i].finalTimeslot;
         var roomID = reservationList[i].roomId;
-        buildNewReservationItem(resID, des, firstTime, secondTime, roomID)
+        var date = reservationList[i].date;
+        date = date.substr(0, 9);
+        buildNewReservationItem(resID, des, firstTime, secondTime, roomID, date);
     }
 }
 
-function buildNewReservationItem(reservationId, description, initialTimeSlot, finalTimeslot , roomID ) //reservtion id goes in .$(".cancelReservation).data(reservationId)
+function buildNewReservationItem(reservationId, description, initialTimeSlot, finalTimeslot , roomID,date ) //reservtion id goes in .$(".cancelReservation).data(reservationId)
 {
     var reservationItem = 
         '<div class="reservation-item">' +
@@ -222,10 +310,12 @@ function buildNewReservationItem(reservationId, description, initialTimeSlot, fi
              '<div class="reservationDetails">'+
                 '<ul>'+
                 '    <li class="description">'+ description +'</li>'+
-                '    <li class="timeslot">From <span class="initialTimeslot">' + initialTimeSlot + '</span> to <span class="finalTimeslot">' + finalTimeslot + '</span></li>' +
+                '    <li class="timeslot">From <span class="initialTimeslot">' + initialTimeSlot + '</span> to <span class="finalTimeslot">' + (finalTimeslot + 1) + '</span></li>' +
+                '    <li class="date">'+date+'<li>' +
                 '</u>' +
              '</div>' +
-             '<div data-reservationId ="' + reservationId + '"    class="cancelReservation"><span class="fa fa-pencil fa-lg"></span></div>' +
+             '<div data-reservationId ="' + reservationId + '"    class="cancelReservation"><span class="fa fa-times fa-lg"></span></div>'+
+             '<div data-reservationId ="' + reservationId + '"    class="modifyReservation"><span class="fa fa-pencil fa-lg"></span></div>' +
         '</div>';
 
     $(".reservations .reservation-content ").append(reservationItem);
@@ -236,14 +326,75 @@ function buildNewReservationItem(reservationId, description, initialTimeSlot, fi
 $(".showReservations").click(function () {
     $(".reservations").toggle(200);
     $(".showReservations").toggleClass('active');
-    $(".hiddenReservationButton").click();
+    $(".reservationButton").click();
 });
 
 
-serverSession.client.notLoggedIn = function () {
-
-
-
-
+function notLoggedIn () {
+    $(".dropdownLogin").click();
+    $("#failedMessage").html("Sign in to continue")
 
 };
+
+
+function remakeCalendar() {
+
+    var reservedTimeslots = $(".timeslots li[class]");
+    for (var i = 0; i < reservedTimeslots.length ; i++) {
+        $(reservedTimeslots[i]).html($(reservedTimeslots[i]).data('timeslot') + ':00')
+    }
+    $(".timeslots li").removeClass("reserved reserved-header active SingleTimeslotReserve");
+    $(".timeslots li").removeAttr("style");
+
+    
+
+}
+
+//Cancel reservations
+$(".reservation-content").on('click',".cancelReservation",function(){
+    var thisElement=$(this);
+    $(".confirm").toggle(0);
+    $(".confirm").css('opacity', '0');
+    $(".confirm").position({
+        my: "center+120 top+3 ",
+        at: "bottom",
+        of: thisElement,
+
+    });
+    $(".confirm").toggle(0);
+    $(".confirm").css('opacity', '1');
+    $(".confirm").toggle(300);
+    $(".confirm-yes").on('click', function () {
+        setCalendarDate();
+        $("input[name='resid']").attr("value", thisElement.data("reservationid"));
+        $(".cancelReservationAjax").click();
+        $(".confirm-yes").off('click');
+        $(".confirm").toggle('blind', 300);
+        $(".reservation-content").click();
+        
+    });
+    $(".confirm-no").on('click', function () {
+        $(".confirm-yes").off('click');
+        $(".confirm").toggle('blind', 300);
+        $(".confirm-no").off('click');
+       
+    });
+    
+    
+
+});
+$(".reservation-content").on('click', ".modifyReservation", function () {
+    var thisElement = $(this);
+    $(".modify-reservation").toggle(0);
+    $(".modify-reservation").css('opacity', '1');
+    $(".modify-reservation").position({
+        my: "right",
+        at: "left",
+        of: thisElement
+    });
+    $(".modify-reservation").toggle(0);
+    $(".modify-reservation").css('opacity', '1');
+    $(".modify-reservation").toggle(300);
+});
+
+

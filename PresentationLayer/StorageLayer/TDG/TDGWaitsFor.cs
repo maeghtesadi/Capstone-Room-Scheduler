@@ -37,12 +37,6 @@ namespace TDG
         // Determine after how much time a command (query) should be timed out
         private const int COMMAND_TIMEOUT = 60;
 
-        // MySQL Connection
-        private MySqlConnection conn;
-
-        // Command object
-        private MySqlCommand cmd;
-
         /**
          * Returns the instance
          */
@@ -56,30 +50,6 @@ namespace TDG
          */
         private TDGWaitsFor()
         {
-            this.cmd = new MySqlCommand();
-            this.cmd.CommandTimeout = COMMAND_TIMEOUT;
-        }
-
-        // Open the database connection to the database
-        public bool openConnection()
-        {
-            try
-            {
-                this.conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
-                this.conn.Open();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-        }
-
-        // Close the connection to the DB
-        public void closeConnection()
-        {
-            this.conn.Close();
         }
 
         /**
@@ -90,24 +60,22 @@ namespace TDG
         public List<int> getAllUsers(int timeSlotID)
         {
             List<int> listOfUsers = new List<int>();
+            String commandLine = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlotID + " ORDER BY " + FIELDS[2] + ";";
+            MySqlDataReader reader = null;
+            MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
 
             // Open connection
-            if (!openConnection())
-                return listOfUsers;
-
-            // Write and execute the query
-            this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlotID + " ORDER BY " + FIELDS[2] + ";";
-            this.cmd.Connection = this.conn;
-
-            // Try to perform read
-            MySqlDataReader reader = null;
             try
             {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand(commandLine, conn);
                 reader = cmd.ExecuteReader();
 
                 // If no record is found, return empty list
                 if (!reader.HasRows)
                 {
+                    reader.Close();
+                    conn.Close();
                     return listOfUsers;
                 }
 
@@ -116,25 +84,22 @@ namespace TDG
                 {
                     if (reader[0].GetType() == typeof(System.DBNull))
                     {
+                        reader.Close();
+                        conn.Close();
                         return listOfUsers;
                     }
                     listOfUsers.Add((int)reader[0]); // Selecting only the userID
                 }
             }
-            // Exception occurred
-            catch(Exception ex)
+            catch(Exception e)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(e.Message);
             }
-
-            // Close reader and connection
             finally
             {
                 if (reader != null)
-                {
                     reader.Close();
-                }
-                closeConnection();
+                conn.Close();
             }
 
             // If successful, return the list
@@ -147,47 +112,41 @@ namespace TDG
         public void refreshWaitsFor(List<TimeSlot> listOfTimeSlots)
         {
 
-            // Open connection
-            if(!openConnection())
-            {
-                return;
-            }
-
-            Queue<int> waitlist;
-            List<int> results;
-
+            
             foreach (TimeSlot timeSlot in listOfTimeSlots)
             {
                 // The list is not empty, refresh the content of the database
                 if (timeSlot.waitlist.Count != 0)
                 {
                     // Obtain all queuery for that timeSlot from the database
-                    this.cmd.CommandText = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlot.timeSlotID;
-                    this.cmd.Connection = this.conn;
+                    String commandLine = "SELECT " + FIELDS[1] + " FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlot.timeSlotID;
                     MySqlDataReader reader = null;
+                    MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
 
                     // Try to exeucte the command and read
-
                     try
                     {
+                        conn.Open();
+                        MySqlCommand cmd = new MySqlCommand(commandLine, conn);
                         reader = cmd.ExecuteReader();
 
                         // Store the results
-                        results = new List<int>();
+                        List<int> results = new List<int>(); // Will store the results found after querying the database
                         while (reader.Read())
                         {
                             results.Add((int)reader[0]); // Selecting only the userID
                         }
+                        reader.Close();
 
                         // Get the waitlist of the timeSlot that is refreshed
-                        waitlist = timeSlot.waitlist;
+                        Queue<int>  waitlist = timeSlot.waitlist;
 
                         // If a userID is found in the DB but not in the waitlist: remove from the DB
                         foreach (int userID in results)
                         {
                             if (!waitlist.Contains(userID))
                             {
-                                deleteWaitsFor(timeSlot.timeSlotID, userID);
+                                deleteWaitsFor(conn, timeSlot.timeSlotID, userID);
                             }
                         }
 
@@ -197,7 +156,7 @@ namespace TDG
                             if (!results.Contains(userID))
                             {
                                 String currentDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                                createWaitsFor(timeSlot.timeSlotID, userID, currentDateTime);
+                                createWaitsFor(conn, timeSlot.timeSlotID, userID, currentDateTime);
                             }
                         }
                     }
@@ -207,19 +166,23 @@ namespace TDG
                     }
                     finally
                     {
-                        reader.Close();
+                        if (reader != null)
+                            reader.Close();
+                        conn.Close();
                     }
 
                 }
                 // If the queue is empty, ensure it is empty by deleting all rows that have that timeslot id
                 else
                 {
-                    this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + timeSlot.timeSlotID;
-                    this.cmd.Connection = this.conn;
+                    String commandLine = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + " = " + timeSlot.timeSlotID;
+                    MySqlConnection conn = new MySqlConnection(DATABASE_CONNECTION_STRING);
                     MySqlDataReader reader = null;
 
                     try
                     {
+                        conn.Open();
+                        MySqlCommand cmd = new MySqlCommand(commandLine, conn);
                         reader = cmd.ExecuteReader();
                     }
                     catch(Exception ex)
@@ -228,18 +191,19 @@ namespace TDG
                     }
                     finally
                     {
-                        reader.Close();
+                        if(reader!=null)
+                            reader.Close();
+                        conn.Close();
                     }
                 }
             }
-            closeConnection();
         }
 
-        private void createWaitsFor(int timeSlotID, int userID, String currentDateTime)
+        private void createWaitsFor(MySqlConnection conn, int timeSlotID, int userID, String currentDateTime)
         {
-            this.cmd.CommandText = "INSERT INTO " + TABLE_NAME + " VALUES ( " + timeSlotID + "," + userID + ", '" + currentDateTime + "');";
-            this.cmd.Connection = this.conn;
+            String commandLine = "INSERT INTO " + TABLE_NAME + " VALUES ( " + timeSlotID + "," + userID + ", '" + currentDateTime + "');";
             MySqlDataReader reader = null;
+            MySqlCommand cmd = new MySqlCommand(commandLine, conn);
             try
             {
                 reader = cmd.ExecuteReader();
@@ -250,15 +214,15 @@ namespace TDG
             }
             finally
             {
-                reader.Close();
+                if(reader != null)
+                    reader.Close();
             }
         }
-        private void deleteWaitsFor(int timeSlotID, int userID)
+        private void deleteWaitsFor(MySqlConnection conn, int timeSlotID, int userID)
         {
-            this.cmd.CommandText = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlotID + " AND " + FIELDS[1] + " = " + userID;
-            this.cmd.Connection = this.conn;
+            String commandLine = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeSlotID + " AND " + FIELDS[1] + " = " + userID;
             MySqlDataReader reader = null;
-
+            MySqlCommand cmd = new MySqlCommand(commandLine, conn);
             try
             {
                 reader = cmd.ExecuteReader();
@@ -269,7 +233,8 @@ namespace TDG
             }
             finally
             {
-                reader.Close();
+                if(reader!=null)
+                    reader.Close();
             }
         }
     }

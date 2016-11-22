@@ -15,8 +15,7 @@ namespace CapstoneRoomScheduler.LogicLayer.AuthorizeManager
         {
             if (!httpContext.Request.IsAuthenticated)
             { 
-                var hubContext = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-                hubContext.Clients.All.notLoggedIn();
+               
                 return false;
             }
             return base.AuthorizeCore(httpContext);

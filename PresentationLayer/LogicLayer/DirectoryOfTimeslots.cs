@@ -34,8 +34,11 @@ namespace LogicLayer
             TimeSlotMapper.getInstance().delete(id);
 
             foreach (TimeSlot timeSlot in timeSlotList)
-                if (timeSlot.timeSlotID == id)
+                if (timeSlot.timeSlotID == id) {
                     timeSlotList.Remove(timeSlot);
+                    return;
+                }
+                    
         }
 
         public List<int> getAllUsers(int timeSlotID)
@@ -56,6 +59,13 @@ namespace LogicLayer
         public void done()
         {
             TimeSlotMapper.getInstance().done();
+        }
+
+
+        public int findHoursByReservationIDs(List<int> IDlist)
+        {
+            int hours = TimeSlotMapper.getInstance().findHoursByReservationID(IDlist);
+            return hours;
         }
     }
 }
