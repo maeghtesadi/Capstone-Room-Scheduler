@@ -203,8 +203,8 @@ namespace LogicLayer
                         int myroomid = ReservationMapper.getInstance().getReservation(resID).roomID;
                         DateTime mydate = ReservationMapper.getInstance().getReservation(resID).date;
                         Reservation res = ReservationMapper.getInstance().makeNew(myroomid, userID, "", mydate);
-                        //Reservation res = directoryOfReservations.makeNewReservation(directoryOfReservations.getReservation(resID).roomID, userID, "",
-                        //   directoryOfReservations.getReservation(resID).date);
+                        //Reservation res = directoryOfReservations.makeNewReservation(directoryOfReservations.getReservation(reservationID).roomID, userID, "",
+                        //   directoryOfReservations.getReservation(reservationID).date);
                         ReservationMapper.getInstance().done();
 
                         updateWaitList(userID, ReservationMapper.getInstance().getReservation(resID).date, resToModify.timeSlots[i].hour);
@@ -257,14 +257,14 @@ namespace LogicLayer
         }
 
         // Method to cancel a reservation
-        public void cancelReservation(int resID)
+        public void cancelReservation(int reservationID)
         {
             // Loop through each timeslot
             for (int i = 0; i < TimeSlotMapper.getInstance().getListOfTimeSlots().Count; i++)
             {
                 // For those who are belonging to the reservation to be cancelled:
-                //if (directoryOfTimeSlots.timeSlotList[i].reservationID == resID)
-                if (TimeSlotMapper.getInstance().getListOfTimeSlots()[i].reservationID == resID) //make a method in mappers that returns the respective directory lists
+                //if (directoryOfTimeSlots.timeSlotList[i].reservationID == reservationID)
+                if (TimeSlotMapper.getInstance().getListOfTimeSlots()[i].reservationID == reservationID) //make a method in mappers that returns the respective directory lists
                 {
                     // If no one is waiting, delete it.
                     if (TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist.Count == 0)
@@ -282,8 +282,8 @@ namespace LogicLayer
                     {
                         //int userID = directoryOfTimeSlots.timeSlotList[i].waitlist.Dequeue();
                         int userID = TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist.Dequeue();
-                        Reservation res = ReservationMapper.getInstance().makeNew(ReservationMapper.getInstance().getReservation(resID).roomID, userID, 
-                            "", ReservationMapper.getInstance().getReservation(resID).date);
+                        Reservation res = ReservationMapper.getInstance().makeNew(ReservationMapper.getInstance().getReservation(reservationID).roomID, userID, 
+                            "", ReservationMapper.getInstance().getReservation(reservationID).date);
 
                         ReservationMapper.getInstance().done();
 
@@ -298,7 +298,7 @@ namespace LogicLayer
             }
 
             // Completely done with this reservation, delete it.
-            ReservationMapper.getInstance().delete(resID);
+            ReservationMapper.getInstance().delete(reservationID);
             ReservationMapper.getInstance().done();
             updateDirectories();
         }
