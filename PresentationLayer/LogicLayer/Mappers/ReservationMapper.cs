@@ -165,15 +165,6 @@ namespace Mappers
         }
 
         /**
-         * Return all users waiting for a reservation given the
-         * reservation ID.
-         */
-        public List<int> getAllUsers(int reservationID)
-        {
-            return waitsForMapper.getAllUsers(reservationID);
-        }
-
-        /**
          * Set reservation attributes
          **/
 
