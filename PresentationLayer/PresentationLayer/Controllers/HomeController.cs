@@ -78,7 +78,8 @@ namespace CapstoneRoomScheduler.Controllers
                     description = reservationList[i].description,
                     userName = ReservationConsole.getInstance().getUserCatalog().registeredUsers.First(x => x.userID == reservationList[i].userID).name,
                     reservationId = reservationList[i].reservationID,
-                    userId = reservationList[i].userID
+                    userId = reservationList[i].userID,
+                    date = reservationList[i].date.Date
 
                 });
 

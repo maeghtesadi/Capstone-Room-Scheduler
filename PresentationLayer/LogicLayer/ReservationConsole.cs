@@ -312,5 +312,24 @@ namespace LogicLayer
         {
             return userCatalog;
         }
+
+        /**
+         * method for the constraint of not exceeding a reservation of 4 hours per day per person
+         */
+        public Boolean dailyConstraintCheck(int userID, DateTime date, int firstHour, int lastHour)
+        {
+            //interval of hours for the desired reservvation
+            int newHours = lastHour - firstHour + 1;
+            //number of hours of reservation currently for chosen day
+            int currentHours = directoryOfTimeSlots.findHoursByReservationIDs(directoryOfReservations.findReservationsByIDAndDate(userID, date));
+            //checks of reservation is possible according to constraint
+            if (currentHours + newHours < 4)
+            {
+                return true;
+            }
+        
+            return false;
+        }
+       
     }
 }

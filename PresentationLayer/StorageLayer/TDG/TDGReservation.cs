@@ -322,7 +322,7 @@ namespace TDG
         /**
          * Get the list of reservation IDs associated with the userID at a specific day
          */
-        public List<int> findById(int userID, DateTime date)
+        public List<int> getReservationIDs(int userID, DateTime date)
         {
             List<int> IDlist = new List<int>();
             //Open connection
