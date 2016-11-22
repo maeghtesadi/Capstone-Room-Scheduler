@@ -300,6 +300,9 @@ serverSession.client.populateReservations = function (reservationList) {
     }
 }
 
+
+
+
 function buildNewReservationItem(reservationId, description, initialTimeSlot, finalTimeslot , roomID ) //reservtion id goes in .$(".cancelReservation).data(reservationId)
 {
     var reservationItem = 
@@ -382,3 +385,24 @@ $(".reservation-content").on('click',".cancelReservation",function(){
 });
 
 
+$(".reservation-tab").click(function () {
+    if ($(".reservation-tab").hasClass("active")) { }
+    else {
+        $(".reservation-tab").toggleClass('active');
+        $(".waitlist-tab").toggleClass('active');
+        $(".reservation-content").toggle('active');
+        $(".waitlist-content").toggle('active');
+    }
+});
+
+
+$(".waitlist-tab").click(function () {
+    if ($(".waitlist-tab").hasClass("active")) { }
+    else {
+        $(".waitlist-tab").toggleClass('active');
+        $(".reservation-tab").toggleClass('active');
+        $(".reservation-content").toggle('active');
+        $(".waitlist-content").toggle('active');
+
+    }
+});
