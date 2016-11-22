@@ -214,11 +214,11 @@ namespace Mappers
                 tdgTimeSlot.get(timeSlotID);
             }
 
+            DirectoryOfTimeSlots.getInstance().deleteTimeSlot(timeSlotID);
 
             //Register as deleted in the Unit Of Work
             UnitOfWork.getInstance().registerDeleted(timeSlot);
 
-            DirectoryOfTimeSlots.getInstance().deleteTimeSlot(timeSlot.timeSlotID);
         }
 
         /**
