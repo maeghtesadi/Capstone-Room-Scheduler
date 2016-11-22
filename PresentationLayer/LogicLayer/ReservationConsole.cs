@@ -27,7 +27,7 @@ namespace LogicLayer
         //default constructor
         public ReservationConsole()
         {
-            udpateDirectories();
+            updateDirectories();
         }
 
         //public void makeReservation(int uid, int roomid, string resdes, DateTime dt, int firstHour, int lastHour)
@@ -67,6 +67,7 @@ namespace LogicLayer
                 for (int i = 0; i < hours.Count; i++)
                 {
                     directoryOfTimeSlots.makeNewTimeSlot(res.reservationID, hours[i]);
+                    
                     updateWaitList(userID, date, i);
                     
                 }
@@ -74,10 +75,10 @@ namespace LogicLayer
 
             directoryOfTimeSlots.done();
             directoryOfReservations.done();
-            udpateDirectories();
+            updateDirectories();
         }
 
-        public void udpateDirectories()
+        public void updateDirectories()
         {
             // Only Console has visibility over DirectoryOfTimeSlot, so this was loop was put here instead of DirectoryOfReservation
             // Updating timeSlots of each reservations
@@ -179,7 +180,7 @@ namespace LogicLayer
             {
                 int hour = resToModify.timeSlots[i].hour;
                 bool foundSlot = false;
-                for (int j = firstHour; j < lastHour; j++)
+                for (int j = firstHour; j <= lastHour; j++)
                 {
                     if (hour == j)
                         foundSlot = true;
@@ -211,7 +212,7 @@ namespace LogicLayer
 
             //Put on waitList if the new timeSlots are already taken, else create new ones
             List<int> hours = new List<int>();
-            for (int i = firstHour; i < lastHour; i++)
+            for (int i = firstHour; i <= lastHour; i++)
                 hours.Add(i);
 
             foreach (Reservation reservation in directoryOfReservations.reservationList)
@@ -220,7 +221,7 @@ namespace LogicLayer
                 {
                     foreach (TimeSlot timeSlot in reservation.timeSlots)
                     {
-                        for (int i = firstHour; i < lastHour; i++)
+                        for (int i = firstHour; i <= lastHour; i++)
                         {
                             if (timeSlot.hour == i)
                             {
@@ -248,7 +249,7 @@ namespace LogicLayer
             directoryOfTimeSlots.done();
             directoryOfReservations.modifyReservation(resToModify.reservationID, roomID, desc, date);
             directoryOfReservations.done();
-            udpateDirectories();
+            updateDirectories();
         }
 
         public void cancelReservation(int resID)
@@ -263,6 +264,7 @@ namespace LogicLayer
                     if (directoryOfTimeSlots.timeSlotList[i].waitlist.Count == 0)
                     {
                         directoryOfTimeSlots.deleteTimeSlot(directoryOfTimeSlots.timeSlotList[i].timeSlotID);
+                        i--;
                         directoryOfTimeSlots.done();
                     }
 
@@ -287,7 +289,7 @@ namespace LogicLayer
             // Completely done with this reservation, delete it.
             directoryOfReservations.cancelReservation(resID);
             directoryOfReservations.done();
-            udpateDirectories();
+            updateDirectories();
         }
 
         public DirectoryOfTimeSlots getAllTimeSlots()

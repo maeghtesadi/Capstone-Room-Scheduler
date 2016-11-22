@@ -37,8 +37,10 @@ namespace CapstoneRoomScheduler.Controllers
         public void cancelReservation(string resid,int day, int month, int year)
         {
 
-            ReservationConsole.getInstance();
+            ReservationConsole.getInstance().cancelReservation(Int32.Parse(resid));
+            getReservations();
             updateCalendar(year, month, day);
+           
         }
 
         [HttpPost]
@@ -74,8 +76,9 @@ namespace CapstoneRoomScheduler.Controllers
                     finalTimeslot = lastTimeSlot,
                     roomId = reservationList[i].roomID,
                     description = reservationList[i].description,
-                    userName =  ReservationConsole.getInstance().getUserCatalog().registeredUsers.First(x => x.userID == reservationList[i].userID).name,
-                    reservationId = reservationList[i].reservationID
+                    userName = ReservationConsole.getInstance().getUserCatalog().registeredUsers.First(x => x.userID == reservationList[i].userID).name,
+                    reservationId = reservationList[i].reservationID,
+                    userId = reservationList[i].userID
 
                 });
 

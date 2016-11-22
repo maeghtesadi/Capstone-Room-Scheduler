@@ -192,7 +192,7 @@ serverSession.client.updateCalendar = updateCalendar;
 function updateCalendar(reservationList) {
     remakeCalendar();
     for (j = 0; j < reservationList.length; j++) {
-        var color = colorPallette[Math.floor(Math.random() * colorPallette.length)];
+        var color = colorPallette[reservationList[j].userId];
         for (var i = reservationList[j].initialTimeslot; i <= reservationList[j].finalTimeslot; i++) {
             $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").addClass("reserved");
             $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").html("");
@@ -353,22 +353,29 @@ $(".reservation-content").on('click',".cancelReservation",function(){
     $(".confirm").toggle(0);
     $(".confirm").css('opacity', '0');
     $(".confirm").position({
-        my: "left top",
-        at: "right+3 top+3",
-        of: $(".cancelReservation"),
-        
+        my: "center+120 top+3 ",
+        at: "bottom",
+        of: thisElement,
+
     });
     $(".confirm").toggle(0);
     $(".confirm").css('opacity', '1');
     $(".confirm").toggle(300);
-    $(".confirm").on('click', function () {
+    $(".confirm-yes").on('click', function () {
         setCalendarDate();
         $("input[name='resid']").attr("value", thisElement.data("reservationid"));
         $(".cancelReservationAjax").click();
-        $(".confirm").off('click');
+        $(".confirm-yes").off('click');
+        $(".confirm").toggle('blind', 300);
         $(".reservation-content").click();
+        
     });
-    
+    $(".confirm-no").on('click', function () {
+        $(".confirm-yes").off('click');
+        $(".confirm").toggle('blind', 300);
+        $(".confirm-no").off('click');
+       
+    });
     
     
 
