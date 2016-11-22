@@ -49,10 +49,11 @@ namespace CapstoneRoomScheduler.Controllers
         [HttpPost]
         public void updateCalendar(int year, int month, int day)
         {
-            //ReservationConsole.getInstance().getAllTimeSlots().
+           
            DateTime date = new DateTime(year, month, day);
            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
            hubContext.Clients.All.updateCalendar(convertToJsonObject(ReservationConsole.getInstance().findByDate(date)));
+            hubContext.Clients.All.updateWaitlist(ReservationConsole.getInstance().getAllTimeSlots(), convertToJsonObject(ReservationConsole.getInstance().findByDate(date)));
         }
         [LoggedIn]
         [HttpPost]
