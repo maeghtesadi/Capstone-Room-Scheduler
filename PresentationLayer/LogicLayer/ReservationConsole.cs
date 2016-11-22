@@ -286,7 +286,7 @@ namespace LogicLayer
                     {
                         //int userID = directoryOfTimeSlots.timeSlotList[i].waitlist.Dequeue();
                         int userID = TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist.Dequeue();
-                        Reservation res = ReservationMapper.getInstance().makeNew(ReservationMapper.getInstance().getReservation(reservationID).roomID, userID, 
+                        Reservation res = ReservationMapper.getInstance().makeNew(userID, ReservationMapper.getInstance().getReservation(reservationID).roomID, 
                             "", ReservationMapper.getInstance().getReservation(reservationID).date);
 
                         ReservationMapper.getInstance().done();
