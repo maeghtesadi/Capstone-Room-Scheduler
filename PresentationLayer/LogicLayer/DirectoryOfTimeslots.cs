@@ -54,7 +54,10 @@ namespace LogicLayer
         {
             foreach (TimeSlot timeSlot in timeSlotList)
                 if (timeSlot.timeSlotID == timeSlotID)
+                {
                     timeSlotList.Remove(timeSlot);
+                    return;
+                }
         }
 
     }
