@@ -73,7 +73,7 @@
         <div class="header-room">Room</div><div class="header-date">Date</div><div class="header-description">Description</div><div class="header-from">From</div><div class="header-from">To</div>
     </div>
     <div class="reservation-content">
-        <div class="reservation-item"><div class="content-room">1</div><div class="content-date">2016-11-22</div><div class="content-description">Description</div><div class="content-from">8:00</div><div class="content-from">10:00</div></div>
+       
         
     
     </div>
@@ -190,7 +190,13 @@
                                 <option value="25">25:00</option>
 
                             </select>
-                      
+                            <div class="modify-label">Description</div>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control input-sm" name="description" id="modifyDescription" placeholder="Description">
+                            </div>
+                            <input type="hidden" name="day" value="0" />
+                            <input type="hidden" name="month" value="0" />
+                            <input type="hidden" name="year" value="0" />
                     </div>
                     <div class="modify-buttons">
 <button type="submit" class="btn btn-sm modifyButton">Modify Reservation</button><button type="button" class="btn btn-sm deleteReservation">Delete Reservation</button></div>

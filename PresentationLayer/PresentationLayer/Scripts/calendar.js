@@ -305,7 +305,7 @@ serverSession.client.populateReservations = function (reservationList) {
 function buildNewReservationItem(reservationId, description, initialTimeSlot, finalTimeslot , roomID,date ) //reservtion id goes in .$(".cancelReservation).data(reservationId)
 {
     var reservationItem = 
-       '<div class="reservation-item"><div data-resid="' + reservationId + '" class="content-room">' + roomID + '</div><div class="content-date">' + date + '</div><div class="content-description">' + description + '</div><div class="content-from">' + initialTimeSlot + '</div><div class="content-to">' + finalTimeslot + '</div></div>';
+       '<div class="reservation-item"><div data-resid="' + reservationId + '" class="content-room">' + roomID + '</div><div class="content-date">' + date + '</div><div class="content-description">-' + description + '</div><div class="content-from">' + initialTimeSlot + '</div><div class="content-to">' + finalTimeslot + '</div></div>';
 
     $(".reservations .reservation-content ").append(reservationItem);
 }
@@ -349,6 +349,7 @@ $(".reservation-content").on('click',".reservation-item",function(){
     $("select[name='finalTimeslot']").val($(".reservation-item.active").find(".content-to").html().split(":")[0]);
     $("input[name='date']").val($(".reservation-item.active").find(".content-date").html());
     $("input[name='resid']").attr("value", $(".reservation-item.active").find(".content-room").data('resid'));
+    setCalendarDate();
 });
     
 $(".deleteReservation").on('click', function () {

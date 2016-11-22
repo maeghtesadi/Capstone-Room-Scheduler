@@ -27,12 +27,13 @@ namespace CapstoneRoomScheduler.Controllers
             updateCalendar(year, month, day);
         }
         [HttpPost]
-        public void modifyReservation(int roomId,string date,int initialTimeslot,int finalTimeslot,int resid)
+        public void modifyReservation(int roomId,string date,int initialTimeslot,int finalTimeslot,int resid,int day,int month,int year)
         {
             string[] dateArray=date.Split('-');
         
             ReservationConsole.getInstance().modifyReservation(resid, roomId, "Hard coded for now",new DateTime(Int32.Parse(dateArray[0]), Int32.Parse(dateArray[1]), Int32.Parse(dateArray[2])), initialTimeslot, finalTimeslot);
-            
+            updateCalendar(year, month, day);
+
         }
         [HttpPost]
         public void cancelReservation(string resid,int day, int month, int year)
