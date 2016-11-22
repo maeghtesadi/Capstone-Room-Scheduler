@@ -62,9 +62,10 @@ namespace Mappers
 
             //Make a new reservation object
             Reservation reservation = new Reservation();
+
+            reservation = DirectoryOfReservations.getInstance().makeNewReservation(roomID, userID, desc, date);
             reservation.reservationID = (reservationID);
 
-            DirectoryOfReservations.getInstance().makeNewReservation(roomID, userID, desc, date);
 
             //Add new reservation object to the identity map, in Live memory.
             reservationIdentityMap.addTo(reservation);
