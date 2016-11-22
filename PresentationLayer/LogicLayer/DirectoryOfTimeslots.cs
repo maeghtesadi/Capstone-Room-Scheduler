@@ -46,11 +46,26 @@ namespace LogicLayer
             }
         }
 
-        public TimeSlot makeNewTimeSlot(int resID, int hour)
+        public TimeSlot makeNewTimeSlot(int timeslotID, int resID, int hour, Queue<int> wlist)
         {
-            TimeSlot timeSlot = TimeSlotMapper.getInstance().makeNew(resID, hour);
+            //TimeSlot timeSlot = TimeSlotMapper.getInstance().makeNew(resID, hour);
+            TimeSlot timeSlot = new TimeSlot(timeslotID, resID, hour, wlist);
             timeSlotList.Add(timeSlot);
             return timeSlot;
+        }
+
+        public void modifyTimeSlot(int timeSlotID, int resID, Queue<int> wlist)
+        {
+            for (int i = 0; i < timeSlotList.Count; i++ )
+            {
+                if (timeSlotList[i].timeSlotID == timeSlotID)
+                {
+                    timeSlotList[i].reservationID = resID;
+                    timeSlotList[i].timeSlotID = timeSlotID;
+                    timeSlotList[i].waitlist = wlist;
+                    break;
+                }
+            }
         }
 
         public void deleteTimeSlot(int id)

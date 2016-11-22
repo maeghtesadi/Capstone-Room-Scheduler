@@ -63,10 +63,10 @@ namespace Mappers
             //Make a new TimeSlot object
             TimeSlot timeslot = new TimeSlot();
 
-            //timeslot = DirectoryOfTimeSlots.getInstance().makeNewTimeSlot(reservationID, hour);
-            timeslot.timeSlotID = (timeslotID);
-            timeslot.reservationID = reservationID;
-            timeslot.hour = hour;
+            timeslot = DirectoryOfTimeSlots.getInstance().makeNewTimeSlot(timeslotID, reservationID, hour, new Queue<int>());
+            //timeslot.timeSlotID = (timeslotID);
+            //timeslot.reservationID = reservationID;
+            //timeslot.hour = hour;
 
             DirectoryOfTimeSlots.getInstance().addToListOfTimeSlots(timeslot);
 
@@ -80,7 +80,6 @@ namespace Mappers
             return timeslot;
 
         }
-
 
         /**
          * Retrieve a TimeSlot given its TimeSlot ID.
@@ -210,9 +209,10 @@ namespace Mappers
             TimeSlot timeSlot = getTimeSlot(timeSlotID);
 
             // Update the timeslot
-            timeSlot.timeSlotID = timeSlotID;
-            timeSlot.reservationID = reservationID;
-            timeSlot.waitlist = waitList;
+            DirectoryOfTimeSlots.getInstance().modifyTimeSlot(timeSlotID, reservationID, waitList);
+            //timeSlot.timeSlotID = timeSlotID;
+            //timeSlot.reservationID = reservationID;
+            //timeSlot.waitlist = waitList;
 
             // Register it to the unit of work
             UnitOfWork.getInstance().registerDirty(timeSlot); 
@@ -243,7 +243,7 @@ namespace Mappers
 
             //DirectoryOfTimeSlots.getInstance().deleteTimeSlot(timeSlot.timeSlotID);
 
-            DirectoryOfTimeSlots.getInstance().deleteFromListOfTimeSlots(timeSlotID);
+            DirectoryOfTimeSlots.getInstance().deleteFromListOfTimeSlots(timeSlot.timeSlotID);
 
         }
         /**
@@ -256,7 +256,6 @@ namespace Mappers
             UnitOfWork.getInstance().commit();
 
         }
-
 
         //For Unit of Work: A list of timeslots to be added to the DB is passed to the TDG. 
         public void addTimeSlot(List<TimeSlot> newList)
