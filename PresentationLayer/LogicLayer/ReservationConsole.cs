@@ -141,7 +141,7 @@ namespace LogicLayer
                             newQueue.Enqueue(timeSlot.waitlist.Dequeue());
                         }
                     }
-                    TimeSlotMapper.getInstance().setTimeSlot(timeSlot.timeSlotID, timeSlot.reservationID, timeSlot.waitlist);
+                    TimeSlotMapper.getInstance().setTimeSlot(timeSlot.timeSlotID, timeSlot.reservationID, newQueue);
                     //directoryOfTimeSlots.addToWaitList(timeSlot.timeSlotID, timeSlot.reservationID, newQueue);
                 }
 
