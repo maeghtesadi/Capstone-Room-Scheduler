@@ -348,6 +348,7 @@ $(".reservation-content").on('click',".reservation-item",function(){
     $("select[name='initialTimeslot']").val($(".reservation-item.active").find(".content-from").html().split(":")[0]);
     $("select[name='finalTimeslot']").val($(".reservation-item.active").find(".content-to").html().split(":")[0]);
     $("input[name='date']").val($(".reservation-item.active").find(".content-date").html());
+    $("input[name='description']").val($(".reservation-item.active").find(".content-description").html());
     $("input[name='resid']").attr("value", $(".reservation-item.active").find(".content-room").data('resid'));
     setCalendarDate();
 });
