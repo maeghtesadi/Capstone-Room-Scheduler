@@ -121,22 +121,24 @@ content:"WaitList";
     height:inherit;
     width: 10px;
 
-    background-color:#f1c40f;
+    background-color:#6c6d6d;
     position:relative;
     float:right;
-     box-shadow: inset 0px -1px 0 white;
+     box-shadow: inset 0px -1px 0 #909090;
+     opacity:0.8;
 }
 .get-waitlist:before {
     right: 8px;
-    bottom: 11px;
+    bottom: 12px;
     width: 0;
     height: 0;
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
-    border-right: 8px solid #f1c40f;
+    border-right: 8px solid #6c6d6d;
     content: " ";
     font-size: 2px;
-    position:absolute
+    position:absolute;
+    opacity:0.8;
 }
 .calendar-buttons {
     font-size: 20px;

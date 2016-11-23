@@ -335,7 +335,7 @@ function buildNewReservationItem(reservationId, description, initialTimeSlot, fi
 
 $(".showReservations").click(function () {
     $(".reservations").toggle('fade',200);
-    $(".modify-reservation").toggle('fade', 200);
+    //$(".modify-reservation").toggle('fade', 200);
     $(".showReservations").toggleClass('active');
     $(".reservationButton").click();
 });
@@ -440,3 +440,13 @@ $(".ddl-initialTimeslot").change(function () {
     }
 });
 
+//get-waitlist click functionailty
+$(".timeslots li ul li").on('click','.get-waitlist', function (event) {
+    event.stopPropagation();
+    $(".reservations").toggle('fade', 100);
+    $(".waitlist-tab").toggleClass('active');
+    $(".reservation-tab").toggleClass('active');
+
+
+
+});
