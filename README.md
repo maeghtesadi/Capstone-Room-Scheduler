@@ -2,6 +2,12 @@
 
 ******** Room scheduling system for Capstone rooms ********
 
+Please take a look at the following files :
+-Software Requirements Specification (SRS) 
+-Software Architecture Document (SAD)
+
+-------
+
 Master branch is the default branch, but is the branch least updated. 
 
 The current most updated branches for backend are the AlineAndNassim and hannahphilipideawin branches. 
