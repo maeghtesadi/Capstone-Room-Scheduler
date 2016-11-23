@@ -166,12 +166,33 @@ padding:6px;
 display:none;
 color:white;
 }
+.messages{
+background-color:white;
+width:400px;
+position:fixed;
 
+top:50px;
+right:0px;
+padding-bottom:0px;
+display:none;
+}
+.message-item{
+background-color:white;
+height:60px;
+width:100%;
+ box-shadow:  inset 0px -1px 0px rgb(197, 197, 197);
+ padding:10px;
+ margin-bottom:10px;
+
+}
 .waitlist-item {
   color:white;
     
 }
-
+.incomingMessage.active{
+background-color:#e74c3c;
+color:white;
+}
 
 .waitlist-tooltip:before {
   bottom:-10px;

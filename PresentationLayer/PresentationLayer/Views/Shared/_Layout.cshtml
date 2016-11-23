@@ -30,12 +30,14 @@
                 @if (!User.Identity.IsAuthenticated)
                 {
                     <div class="icon dropdownLogin"><span style="" class="fa fa-user-circle-o fa-2x"></span></div>
+                    <div class="icon incomingMessage"><span style="" class="fa fa-envelope-o fa-2x"></span></div>
                 }
                 else
                 {
                 <div class="icon dropdownLogout"><span class="userId">@User.Identity.Name</span></div>
                     
                 }
+               
 
 
 
