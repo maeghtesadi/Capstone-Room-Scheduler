@@ -131,6 +131,23 @@ namespace Mappers
             return rooms;
         }
 
+        /**
+         * Initialize the list of rooms, used for instantiating console
+         * */
+        public void initializeDirectory()
+        {
+            // Get all rooms in the database
+            Dictionary<int, Object[]> result = tdgRoom.getAll();
+
+            //Loop through each of the result:
+            foreach (KeyValuePair<int, Object[]> record in result)
+            {
+                Room room = DirectoryOfRooms.getInstance().makeNewRoom((int)record.Key, (String)record.Value[1]);
+
+                roomIdentityMap.addTo(room);
+            }
+        }
+
         // I commented it out because this is not used right now.
         //The list of reservation is updated upon calling updateDirectories()
         //

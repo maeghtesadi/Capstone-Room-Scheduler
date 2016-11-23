@@ -16,13 +16,6 @@ namespace Mappers
         private UserMapper() {
         }
 
-        public void initializeUserCatalog()
-        {
-            foreach (KeyValuePair<int, User> user in getAllUser())
-            {
-                UserCatalog.getInstance().registeredUsers.Add(user.Value);
-            }
-        }
         public static UserMapper getInstance()
         {
             return instance;
@@ -88,6 +81,23 @@ namespace Mappers
 
             return users;
         }
+
+        /**
+        * Initialize the list of users, used for instantiating console
+        * */
+        public void initializeDirectory()
+        {
+            // Get all users in the database
+            Dictionary<int, Object[]> result = tdgUser.getAll();
+
+            //Loop through each of the result:
+            foreach (KeyValuePair<int, Object[]> record in result)
+            {
+                User user = UserCatalog.getInstance().makeNewUser((int)record.Key, (String)record.Value[1], (String)record.Value[2], (String)record.Value[3]);
+                UserIdentityMap.getInstance().addTo(user);
+            }
+        }
+
         /**
          * Set user attributes
          */

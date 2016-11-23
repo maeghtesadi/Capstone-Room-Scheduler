@@ -30,13 +30,6 @@ namespace Mappers
 
         }
 
-        public void initializeDirectoryOfTimeSlots() {
-            foreach (KeyValuePair<int, TimeSlot> timeSlot in getAllTimeSlot())
-            {
-                if (!DirectoryOfTimeSlots.getInstance().timeSlotList.Contains(timeSlot.Value))
-                     DirectoryOfTimeSlots.getInstance().timeSlotList.Add(timeSlot.Value);
-            }
-        }
     // Get instance
     public static TimeSlotMapper getInstance()
         {
@@ -142,6 +135,24 @@ namespace Mappers
                 }
             }
             return timeslots;
+        }
+
+        /**
+        * Initialize the list of time slots, used for instantiating console
+        * */
+        public void initializeDirectory()
+        {
+            //Get all timeslots in the DB
+            Dictionary<int, Object[]> result = tdgTimeSlot.getAllTimeSlot();
+
+            //Loop through each of the result:
+            foreach (KeyValuePair<int, Object[]> record in result)
+            {
+                TimeSlot timeSlot = DirectoryOfTimeSlots.getInstance().makeNewTimeSlot((int)record.Key, (int)record.Value[1], (int)record.Value[2]);
+
+                // Add to IdentityMap
+                timeSlotIdentityMap.addTo(timeSlot);
+            }
         }
 
         /**
