@@ -163,6 +163,12 @@ namespace LogicLayer
                     {
                         //If waitList for timeSlots is empty, delete from db
                         TimeSlotMapper.getInstance().delete(resToModify.timeSlots[i].timeSlotID);
+                        for (int k = 0; k < ReservationMapper.getInstance().getListOfReservations().Count; k++)
+                        {
+                            if (ReservationMapper.getInstance().getListOfReservations()[k].reservationID == resToModify.reservationID)
+                                ReservationMapper.getInstance().getListOfReservations()[k].timeSlots.Remove(resToModify.timeSlots[i]);
+                        }
+                        i--;
                         TimeSlotMapper.getInstance().done();
                     }
                     else
@@ -197,6 +203,12 @@ namespace LogicLayer
                     {
                         //If waitList for timeSlots is empty, delete from db
                         TimeSlotMapper.getInstance().delete(resToModify.timeSlots[i].timeSlotID);
+                        for (int k = 0; k < ReservationMapper.getInstance().getListOfReservations().Count; k++)
+                        {
+                            if (ReservationMapper.getInstance().getListOfReservations()[k].reservationID == resToModify.reservationID)
+                                ReservationMapper.getInstance().getListOfReservations()[k].timeSlots.Remove(resToModify.timeSlots[i]);
+                        }
+                        i--;
                         TimeSlotMapper.getInstance().done();
                     }
                     else
@@ -248,8 +260,8 @@ namespace LogicLayer
             {
                 for (int i = 0; i < hours.Count; i++)
                 {
-                    updateWaitList(resToModify.userID, resToModify.date, i);
                     TimeSlotMapper.getInstance().makeNew(resToModify.reservationID, hours[i]);
+                    updateWaitList(resToModify.userID, resToModify.date, i);
                 }
             }
 
@@ -384,7 +396,7 @@ namespace LogicLayer
             //number of hours of reservation currently for chosen day
             int currentHours = TimeSlotMapper.getInstance().findHoursByReservationID(ReservationMapper.getInstance().findReservationIDs(userID, date));
             //checks of reservation is possible according to constraint
-            if (currentHours + newHours < 4)
+            if (currentHours + newHours <= 4)
             {
                 return true;
             }
