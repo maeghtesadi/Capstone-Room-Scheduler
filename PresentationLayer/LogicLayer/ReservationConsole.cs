@@ -394,7 +394,13 @@ namespace LogicLayer
             //interval of hours for the desired reservvation
             int newHours = lastHour - firstHour + 1;
             //number of hours of reservation currently for chosen day
-            int currentHours = TimeSlotMapper.getInstance().findHoursByReservationID(ReservationMapper.getInstance().findReservationIDs(userID, date));
+            List<int> result = ReservationMapper.getInstance().findReservationIDs(userID, date);
+            // if the user doesn't have any reservations for this day, the constraint satisfied (user can make reservation)
+            if(result == null)
+            {
+                return true;
+            }
+            int currentHours = TimeSlotMapper.getInstance().findHoursByReservationID(result);
             //checks of reservation is possible according to constraint
             if (currentHours + newHours <= 4)
             {
@@ -421,7 +427,11 @@ namespace LogicLayer
             //for every day of the week until current day
             for (int i = 0; i < currentDay; i++)
             {
-                counter += (ReservationMapper.getInstance().findReservationIDs(userID, date.AddDays(-i))).Count;
+                List<int> result = ReservationMapper.getInstance().findReservationIDs(userID, date.AddDays(-i));
+                if (result != null)
+                {
+                    counter += result.Count;
+                }
             } 
             //return true if the user has made less than 3 reservations
             if (counter < 3)
