@@ -24,9 +24,9 @@ namespace CapstoneRoomScheduler.Controllers
         {
             var userID = Int32.Parse(User.Identity.GetUserId());
             var date = new DateTime(year, month, day);
-            var weeklyConstraint = ReservationConsole.getInstance().weeklyConstraintCheck(userID, date);
-            var dailyConstraint = ReservationConsole.getInstance().dailyConstraintCheck(userID, date, firstTimeSlot, lastTimeSlot);
-            if (dailyConstraint && weeklyConstraint)
+            //var weeklyConstraint = ReservationConsole.getInstance().weeklyConstraintCheck(userID, date);
+           // var dailyConstraint = ReservationConsole.getInstance().dailyConstraintCheck(userID, date, firstTimeSlot, lastTimeSlot);
+            if (true)
             {
                 ReservationConsole.getInstance().makeReservation(userID, room, description, date, firstTimeSlot, lastTimeSlot);
                 updateCalendar(year, month, day);
@@ -43,8 +43,8 @@ namespace CapstoneRoomScheduler.Controllers
             if (dailyConstraint && weeklyConstraint)
             {
                 ReservationConsole.getInstance().modifyReservation(resid, roomId, description, dateOfRes, initialTimeslot, finalTimeslot - 1);
-                getReservations();
-                updateCalendar(year, month, day);
+            getReservations();
+            updateCalendar(year, month, day);
             }
         }
         [HttpPost]
@@ -64,7 +64,7 @@ namespace CapstoneRoomScheduler.Controllers
            DateTime date = new DateTime(year, month, day);
            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
            hubContext.Clients.All.updateCalendar(convertToJsonObject(ReservationConsole.getInstance().findByDate(date)));
-           hubContext.Clients.All.updateWaitlist(ReservationConsole.getInstance().getAllTimeSlots(), convertToJsonObject(ReservationConsole.getInstance().findByDate(date)));
+            hubContext.Clients.All.updateWaitlist(ReservationConsole.getInstance().getAllTimeSlots(), convertToJsonObject(ReservationConsole.getInstance().findByDate(date)),ReservationConsole.getInstance().getUserCatalog());
         }
         [LoggedIn]
         [HttpPost]
