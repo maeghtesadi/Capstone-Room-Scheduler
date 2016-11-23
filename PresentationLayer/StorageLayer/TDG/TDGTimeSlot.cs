@@ -319,6 +319,9 @@ namespace TDG
          * */
         private void createTimeSlot(MySqlConnection conn, TimeSlot timeslot)
         {
+            if (timeslot == null)
+                return;
+
             String commandLine = "INSERT INTO " + TABLE_NAME + " VALUES (" + timeslot.timeSlotID + "," +
                 timeslot.reservationID + "," + timeslot.hour + ");";
             MySqlDataReader reader = null;
@@ -344,6 +347,9 @@ namespace TDG
          * */
         private void updateTimeSlot(MySqlConnection conn, TimeSlot timeslot)
         {
+            if (timeslot == null)
+                return;
+
             String commandLine = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + " = " + timeslot.reservationID + " WHERE " + FIELDS[0] + " = " + timeslot.timeSlotID;
             MySqlDataReader reader = null;
             MySqlCommand cmd = new MySqlCommand(commandLine, conn);
@@ -368,6 +374,9 @@ namespace TDG
 
         private void removeTimeSlot(MySqlConnection conn, TimeSlot timeslot)
         {
+            if (timeslot == null)
+                return;
+
             String commandLine = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + timeslot.timeSlotID + ";";
             MySqlDataReader reader = null;
             MySqlCommand cmd = new MySqlCommand(commandLine, conn);
