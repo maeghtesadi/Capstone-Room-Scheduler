@@ -22,9 +22,15 @@ namespace CapstoneRoomScheduler.Controllers
         [HttpPost]
         public void makeReservation(int room,string description,int day,int month,int year,int firstTimeSlot, int lastTimeSlot)
         {
-       
-            ReservationConsole.getInstance().makeReservation(Int32.Parse(User.Identity.GetUserId()),room,description,new DateTime(year,month,day),firstTimeSlot,lastTimeSlot);
-            updateCalendar(year, month, day);
+            var userID = Int32.Parse(User.Identity.GetUserId());
+            var date = new DateTime(year, month, day);
+            var weeklyConstraint = ReservationConsole.getInstance().weeklyConstraintCheck(userID, date);
+            var dailyConstraint = ReservationConsole.getInstance().dailyConstraintCheck(userID, date, firstTimeSlot, lastTimeSlot);
+            if (dailyConstraint && weeklyConstraint)
+            {
+                ReservationConsole.getInstance().makeReservation(userID, room, description, date, firstTimeSlot, lastTimeSlot);
+                updateCalendar(year, month, day);
+            }
         }
         [HttpPost]
         public void modifyReservation(int roomId,string date,int initialTimeslot,int finalTimeslot,int resid,int day,int month,int year,string description)

@@ -29,7 +29,8 @@ namespace LogicLayer
         public TimeSlot makeNewTimeSlot(int timeslotID, int reservationID, int hour)
         {
             TimeSlot timeSlot = new TimeSlot(timeslotID, reservationID, hour);
-            timeSlotList.Add(timeSlot);
+            if (!timeSlotList.Contains(timeSlot))
+                timeSlotList.Add(timeSlot);
             return timeSlot;
         }
 
