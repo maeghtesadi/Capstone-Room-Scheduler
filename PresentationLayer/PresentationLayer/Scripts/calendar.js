@@ -307,15 +307,14 @@ serverSession.client.populateReservations = function (reservationList) {
 serverSession.client.updateWaitlist = function (timeslotList,reservationList,userCatalog) {
     var roomId;
     var userName;
-    var waitlistUsers="";
     for (var i = 0; i < timeslotList.length; i++) {
-    
+        var waitlistUsers = "";
         if (timeslotList[i].waitlist.length != 0) {
             for (var k = 0; k < timeslotList[i].waitlist.length; k++) {
-                for (var n = 0; n < userCatalog.length; n++) {
+               for (var n = 0; n < userCatalog.length; n++) {
                     if(timeslotList[i].waitlist[k]==userCatalog[n].userID)
                     {
-                        var waitlistUsers = waitlistUsers +userCatalog[n].name+"-";
+                        waitlistUsers = waitlistUsers +userCatalog[n].name+"-";
                     }
                 }
             }
@@ -460,7 +459,7 @@ $(".timeslots li ul li").on('mouseenter','.get-waitlist', function (event) {
     $(".waitlist-tooltip").css('opacity', '0');
     for (var i = 0; i < username.length-1; i++)
     {
-        $(".waitlist-tooltip").append('<div style="waitlist-item">'+username[0]+'</div>');
+        $(".waitlist-tooltip").append('<div style="waitlist-item">'+username[i]+'</div>');
     }
     $(".waitlist-tooltip").position({
         my: "left top",
