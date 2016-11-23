@@ -100,7 +100,7 @@ padding-left:0px;
   font-size:12px;
   text-align:left;
   padding-left:7px;
-  line-height:200%;
+  line-height:150%;
 }
 .timeslots .active.reserved{
 background-color:#ec644b;
@@ -113,27 +113,30 @@ content:"WaitList";
   background-color:#5c8194;
   color:white;
   text-align:center;
-  padding-left:0px;
+  padding-left:70px;
   line-height:300%;
 }
 
-get-waitlist{
-    height: 40px;
-    width: 15px;
-    float: right;
-    background-color: #64d40b;
+.get-waitlist{
+    height:inherit;
+    width: 10px;
+
+    background-color:#f1c40f;
+    position:relative;
+    float:right;
+     box-shadow: inset 0px -1px 0 white;
 }
 .get-waitlist:before {
-    right: 12px;
-    bottom: 4px;
-    position: relative;
+    right: 8px;
+    bottom: 11px;
     width: 0;
     height: 0;
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
-    border-right: 8px solid #64d40b;
+    border-right: 8px solid #f1c40f;
     content: " ";
-    font-size: 1px;
+    font-size: 2px;
+    position:absolute
 }
 .calendar-buttons {
     font-size: 20px;
@@ -143,6 +146,10 @@ get-waitlist{
    padding: 0px 25px;
     margin:0px;
    
+}
+.reserved-left {
+float:left;
+padding-left:5px;
 }
 
 .calendar-buttons li{

@@ -199,7 +199,8 @@ function updateCalendar(reservationList) {
             $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").css('background-color', color[1]);
         }
         //First timeslot classtoggle=reservedHeader
-        $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").addClass("reserved-header").html(reservationList[j].userName);
+        //Add first Name
+        $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").addClass("reserved-header").html('<div class="reserved-left">'+reservationList[j].userName+'</div>');
         $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").css('background-color', color[0]);
         //Second timeslot classtoggle=reservedd;
         if (reservationList[j].initialTimeslot === reservationList[j].finalTimeslot) {
@@ -209,7 +210,7 @@ function updateCalendar(reservationList) {
             var time = "<u>Time</u>: From " + reservationList[j].initialTimeslot + " to " + (parseInt(reservationList[j].finalTimeslot) + 1);
             var description = "<u>Description</u>: " + reservationList[j].description;
             // var waitingList = "<u>Waiting List:</u>:";
-            $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time + "</br>" + description + "</br>");
+            $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html('<div class="reserved-left">' + time + "</br>" + description + "</br></div>");
         }
     }
 
@@ -307,12 +308,13 @@ serverSession.client.updateWaitlist = function (timeslotList,reservationList) {
     var userName;
     for (var i = 0; i < timeslotList.length; i++) {
     
-        if (timeslotList.waitlist.length != 0) {
+        if (timeslotList[i].waitlist.length != 0) {
             for (var j = 0; j < reservationList.length; j++) {
                 if(timeslotList[i].reservationID == reservationList[j].reservationId)
                 {
                     roomId = reservationList[j].roomId;
                     userName = reservationList[j].userName;
+                    break;
                 }
             }
             $("li[data-timeslot='" + timeslotList[i].hour + "']li[data-room='" + roomId + "']").append('<div class="get-waitlist"></div>');;
