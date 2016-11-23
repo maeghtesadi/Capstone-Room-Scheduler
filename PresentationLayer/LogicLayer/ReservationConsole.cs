@@ -176,17 +176,23 @@ namespace LogicLayer
                     }
                     else
                     {
-                        //Else give new reservation to the first person in waitlist
-                        int userID = resToModify.timeSlots[i].waitlist.Dequeue();
-                        if (weeklyConstraintCheck(userID, date) && dailyConstraintCheck(userID, date, firstHour, lastHour))
+                        for (int k = 0; k < TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist.Count; k++)
                         {
-                            Reservation res = ReservationMapper.getInstance().makeNew(userID, ReservationMapper.getInstance().getReservation(resID).roomID,
-                                                                                    "", ReservationMapper.getInstance().getReservation(resID).date);
-                        ReservationMapper.getInstance().done();
-                        TimeSlotMapper.getInstance().setTimeSlot(resToModify.timeSlots[i].timeSlotID, res.reservationID, resToModify.timeSlots[i].waitlist);
+                            //Else give new reservation to the first person in waitlist
+                            int userID = resToModify.timeSlots[i].waitlist.Dequeue();
+                            if (weeklyConstraintCheck(userID, date) && dailyConstraintCheck(userID, ReservationMapper.getInstance().getReservation(resID).date, 
+                                resToModify.timeSlots[i].hour, resToModify.timeSlots[i].hour))
+                            {
+                                Reservation res = ReservationMapper.getInstance().makeNew(userID, ReservationMapper.getInstance().getReservation(resID).roomID,
+                                                                                        "", ReservationMapper.getInstance().getReservation(resID).date);
+                                ReservationMapper.getInstance().done();
+                                TimeSlotMapper.getInstance().setTimeSlot(resToModify.timeSlots[i].timeSlotID, res.reservationID, resToModify.timeSlots[i].waitlist);
+                                TimeSlotMapper.getInstance().done();
+                                updateWaitList(userID, ReservationMapper.getInstance().getReservation(resID).date, resToModify.timeSlots[i].hour);
+                                break;
+                            }
+                            updateWaitList(userID, ReservationMapper.getInstance().getReservation(resID).date, resToModify.timeSlots[i].hour);
                         }
-                        updateWaitList(userID, ReservationMapper.getInstance().getReservation(resID).date, resToModify.timeSlots[i].hour);
-                        TimeSlotMapper.getInstance().done();
                     }
                 }
             }
@@ -219,20 +225,27 @@ namespace LogicLayer
                     }
                     else
                     {
-                        //Else give new reservation to the first person in waitlist
-                        int userID = resToModify.timeSlots[i].waitlist.Dequeue();
-                        if (weeklyConstraintCheck(userID, date) && dailyConstraintCheck(userID, date, firstHour, lastHour))
+                        for (int k = 0; k < TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist.Count; k++)
                         {
-                              int myroomid = ReservationMapper.getInstance().getReservation(resID).roomID;
-                              DateTime mydate = ReservationMapper.getInstance().getReservation(resID).date;
-                              Reservation res = ReservationMapper.getInstance().makeNew(userID, myroomid, "", mydate);
-                        //Reservation res = directoryOfReservations.makeNewReservation(directoryOfReservations.getReservation(reservationID).roomID, userID, "",
-                        //   directoryOfReservations.getReservation(reservationID).date);
-                              ReservationMapper.getInstance().done();
-                              TimeSlotMapper.getInstance().setTimeSlot(resToModify.timeSlots[i].timeSlotID, res.reservationID, resToModify.timeSlots[i].waitlist);
-                        }                      
-                        updateWaitList(userID, ReservationMapper.getInstance().getReservation(resID).date, resToModify.timeSlots[i].hour);
-                        TimeSlotMapper.getInstance().done();
+                            //Else give new reservation to the first person in waitlist
+                            int userID = resToModify.timeSlots[i].waitlist.Dequeue();
+                            if (weeklyConstraintCheck(userID, date) && dailyConstraintCheck(userID, ReservationMapper.getInstance().getReservation(resID).date,
+                                TimeSlotMapper.getInstance().getListOfTimeSlots()[i].hour, TimeSlotMapper.getInstance().getListOfTimeSlots()[i].hour))
+                            {
+                                int myroomid = ReservationMapper.getInstance().getReservation(resID).roomID;
+                                DateTime mydate = ReservationMapper.getInstance().getReservation(resID).date;
+                                Reservation res = ReservationMapper.getInstance().makeNew(userID, myroomid, "", mydate);
+                                //Reservation res = directoryOfReservations.makeNewReservation(directoryOfReservations.getReservation(reservationID).roomID, userID, "",
+                                //   directoryOfReservations.getReservation(reservationID).date);
+                                ReservationMapper.getInstance().done();
+                                TimeSlotMapper.getInstance().setTimeSlot(resToModify.timeSlots[i].timeSlotID, res.reservationID, resToModify.timeSlots[i].waitlist);
+                                TimeSlotMapper.getInstance().done();
+                                updateWaitList(userID, ReservationMapper.getInstance().getReservation(resID).date, resToModify.timeSlots[i].hour);
+                                break;
+                            }
+                            updateWaitList(userID, ReservationMapper.getInstance().getReservation(resID).date, resToModify.timeSlots[i].hour);
+                            k--;
+                        }   
                     }
                 }
             }
@@ -305,18 +318,27 @@ namespace LogicLayer
                     else
                     {
                         //int userID = directoryOfTimeSlots.timeSlotList[i].waitlist.Dequeue();
-                        int userID = TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist.Dequeue();
-                        Reservation res = ReservationMapper.getInstance().makeNew(userID, ReservationMapper.getInstance().getReservation(reservationID).roomID, 
-                            "", ReservationMapper.getInstance().getReservation(reservationID).date);
+                        for (int k = 0; k < TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist.Count; k++ )
+                        {
+                            int userID = TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist.Dequeue();
+                            if (weeklyConstraintCheck(userID, ReservationMapper.getInstance().getReservation(reservationID).date)
+                                && dailyConstraintCheck(userID, ReservationMapper.getInstance().getReservation(reservationID).date,
+                                TimeSlotMapper.getInstance().getListOfTimeSlots()[i].hour, TimeSlotMapper.getInstance().getListOfTimeSlots()[i].hour))
+                            {
+                                Reservation res = ReservationMapper.getInstance().makeNew(userID, ReservationMapper.getInstance().getReservation(reservationID).roomID,
+                             "", ReservationMapper.getInstance().getReservation(reservationID).date);
+                                ReservationMapper.getInstance().done();
+                                TimeSlotMapper.getInstance().setTimeSlot(TimeSlotMapper.getInstance().getListOfTimeSlots()[i].timeSlotID, res.reservationID,
+                                                                         TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist);
 
-                        ReservationMapper.getInstance().done();
-
-                        TimeSlotMapper.getInstance().setTimeSlot(TimeSlotMapper.getInstance().getListOfTimeSlots()[i].timeSlotID, res.reservationID,
-                            TimeSlotMapper.getInstance().getListOfTimeSlots()[i].waitlist);
-
-                        updateWaitList(userID, res.date, TimeSlotMapper.getInstance().getListOfTimeSlots()[i].hour);
-
-                        TimeSlotMapper.getInstance().done();
+                                TimeSlotMapper.getInstance().done();
+                                updateWaitList(userID, ReservationMapper.getInstance().getReservation(reservationID).date, TimeSlotMapper.getInstance().getListOfTimeSlots()[i].hour);
+                                break;
+                            }
+                            updateWaitList(userID, ReservationMapper.getInstance().getReservation(reservationID).date, TimeSlotMapper.getInstance().getListOfTimeSlots()[i].hour);
+                            k--;
+                        }
+                     
                     }
                 }
             }
