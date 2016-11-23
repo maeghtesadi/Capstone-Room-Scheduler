@@ -303,21 +303,31 @@ serverSession.client.populateReservations = function (reservationList) {
     }
 }
 //adds a show waitlist button to timeslots with waitlists
-serverSession.client.updateWaitlist = function (timeslotList,reservationList) {
+//complexity can be heaviily improved but not enough time left
+serverSession.client.updateWaitlist = function (timeslotList,reservationList,userCatalog) {
     var roomId;
     var userName;
+    var waitlistUsers="";
     for (var i = 0; i < timeslotList.length; i++) {
     
         if (timeslotList[i].waitlist.length != 0) {
+            for (var k = 0; k < timeslotList[i].waitlist.length; k++) {
+                for (var n = 0; n < userCatalog.length; n++) {
+                    if(timeslotList[i].waitlist[k]==userCatalog[n].userID)
+                    {
+                        var waitlistUsers = waitlistUsers +userCatalog[n].name+"-";
+                    }
+                }
+            }
             for (var j = 0; j < reservationList.length; j++) {
                 if(timeslotList[i].reservationID == reservationList[j].reservationId)
                 {
                     roomId = reservationList[j].roomId;
-                    userName = reservationList[j].userName;
+                
                     break;
                 }
             }
-            $("li[data-timeslot='" + timeslotList[i].hour + "']li[data-room='" + roomId + "']").append('<div class="get-waitlist"></div>');;
+            $("li[data-timeslot='" + timeslotList[i].hour + "']li[data-room='" + roomId + "']").append('<div class="get-waitlist" data-users="'+waitlistUsers+'">' + timeslotList[i].waitlist.length + '</div>');
             
         }
     }
@@ -332,10 +342,10 @@ function buildNewReservationItem(reservationId, description, initialTimeSlot, fi
 }
 
 
-
+//Show reservations
 $(".showReservations").click(function () {
     $(".reservations").toggle('fade',200);
-    //$(".modify-reservation").toggle('fade', 200);
+    $(".modify-reservation").toggle('fade', 200);
     $(".showReservations").toggleClass('active');
     $(".reservationButton").click();
 });
@@ -363,7 +373,9 @@ function remakeCalendar() {
 
 $(".reservation-content").on('click',".reservation-item",function(){
     $(".reservation-item.active").toggleClass('active');
+    
     $(this).toggleClass('active');
+
     var activeElement = $(".reservation-item.active");
     $("select[name='roomId']").val($(".reservation-item.active").find(".content-room").html());
     $("select[name='initialTimeslot']").val($(".reservation-item.active").find(".content-from").html().split(":")[0]);
@@ -447,6 +459,11 @@ $(".timeslots li ul li").on('click','.get-waitlist', function (event) {
     $(".waitlist-tab").toggleClass('active');
     $(".reservation-tab").toggleClass('active');
 
-
-
 });
+
+
+//Populate waitlist functionailty
+function populateWaitlist() {
+
+
+}
