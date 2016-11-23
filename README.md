@@ -3,7 +3,9 @@
 ******** Room scheduling system for Capstone rooms ********
 
 Please take a look at the following files :
+
 -Software Requirements Specification (SRS) 
+
 -Software Architecture Document (SAD)
 
 -------
