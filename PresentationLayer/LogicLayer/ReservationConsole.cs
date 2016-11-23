@@ -396,7 +396,7 @@ namespace LogicLayer
             //number of hours of reservation currently for chosen day
             int currentHours = TimeSlotMapper.getInstance().findHoursByReservationID(ReservationMapper.getInstance().findReservationIDs(userID, date));
             //checks of reservation is possible according to constraint
-            if (currentHours + newHours < 4)
+            if (currentHours + newHours <= 4)
             {
                 return true;
             }
