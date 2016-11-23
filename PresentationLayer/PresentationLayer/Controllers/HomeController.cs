@@ -41,7 +41,7 @@ namespace CapstoneRoomScheduler.Controllers
                 var dailyConstraint = ReservationConsole.getInstance().dailyConstraintCheck(userID, date, firstTimeSlot, lastTimeSlot);
                 if (dailyConstraint && weeklyConstraint)
                 {
-                  
+                    Thread.Sleep(4000); //sleep function for the room lock, make reservation takes 
                     ReservationConsole.getInstance().makeReservation(userID, room, description, date, firstTimeSlot, lastTimeSlot);
                     GlobalHost.ConnectionManager.GetHubContext<CalendarHub>().Clients.Group(User.Identity.GetUserId()).incomingMessage("Reservation has been successfully created");
                     updateCalendar(year, month, day);
