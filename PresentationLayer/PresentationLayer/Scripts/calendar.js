@@ -312,7 +312,7 @@ $(".incomingMessage").on('click', function () {
 serverSession.client.incomingMessage = function (message) {
     $(".incomingMessage").addClass('active');
     $(".messages").prepend('<div class="message-item">'+message+'</div>')
-    $(".messages").show(200);
+
    
 
 }
