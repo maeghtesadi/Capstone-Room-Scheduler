@@ -227,7 +227,7 @@ namespace Mappers
             List<int> IDlist = new List<int>();
             IDlist = ReservationIdentityMap.getInstance().findReservationIDs(userID, date);
 
-            if (IDlist == null)
+            if (IDlist == null || IDlist.Count == 0)
             {
                 IDlist = tdgReservation.getReservationIDs(userID, date);
                 if (IDlist == null)
