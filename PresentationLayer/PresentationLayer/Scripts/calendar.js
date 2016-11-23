@@ -479,7 +479,7 @@ $(".timeslots li ul li").on('mouseenter','.get-waitlist', function (event) {
     $(".waitlist-tooltip").position({
         my: "left top",
         at: "right+7 top+-7",
-        of: $(this),
+        of: $(this)
     });
     $(".waitlist-tooltip").toggle(0);
     $(".waitlist-tooltip").css('opacity', '1');
