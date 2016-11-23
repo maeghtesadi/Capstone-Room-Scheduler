@@ -25,18 +25,11 @@ namespace LogicLayer
         }
 
         // Method to make a new reservation
-        public Reservation makeNewReservation(int reservationid, int userID, int roomID, string desc, DateTime date)
+        public Reservation makeNewReservation(int reservationID, int userID, int roomID, string desc, DateTime date)
         {
-            Reservation reservation = new Reservation(reservationid, userID, roomID, desc, date);
-            bool foundID = false;
+            Reservation reservation = new Reservation(reservationID, userID, roomID, desc, date);
 
-            for (int i = 0; i < reservationList.Count; i++)
-            {
-                if (reservationList[i].reservationID == reservationid)
-                    foundID = true;
-            }
-            if (!foundID)
-                reservationList.Add(reservation);
+            reservationList.Add(reservation);
 
             return reservation;
         }
@@ -65,56 +58,6 @@ namespace LogicLayer
                     return;
                 }
         }
-
-    //    public List<Reservation> findByDate(DateTime date)
-    //    {
-    //        List<Reservation> listByDate = new List<Reservation>();
-    //        foreach (Reservation reservation in reservationList)
-    //        {
-    //            if (reservation.date.Date == date.Date)
-    //            {
-    //                listByDate.Add(reservation);
-    //            }
-    //        }
-    //        return listByDate;
-    //    }
-
-    //    public List<Reservation> findByUser(int userID)
-    //    {
-    //        List<Reservation> listByuserId = new List<Reservation>();
-    //        foreach (Reservation reservation in reservationList)
-    //        {
-    //            if (reservation.userID == userID)
-    //            {
-    //                listByuserId.Add(reservation);
-    //            }
-    //        }
-    //        return listByuserId;
-    //    }
-   
-
-    //public List<Reservation> filterByBlock(DateTime date)
-    //    {
-    //        List<Reservation> listByDate = new List<Reservation>();
-    //        foreach (Reservation reservation in reservationList)
-    //        {
-    //            if (reservation.date == date)
-    //            {
-    //                listByDate.Add(reservation);
-    //            }
-    //        }
-    //        return listByDate;
-    //    }
-
-    //    public Boolean check4HourConstraint(int userID, DateTime date, int interval)
-    //    {
-    //        if ((TimeSlotMapper.getInstance().findHoursByReservationID(ReservationMapper.getInstance().findReservationID(userID, date)) + interval) < 4)
-    //        {
-    //            return true;
-    //        }
-    //        else
-    //            return false;
-    //    }
 
     }
 }

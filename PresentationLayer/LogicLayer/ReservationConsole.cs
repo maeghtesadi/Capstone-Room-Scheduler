@@ -23,10 +23,10 @@ namespace LogicLayer
         //Constructor
         public ReservationConsole()
         {
-            TimeSlotMapper.getInstance().initializeDirectoryOfTimeSlots();
-            ReservationMapper.getInstance().initializeDirectoryOfReservation();
-            UserMapper.getInstance().initializeUserCatalog();
-            RoomMapper.getInstance().initializeDirectoryOfRoom();
+            TimeSlotMapper.getInstance().initializeDirectory();
+            ReservationMapper.getInstance().initializeDirectory();
+            UserMapper.getInstance().initializeDirectory();
+            RoomMapper.getInstance().initializeDirectory();
             updateDirectories();
         }
 
