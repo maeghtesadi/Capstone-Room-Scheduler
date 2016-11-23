@@ -8,13 +8,13 @@ namespace Mappers
 {
     class UserMapper
     {
-
         private static UserMapper instance = new UserMapper();
 
         private TDGUser tdgUser = TDGUser.getInstance();
         private UserIdentityMap userIdentityMap = UserIdentityMap.getInstance();
 
-        private UserMapper() { }
+        private UserMapper() {
+        }
 
         public static UserMapper getInstance()
         {
@@ -73,35 +73,37 @@ namespace Mappers
                 // The user is not in the identity map. Create an instance, add it to identity map and to the return variable
                 if (!users.ContainsKey(record.Key))
                 {
-                    User user = new User();
-                    user.userID = ((int)record.Key); // userID
-                    user.username = ((String)record.Value[1]); // userName
-                    user.password = ((String)record.Value[2]); // password
-                    user.name = ((String)record.Value[3]); // name
-                   
-
+                    User user = UserCatalog.getInstance().makeNewUser((int)record.Key, (String)record.Value[1], (String)record.Value[2], (String)record.Value[3]);
                     UserIdentityMap.getInstance().addTo(user);
-
                     users.Add(user.userID, user);
                 }
             }
 
             return users;
         }
+
+        /**
+        * Initialize the list of users, used for instantiating console
+        * */
+        public void initializeDirectory()
+        {
+            // Get all users in the database
+            Dictionary<int, Object[]> result = tdgUser.getAll();
+
+            //Loop through each of the result:
+            foreach (KeyValuePair<int, Object[]> record in result)
+            {
+                User user = UserCatalog.getInstance().makeNewUser((int)record.Key, (String)record.Value[1], (String)record.Value[2], (String)record.Value[3]);
+                UserIdentityMap.getInstance().addTo(user);
+            }
+        }
+
         /**
          * Set user attributes
          */
-        public void setUser(int userID, string name, int numOfReservations)
+        public void setUser(int userID, string name)
         {
-
-            // First we fetch the User || We could have passed the User as a Param. But this assumes you might not have
-            // access to the instance of the desired object.
-            User user = getUser(userID);
-
-            // Mutator function to SET the new name.
-            user.name = (name);
-
-        
+            User user = UserCatalog.getInstance().modifyUser(userID, name);
             // We've modified something in the object so we Register the instance as Dirty in the UoW.
             UnitOfWork.getInstance().registerDirty(user);
         }
@@ -123,6 +125,11 @@ namespace Mappers
             tdgUser.updateUser(updateList);
         }
 
+
+        public List<User> getListOfUsers()
+        {
+            return (UserCatalog.getInstance().registeredUsers);
+        }
 
     }
 }

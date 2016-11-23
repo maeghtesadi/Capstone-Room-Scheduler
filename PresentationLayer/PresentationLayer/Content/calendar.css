@@ -100,19 +100,48 @@ padding-left:0px;
   font-size:12px;
   text-align:left;
   padding-left:7px;
-  line-height:200%;
+  line-height:150%;
 }
 .timeslots .active.reserved{
 background-color:#ec644b;
 content:"WaitList";
 
 }
+
+
 .timeslots li ul li.reserved-header{
   background-color:#5c8194;
   color:white;
   text-align:center;
-  padding-left:0px;
+  padding-left:70px;
   line-height:300%;
+}
+
+.get-waitlist{
+    height:inherit;
+    width: 11px;
+
+    background-color:#6c6d6d;
+    position:relative;
+    float:right;
+     box-shadow: inset 0px -1px 0 #909090;
+     opacity:0.8;
+     padding-top:10px;
+     padding-left:2px;
+
+}
+.get-waitlist:before {
+    right: 11px;
+    bottom: 12px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid #6c6d6d;
+    content: " ";
+    font-size: 2px;
+    position:absolute;
+  
 }
 .calendar-buttons {
     font-size: 20px;
@@ -122,6 +151,66 @@ content:"WaitList";
    padding: 0px 25px;
     margin:0px;
    
+}
+
+.waitlist-tooltip{
+position:fixed;
+background-color:#607583;
+opacity:0.8;
+width:200px;
+left:540px;
+border-radius:3px;
+padding:6px;
+display:none;
+color:white;
+}
+.messages{
+background-color:white;
+width:400px;
+position:fixed;
+
+top:50px;
+right:0px;
+padding-bottom:0px;
+display:none;
+z-index:70;
+}
+.message-item{
+background-color:white;
+height:60px;
+width:100%;
+ box-shadow:  inset 2px -1px 0px rgb(197, 197, 197);
+ padding:10px;
+ 
+
+
+}
+.waitlist-item {
+  color:white;
+    
+}
+.incomingMessage.active{
+background-color:#e74c3c;
+color:white;
+}
+
+.waitlist-tooltip:before {
+  bottom:-10px;
+  left:-14px;
+  position:relative;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid #607583;
+    content: " ";
+    font-size: 2px;
+    float:left;
+    opacity:01;
+}
+.reserved-left {
+float:left;
+padding-left:5px;
 }
 
 .calendar-buttons li{
@@ -270,6 +359,7 @@ margin-right:40px;
  position:absolute;
  bottom:20px;
  left:20px;
+ display:none;
 
  }
  .modify-buttons button{

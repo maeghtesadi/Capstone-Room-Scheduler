@@ -31,6 +31,15 @@ namespace Mappers
         }
 
 
+        // Method to get rooms from DB and add into the list
+        public void initializeDirectoryOfRoom()
+        {
+            foreach (KeyValuePair<int, Room> room in getAllRooms())
+            {
+                DirectoryOfRooms.getInstance().roomList.Add(room.Value);
+            }
+        }
+
         /**
          *  Obtain the next ID available
          **/
@@ -54,11 +63,7 @@ namespace Mappers
         {
 
             int nextID = getNextID();
-
-            // Make a new room object
-            Room room = new Room();
-            room.roomID = nextID;
-            room.roomNum = roomNum;
+            Room room = DirectoryOfRooms.getInstance().makeNewRoom(nextID, roomNum);
 
             // Add it to the identity map
             roomIdentityMap.addTo(room);
@@ -83,9 +88,7 @@ namespace Mappers
                 result = tdgRoom.get(roomID);
                 if (result != null)
                 {
-                    room = new Room();
-                    room.roomID = ((int) result[0]); // roomID
-                    room.roomNum = ((String) result[1]); // roomNum
+                    room = DirectoryOfRooms.getInstance().makeNewRoom((int)result[0], (String)result[1]);
                     roomIdentityMap.addTo(room);
                 }
             }
@@ -117,10 +120,8 @@ namespace Mappers
                 // The room is not in the identity map. Create an instance, add it to identity map and to the return variable
                 if(!rooms.ContainsKey(record.Key))
                 {
-                    Room room = new Room();
-                    room.roomID = ((int) record.Key); // roomID
-                    room.roomNum = ((String) record.Value[1]); // roomNum
-                    
+                    Room room = DirectoryOfRooms.getInstance().makeNewRoom((int)record.Key, (String)record.Value[1]);
+
                     roomIdentityMap.addTo(room);
                     
                     rooms.Add(room.roomID, room);
@@ -128,22 +129,39 @@ namespace Mappers
             } 
 
             return rooms;
-        }  
-        
+        }
+
         /**
-         * Set room attributes
-         */
-        public void setRoom(int roomID, String RoomNum)
+         * Initialize the list of rooms, used for instantiating console
+         * */
+        public void initializeDirectory()
         {
-            // Get the room that needs to be updated
-            Room room = getRoom(roomID);
+            // Get all rooms in the database
+            Dictionary<int, Object[]> result = tdgRoom.getAll();
 
-            // Update the room
-            room.roomNum = (RoomNum);
+            //Loop through each of the result:
+            foreach (KeyValuePair<int, Object[]> record in result)
+            {
+                Room room = DirectoryOfRooms.getInstance().makeNewRoom((int)record.Key, (String)record.Value[1]);
 
-            // Register it to the unit of work
-            UnitOfWork.getInstance().registerDirty(room);
-        } 
+                roomIdentityMap.addTo(room);
+            }
+        }
+
+        // I commented it out because this is not used right now.
+        //The list of reservation is updated upon calling updateDirectories()
+        //
+        ///**
+        // * Set room attributes, mainly to update list of reservations
+        // */
+        //public void setRoom(int roomID, String roomNum, List<Reservation> reservations)
+        //{
+
+        //    Room room = DirectoryOfRooms.getInstance().modifyRoom(roomID, roomNum, reservations);
+
+        //    // Register it to the unit of work
+        //    UnitOfWork.getInstance().registerDirty(room);
+        //}
 
         /**
          * Delete room
@@ -161,6 +179,8 @@ namespace Mappers
 
             // Register as deleted
             UnitOfWork.getInstance().registerDeleted(room);
+            DirectoryOfRooms.getInstance().deleteRoom(roomID);
+
         } 
 
         /**
@@ -197,5 +217,13 @@ namespace Mappers
         {
             tdgRoom.deleteRoom(deleteList);
         }
+
+
+        public List<Room> getListOfRooms()
+        {
+            return (DirectoryOfRooms.getInstance().roomList);
+        }
+
+
     }
 }

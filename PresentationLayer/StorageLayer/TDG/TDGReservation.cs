@@ -274,6 +274,9 @@ namespace TDG
          * */
         private void createReservation(MySqlConnection conn, Reservation reservation)
         {
+            if(reservation == null)
+                return;
+
             String mySqlDate = reservation.date.Date.ToString("yyyy-MM-dd");
             String commandLine = "INSERT INTO " + TABLE_NAME + " VALUES (" + reservation.reservationID + "," +
                 reservation.userID + "," + reservation.roomID + ",'" + reservation.description + "', '" +
@@ -301,6 +304,9 @@ namespace TDG
 
         private void updateReservation(MySqlConnection conn, Reservation reservation)
         {
+            if (reservation == null)
+                return;
+
             String mySqlDate = reservation.date.Date.ToString("yyyy-MM-dd");
             String commandLine = "UPDATE " + TABLE_NAME + " SET " +
                 FIELDS[4] + " = '" + mySqlDate + "', " + FIELDS[3] + " = '" + reservation.description + "', " +
@@ -332,6 +338,9 @@ namespace TDG
 
         private void removeReservation(MySqlConnection conn, Reservation reservation)
         {
+            if (reservation == null)
+                return;
+
             String commandLine = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + reservation.reservationID + ";";
             MySqlCommand cmd = new MySqlCommand(commandLine, conn);
             MySqlDataReader reader = null;

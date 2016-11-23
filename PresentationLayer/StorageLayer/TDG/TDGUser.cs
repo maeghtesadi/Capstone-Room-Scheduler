@@ -81,7 +81,10 @@ namespace TDG
 
         // SQL Statement to update an existing User/Row
         private void updateUser(MySqlConnection conn, User user) {
-           String commandLine = "UPDATE " + TABLE_NAME + " \n" +
+            if (user == null)
+                return;
+
+            String commandLine = "UPDATE " + TABLE_NAME + " \n" +
                    "SET " + FIELDS[1] + "='" + user.username + "'," + FIELDS[2] + "='" + user.password + "'," +
                    FIELDS[3] + "='" + user.name + ";\n" +
                    " WHERE " + FIELDS[0] + "=" + user.userID + ";";

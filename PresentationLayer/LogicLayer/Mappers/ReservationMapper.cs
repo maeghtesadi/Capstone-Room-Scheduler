@@ -15,7 +15,6 @@ namespace Mappers
 
         private TDGReservation tdgReservation = TDGReservation.getInstance();
         private ReservationIdentityMap reservationIdentityMap = ReservationIdentityMap.getInstance();
-        private WaitsForMapper waitsForMapper = WaitsForMapper.getInstance();
 
         // The last ID that is used
         private int lastID;
@@ -23,12 +22,11 @@ namespace Mappers
         // Lock to modify last ID
         private readonly Object lockLastID = new Object();
 
-        //default constructor
+        // Default constructor
         private ReservationMapper()
         {
             this.lastID = tdgReservation.getLastID();
         }
-
 
         public static ReservationMapper getInstance()
         {
@@ -43,12 +41,12 @@ namespace Mappers
             // Increments the last ID atomically, return the increment value
             int nextID;
 
-            lock(this.lockLastID)
+            lock (this.lockLastID)
             {
                 this.lastID++;
                 nextID = this.lastID;
             }
-            return nextID; 
+            return nextID;
         }
 
         /**
@@ -57,27 +55,18 @@ namespace Mappers
 
         public Reservation makeNew(int userID, int roomID, string desc, DateTime date)
         {
-            // Get the next reservation ID
+            //Get the next reservation ID
             int reservationID = getNextID();
 
             //Make a new reservation object
-            Reservation reservation = new Reservation();
-            reservation.reservationID = (reservationID);
-            reservation.userID = (userID);
-            reservation.roomID = (roomID);
-            reservation.description = (desc);
-            reservation.date = (date);
+            Reservation reservation = DirectoryOfReservations.getInstance().makeNewReservation(reservationID, userID, roomID, desc, date);
 
-            //Add new reservation object to the identity map, in Live memory.
+            //Add new reservation to identity map
             reservationIdentityMap.addTo(reservation);
 
-            //Add reservation object to UoW registry (register as a new RESERVATION).
-            //It will be  created in the DB once the user is ready to commit everything.
-
+            //Add reservation object to UoW
             UnitOfWork.getInstance().registerNew(reservation);
-
-            return reservation;
-
+            return reservation; // Must return the reservation to create the time slot with the reservation ID
         }
 
         /**
@@ -86,11 +75,9 @@ namespace Mappers
 
         public Reservation getReservation(int reservationID)
         {
-
             //Try to obtain the reservation from the Reservation indentity map
             Reservation reservation = reservationIdentityMap.find(reservationID);
             Object[] result = null;
-
 
             if (reservation == null)
             {
@@ -99,30 +86,19 @@ namespace Mappers
 
                 if (result != null)
                 {
-                    /**The reservation was obtained from the TDG.
-                     * The TDG got (retrieved) reservation from the DB.
-                    **/
-
-                    //mapper must add reservation to the ReservationIdentityMap
-                    reservation = new Reservation();
-                    reservation.reservationID = ((int)result[0]); //reservationID
-                    reservation.userID = ((int)result[1]); //userID
-                    reservation.roomID = ((int)result[2]); //roomID
-                    reservation.description = ((String)result[3]); //desc
-                    reservation.date = (Convert.ToDateTime(result[4])); //date
+                    //Reservation object was retrieved from the TDG and values obtained are passed as parameters to instantiate it
+                    reservation = DirectoryOfReservations.getInstance().makeNewReservation((int)result[0], (int)result[1], (int)result[2], (String)result[3], Convert.ToDateTime(result[4]));
+                    // Add it to identity map
                     reservationIdentityMap.addTo(reservation);
-
                 }
             }
-
             //Null is returned if it is not found in the reservation identity map NOR in the DB
             return reservation;
-
         }
 
 
         /**
-         * Retrieve all resevations
+         * Retrieve all reservations
          * */
         public Dictionary<int, Reservation> getAllReservation()
         {
@@ -138,31 +114,40 @@ namespace Mappers
                 return reservations;
             }
 
-            //Loop trhough each of the result:
+            //Loop through each of the result:
             foreach (KeyValuePair<int, Object[]> record in result)
             {
                 //The reservation is not in the reservation identity map.
-                //Create an instance, add it to the reservation indentity map and to the return variable
-
+                //Create an instance, add it to the reservation identity map and to the return variable
                 if (!reservations.ContainsKey(record.Key))
                 {
 
-                    Reservation reservation = new Reservation();
-                    reservation.reservationID = ((int)record.Key); //reservationID
-                    reservation.userID = ((int)record.Value[1]); //userID
-                    reservation.roomID = ((int)record.Value[2]); //roomID
-                    reservation.description = ((string)record.Value[3]); //desc
-                    reservation.date = ((DateTime)record.Value[4]); //date
-                    //reservation.date = new DateTime(reservation.reservationDate.Year, reservation.reservationDate.Month, reservation.reservationDate.Day, (int)record.Value[5], 0, 0);//hour
+                    Reservation reservation = DirectoryOfReservations.getInstance().makeNewReservation((int)record.Key, (int)record.Value[1], (int)record.Value[2], (string)record.Value[3], (DateTime)record.Value[4]);
+
                     reservationIdentityMap.addTo(reservation);
                     reservations.Add(reservation.reservationID, reservation);
-
                 }
-
             }
             return reservations;
-
         }
+
+        /**
+         * Initialize the list of reservation, used for instantiating console
+         * */
+        public void initializeDirectory()
+        {
+            //Get all reservations in the DB
+            Dictionary<int, Object[]> result = tdgReservation.getAll();
+
+            //Loop through each of the result:
+            foreach (KeyValuePair<int, Object[]> record in result)
+            {
+               //Create an instance, add it to the reservation identity map and to the return variable
+               Reservation reservation = DirectoryOfReservations.getInstance().makeNewReservation((int)record.Key, (int)record.Value[1], (int)record.Value[2], (string)record.Value[3], (DateTime)record.Value[4]);
+               reservationIdentityMap.addTo(reservation);
+            }
+        }
+
 
         /**
          * Set reservation attributes
@@ -174,12 +159,7 @@ namespace Mappers
             Reservation reservation = getReservation(reservationID);
 
             //Update the reservation
-
-            //reservation.reservationUserID = (userID); //mutator function to set the NEW userID
-            reservation.roomID = (roomID); //mutator function to set the NEW roomID
-            reservation.description = (desc); //mutator function to set the NEW description
-            reservation.date = (date); //mutator function to set the NEW date
-            //reservation.reservationDate = new DateTime(reservation.reservationDate.Year, reservation.reservationDate.Month, reservation.reservationDate.Day, reservation.reservationDate.Hour, 0, 0); //mutator function to set the NEW hour
+            DirectoryOfReservations.getInstance().modifyReservation(reservationID, roomID, desc, date);
 
             //Register instances as Dirty in the Unit Of Work since the object has been modified.
             UnitOfWork.getInstance().registerDirty(reservation);
@@ -203,20 +183,18 @@ namespace Mappers
             {
                 reservation = getReservation(reservationID);
             }
-            //Register as deleted in the Unit Of Work. 
-            //Object will be deleted from the DB
-            UnitOfWork.getInstance().registerDeleted(reservation);
 
+            DirectoryOfReservations.getInstance().cancelReservation(reservationID);
+            //Register as deleted in the Unit Of Work. 
+            UnitOfWork.getInstance().registerDeleted(reservation);
         }
         /**
          * Done: commit
          * When it is time to commit, UoW writes changes to the DB
          * */
-
         public void done()
         {
             UnitOfWork.getInstance().commit();
-
         }
 
 
@@ -224,14 +202,14 @@ namespace Mappers
         public void addReservation(List<Reservation> newList)
         {
             tdgReservation.addReservation(newList);
-            
+
         }
 
         //For Unit of Work: A list of reservations to be updated in the DB is passed to the TDG.
         public void updateReservation(List<Reservation> updateList)
         {
             tdgReservation.updateReservation(updateList);
-            
+
         }
 
         //For Unit of Work : A list of reservation to be deleted in the DB is passes to the TDG.
@@ -249,7 +227,7 @@ namespace Mappers
             List<int> IDlist = new List<int>();
             IDlist = ReservationIdentityMap.getInstance().findReservationIDs(userID, date);
 
-            if (IDlist == null)
+            if (IDlist == null || IDlist.Count == 0)
             {
                 IDlist = tdgReservation.getReservationIDs(userID, date);
                 if (IDlist == null)
@@ -260,5 +238,12 @@ namespace Mappers
             return IDlist;
         }
 
+
+        public List<Reservation> getListOfReservations()
+        {
+            return (DirectoryOfReservations.getInstance().reservationList);
+        }
+
     }
+
 }

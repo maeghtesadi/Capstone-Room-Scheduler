@@ -199,7 +199,8 @@ function updateCalendar(reservationList) {
             $("li[data-timeslot='" + i + "']li[data-room='" + reservationList[j].roomId + "']").css('background-color', color[1]);
         }
         //First timeslot classtoggle=reservedHeader
-        $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").addClass("reserved-header").html(reservationList[j].userName);
+        //Add first Name
+        $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").addClass("reserved-header").html('<div class="reserved-left">'+reservationList[j].userName+'</div>');
         $("li[data-timeslot='" + (reservationList[j].initialTimeslot) + "']li[data-room='" + reservationList[j].roomId + "']").css('background-color', color[0]);
         //Second timeslot classtoggle=reservedd;
         if (reservationList[j].initialTimeslot === reservationList[j].finalTimeslot) {
@@ -209,7 +210,7 @@ function updateCalendar(reservationList) {
             var time = "<u>Time</u>: From " + reservationList[j].initialTimeslot + " to " + (parseInt(reservationList[j].finalTimeslot) + 1);
             var description = "<u>Description</u>: " + reservationList[j].description;
             // var waitingList = "<u>Waiting List:</u>:";
-            $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html(time + "</br>" + description + "</br>");
+            $("li[data-timeslot='" + (reservationList[j].initialTimeslot + 1) + "']li[data-room='" + reservationList[j].roomId + "']").html('<div class="reserved-left">' + time + "</br>" + description + "</br></div>");
         }
     }
 
@@ -302,16 +303,59 @@ serverSession.client.populateReservations = function (reservationList) {
     }
 }
 
+
+$(".incomingMessage").on('click', function () {
+    $(".messages").toggle(200);
+    $(".incomingMessage").removeClass('active');
+});
+//Messages
+serverSession.client.incomingMessage = function (message) {
+    $(".incomingMessage").addClass('active');
+    $(".messages").prepend('<div class="message-item">'+message+'</div>')
+  
+   
+
+}
+//adds a show waitlist button to timeslots with waitlists
+//complexity can be heaviily improved but not enough time left
+serverSession.client.updateWaitlist = function (timeslotList,reservationList,userCatalog) {
+    var roomId;
+    var userName;
+    for (var i = 0; i < timeslotList.length; i++) {
+        var waitlistUsers = "";
+        if (timeslotList[i].waitlist.length != 0) {
+            for (var k = 0; k < timeslotList[i].waitlist.length; k++) {
+               for (var n = 0; n < userCatalog.length; n++) {
+                    if(timeslotList[i].waitlist[k]==userCatalog[n].userID)
+                    {
+                        waitlistUsers = waitlistUsers +userCatalog[n].name+"-";
+                    }
+                }
+            }
+            for (var j = 0; j < reservationList.length; j++) {
+                if(timeslotList[i].reservationID == reservationList[j].reservationId)
+                {
+                    roomId = reservationList[j].roomId;
+                
+                    break;
+                }
+            }
+            $("li[data-timeslot='" + timeslotList[i].hour + "']li[data-room='" + roomId + "']").append('<div class="get-waitlist" data-users="'+waitlistUsers+'">' + timeslotList[i].waitlist.length + '</div>');
+            
+        }
+    }
+
+}
 function buildNewReservationItem(reservationId, description, initialTimeSlot, finalTimeslot , roomID,date ) //reservtion id goes in .$(".cancelReservation).data(reservationId)
 {
     var reservationItem = 
-       '<div class="reservation-item"><div data-resid="' + reservationId + '" class="content-room">' + roomID + '</div><div class="content-date">' + date + '</div><div class="content-description">' + description + '</div><div class="content-from">' + initialTimeSlot + '</div><div class="content-to">' + finalTimeslot + '</div></div>';
+       '<div class="reservation-item"><div data-resid="' + reservationId + '" class="content-room">' + roomID + '</div><div class="content-date">' + date + '</div><div class="content-description">-' + description + '</div><div class="content-from">' + initialTimeSlot + '</div><div class="content-to">' + (parseInt(finalTimeslot)+1) + '</div></div>';
 
     $(".reservations .reservation-content ").append(reservationItem);
 }
 
 
-
+//Show reservations
 $(".showReservations").click(function () {
     $(".reservations").toggle('fade',200);
     $(".modify-reservation").toggle('fade', 200);
@@ -339,16 +383,23 @@ function remakeCalendar() {
     
 
 }
-
+//Modify reservations form fill
 $(".reservation-content").on('click',".reservation-item",function(){
     $(".reservation-item.active").toggleClass('active');
+    
     $(this).toggleClass('active');
+    $(".modify-buttons").show(50);
     var activeElement = $(".reservation-item.active");
     $("select[name='roomId']").val($(".reservation-item.active").find(".content-room").html());
     $("select[name='initialTimeslot']").val($(".reservation-item.active").find(".content-from").html().split(":")[0]);
     $("select[name='finalTimeslot']").val($(".reservation-item.active").find(".content-to").html().split(":")[0]);
     $("input[name='date']").val($(".reservation-item.active").find(".content-date").html());
+    $("input[name='description']").val($(".reservation-item.active").find(".content-description").html());
     $("input[name='resid']").attr("value", $(".reservation-item.active").find(".content-room").data('resid'));
+    setCalendarDate();
+
+    ddl_finalTimeslot_restriction();
+
 });
     
 $(".deleteReservation").on('click', function () {
@@ -387,3 +438,64 @@ $(".waitlist-tab").click(function () {
 
     }
 });
+
+function ddl_finalTimeslot_restriction() {
+    $(".ddl-finalTimeslot").children().hide();
+    var option = parseInt($('.ddl-initialTimeslot option:selected').val());
+    for (var i = option + 1; i <= option + 4 ; i++) {
+        $(".ddl-finalTimeslot").children("option[value=" + i + "]").show();
+    }
+}
+ddl_finalTimeslot_restriction();
+
+$(".ddl-initialTimeslot").change(function () {
+
+    $(".ddl-finalTimeslot").children().hide();
+
+    var option = parseInt($('.ddl-initialTimeslot option:selected').val());
+    if (option > $(".ddl-finalTimeslot").val()) {
+        $(".ddl-finalTimeslot").val(option);
+    }
+    else if (option < $(".ddl-finalTimeslot").val() + 4) {
+        $(".ddl-finalTimeslot").val(option + 4);
+    }
+
+    for (var i = option+1; i <= option + 4 ; i++) {
+        $(".ddl-finalTimeslot").children("option[value=" + i + "]").show();
+    }
+});
+
+//get-waitlist click functionailty
+$(".timeslots li ul li").on('mouseenter','.get-waitlist', function (event) {
+    var username = $(this).data('users').split("-");
+    $(".waitlist-tooltip").empty();
+    $(".waitlist-tooltip").toggle(0);
+    $(".waitlist-tooltip").css('opacity', '0');
+    for (var i = 0; i < username.length-1; i++)
+    {
+        $(".waitlist-tooltip").append('<div style="waitlist-item">'+username[i]+'</div>');
+    }
+    $(".waitlist-tooltip").position({
+        my: "left top",
+        at: "right+7 top+-7",
+        of: $(this)
+    });
+    $(".waitlist-tooltip").toggle(0);
+    $(".waitlist-tooltip").css('opacity', '1');
+    $(".waitlist-tooltip").toggle('fade',300);
+
+});
+$(".timeslots li ul li").on('mouseleave', '.get-waitlist', function (event) {
+    event.stopPropagation();
+    $(".waitlist-tooltip").toggle('fade', 100);
+    
+
+});
+
+
+
+//Populate waitlist functionailty
+function populateWaitlist() {
+
+
+}

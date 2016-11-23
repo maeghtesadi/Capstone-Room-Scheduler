@@ -257,6 +257,9 @@ namespace TDG
          */
         private void createRoom(MySqlConnection conn, Room room)
         {
+            if (room == null)
+                return;
+
             String commandLine = "INSERT INTO " + TABLE_NAME + " VALUES (" + room.roomID + ",'" + room.roomNum + "');";
             MySqlCommand cmd = new MySqlCommand(commandLine, conn);
             MySqlDataReader reader = null;
@@ -279,6 +282,9 @@ namespace TDG
          */
         private void updateRoom(MySqlConnection conn, Room room)
         {
+            if (room == null)
+                return;
+
             String commandLine = "UPDATE " + TABLE_NAME + " SET " + FIELDS[1] + "= '" + room.roomNum + "' WHERE " + FIELDS[0] + " = " + room.roomID + ";";
             MySqlCommand cmd = new MySqlCommand(commandLine, conn);
             MySqlDataReader reader = null;
@@ -302,6 +308,9 @@ namespace TDG
          */
         private void removeRoom(MySqlConnection conn, Room room)
         {
+            if (room == null)
+                return;
+
             String commandLine = "DELETE FROM " + TABLE_NAME + " WHERE " + FIELDS[0] + "=" + room.roomID + ";";
             MySqlCommand cmd = new MySqlCommand(commandLine, conn);
             MySqlDataReader reader = null;
