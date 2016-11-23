@@ -453,13 +453,27 @@ $(".ddl-initialTimeslot").change(function () {
 });
 
 //get-waitlist click functionailty
-$(".timeslots li ul li").on('click','.get-waitlist', function (event) {
+$(".timeslots li ul li").on('mouseenter','.get-waitlist', function (event) {
+    $("waitlist-tooltip").toggle(0);
+    $("waitlist-tooltip").css('opacity', '0');
+    $("waitlist-tooltip").position({
+        my: "left top",
+        at: "right+7 top+-7",
+        of: thisElement,
+    });
+    $("waitlist-tooltip").toggle(0);
+    $("waitlist-tooltip").css('opacity', '1');
+    $("waitlist-tooltip").toggle(300);
+
+});
+$(".timeslots li ul li").on('mouseleave', '.get-waitlist', function (event) {
     event.stopPropagation();
     $(".reservations").toggle('fade', 100);
     $(".waitlist-tab").toggleClass('active');
     $(".reservation-tab").toggleClass('active');
 
 });
+
 
 
 //Populate waitlist functionailty

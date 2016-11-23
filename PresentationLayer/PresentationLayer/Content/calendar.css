@@ -128,6 +128,7 @@ content:"WaitList";
      opacity:0.8;
      padding-top:10px;
      padding-left:2px;
+
 }
 .get-waitlist:before {
     right: 11px;
@@ -140,7 +141,7 @@ content:"WaitList";
     content: " ";
     font-size: 2px;
     position:absolute;
-    opacity:0.8;
+  
 }
 .calendar-buttons {
     font-size: 20px;
@@ -150,6 +151,33 @@ content:"WaitList";
    padding: 0px 25px;
     margin:0px;
    
+}
+
+.waitlist-tooltip{
+position:fixed;
+background-color:#607583;
+opacity:0.8;
+width:200px;
+min-height:100px;
+left:540px;
+bottom:100px;
+border-radius:3px;
+padding:2px;
+display:none;
+}
+.waitlist-tooltip:before {
+  bottom:-10px;
+  left:-9px;
+  position:relative;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid #607583;
+    content: " ";
+    font-size: 2px;
+    float:left;
+    opacity:01;
 }
 .reserved-left {
 float:left;
