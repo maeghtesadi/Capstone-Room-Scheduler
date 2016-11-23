@@ -33,7 +33,8 @@ namespace Mappers
         public void initializeDirectoryOfTimeSlots() {
             foreach (KeyValuePair<int, TimeSlot> timeSlot in getAllTimeSlot())
             {
-                DirectoryOfTimeSlots.getInstance().timeSlotList.Add(timeSlot.Value);
+                if (!DirectoryOfTimeSlots.getInstance().timeSlotList.Contains(timeSlot.Value))
+                     DirectoryOfTimeSlots.getInstance().timeSlotList.Add(timeSlot.Value);
             }
         }
     // Get instance
