@@ -1,3 +1,12 @@
+
+
+Please take a look at the following folders:
+
+-Software Requirements and Specification Document
+
+-Software Architecture Document
+
+
 # Capstone Room Scheduler
 
 Room scheduling system for Capstone rooms
