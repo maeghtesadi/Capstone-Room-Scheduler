@@ -30,6 +30,7 @@ namespace CapstoneRoomScheduler.Controllers
             {
                 
                 ReservationConsole.getInstance().makeReservation(userID, room, description, date, firstTimeSlot, lastTimeSlot);
+                GlobalHost.ConnectionManager.GetHubContext<CalendarHub>().Clients.Group(User.Identity.GetUserId()).incomingMessage("Reservation has been successfully created");
                 updateCalendar(year, month, day);
             }
         }
@@ -44,6 +45,7 @@ namespace CapstoneRoomScheduler.Controllers
             if (dailyConstraint && weeklyConstraint)
             {
                 ReservationConsole.getInstance().modifyReservation(resid, roomId, description, dateOfRes, initialTimeslot, finalTimeslot - 1);
+                GlobalHost.ConnectionManager.GetHubContext<CalendarHub>().Clients.Group(User.Identity.GetUserId()).incomingMessage("Reservation has been successfully modifed");
                 getReservations();
                 updateCalendar(year, month, day);
             }
@@ -53,6 +55,7 @@ namespace CapstoneRoomScheduler.Controllers
         {
 
             ReservationConsole.getInstance().cancelReservation(Int32.Parse(resid));
+            GlobalHost.ConnectionManager.GetHubContext<CalendarHub>().Clients.Group(User.Identity.GetUserId()).incomingMessage("Reservation has been successfully cancelled");
             getReservations();
             updateCalendar(year, month, day);
            
@@ -66,7 +69,8 @@ namespace CapstoneRoomScheduler.Controllers
            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
            hubContext.Clients.All.updateCalendar(convertToJsonObject(ReservationConsole.getInstance().findByDate(date)));
             hubContext.Clients.All.updateWaitlist(ReservationConsole.getInstance().getAllTimeSlots(), convertToJsonObject(ReservationConsole.getInstance().findByDate(date)),ReservationConsole.getInstance().getUserCatalog());
-        }
+            
+            }
         [LoggedIn]
         [HttpPost]
         public void getReservations() {

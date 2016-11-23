@@ -1,26 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 
 namespace PresentationLayer.Hubs
 {
     public class CalendarHub : Hub
     {
-
-        public void updateView()
+        //Mapping connection to user so a message can be sent to a specific user
+        public override Task OnConnected()
         {
-            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-            hubContext.Clients.All.getReservations();
+            string name = Context.User.Identity.GetUserId();
+            if(name!=null) {
+                Groups.Add(Context.ConnectionId, name);
+            }
+            
 
-        }
-
-        //This method is only called from the js file
-        public void updateCalendar()
-        {
-            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
-            hubContext.Clients.All.getReservations();
+            return base.OnConnected();
         }
     }
 }

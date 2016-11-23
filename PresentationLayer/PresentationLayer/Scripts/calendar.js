@@ -302,6 +302,20 @@ serverSession.client.populateReservations = function (reservationList) {
         buildNewReservationItem(resID, des, firstTime, secondTime, roomID, date);
     }
 }
+
+
+$(".incomingMessage").on('click', function () {
+    $(".messages").toggle(200);
+    $(".incomingMessage").removeClass('active');
+});
+//Messages
+serverSession.client.incomingMessage = function (message) {
+    $(".incomingMessage").addClass('active');
+    $(".messages").prepend('<div class="message-item">'+message+'</div>')
+    $(".messages").show(200);
+   
+
+}
 //adds a show waitlist button to timeslots with waitlists
 //complexity can be heaviily improved but not enough time left
 serverSession.client.updateWaitlist = function (timeslotList,reservationList,userCatalog) {
