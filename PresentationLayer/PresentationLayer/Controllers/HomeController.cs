@@ -36,11 +36,16 @@ namespace CapstoneRoomScheduler.Controllers
         public void modifyReservation(int roomId,string date,int initialTimeslot,int finalTimeslot,int resid,int day,int month,int year,string description)
         {
             string[] dateArray=date.Split('-');
-        
-            ReservationConsole.getInstance().modifyReservation(resid, roomId, description,new DateTime(Int32.Parse(dateArray[0]), Int32.Parse(dateArray[1]), Int32.Parse(dateArray[2])), initialTimeslot, finalTimeslot-1);
-            getReservations();
-            updateCalendar(year, month, day);
-
+            var userID = Int32.Parse(User.Identity.GetUserId());
+            var dateOfRes = new DateTime(Int32.Parse(dateArray[0]), Int32.Parse(dateArray[1]), Int32.Parse(dateArray[2]));
+            var weeklyConstraint = ReservationConsole.getInstance().weeklyConstraintCheck(userID, dateOfRes);
+            var dailyConstraint = ReservationConsole.getInstance().dailyConstraintCheck(userID, dateOfRes, initialTimeslot, initialTimeslot);
+            if (dailyConstraint && weeklyConstraint)
+            {
+                ReservationConsole.getInstance().modifyReservation(resid, roomId, description, dateOfRes, initialTimeslot, finalTimeslot - 1);
+                getReservations();
+                updateCalendar(year, month, day);
+            }
         }
         [HttpPost]
         public void cancelReservation(string resid,int day, int month, int year)
@@ -59,7 +64,7 @@ namespace CapstoneRoomScheduler.Controllers
            DateTime date = new DateTime(year, month, day);
            var hubContext = GlobalHost.ConnectionManager.GetHubContext<CalendarHub>();
            hubContext.Clients.All.updateCalendar(convertToJsonObject(ReservationConsole.getInstance().findByDate(date)));
-            hubContext.Clients.All.updateWaitlist(ReservationConsole.getInstance().getAllTimeSlots(), convertToJsonObject(ReservationConsole.getInstance().findByDate(date)));
+           hubContext.Clients.All.updateWaitlist(ReservationConsole.getInstance().getAllTimeSlots(), convertToJsonObject(ReservationConsole.getInstance().findByDate(date)));
         }
         [LoggedIn]
         [HttpPost]
