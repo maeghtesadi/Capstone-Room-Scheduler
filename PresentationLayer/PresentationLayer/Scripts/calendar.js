@@ -312,7 +312,7 @@ $(".incomingMessage").on('click', function () {
 serverSession.client.incomingMessage = function (message) {
     $(".incomingMessage").addClass('active');
     $(".messages").prepend('<div class="message-item">'+message+'</div>')
-
+  
    
 
 }
@@ -383,12 +383,12 @@ function remakeCalendar() {
     
 
 }
-
+//Modify reservations form fill
 $(".reservation-content").on('click',".reservation-item",function(){
     $(".reservation-item.active").toggleClass('active');
     
     $(this).toggleClass('active');
-
+    $(".modify-buttons").show(50);
     var activeElement = $(".reservation-item.active");
     $("select[name='roomId']").val($(".reservation-item.active").find(".content-room").html());
     $("select[name='initialTimeslot']").val($(".reservation-item.active").find(".content-from").html().split(":")[0]);

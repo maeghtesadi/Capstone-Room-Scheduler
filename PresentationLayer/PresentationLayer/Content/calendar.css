@@ -173,13 +173,15 @@ top:50px;
 right:0px;
 padding-bottom:0px;
 display:none;
+z-index:70;
 }
 .message-item{
 background-color:white;
 height:60px;
 width:100%;
- box-shadow:  inset 0px -1px 0px rgb(197, 197, 197);
+ box-shadow:  inset 2px -1px 0px rgb(197, 197, 197);
  padding:10px;
+ 
 
 
 }
@@ -357,6 +359,7 @@ margin-right:40px;
  position:absolute;
  bottom:20px;
  left:20px;
+ display:none;
 
  }
  .modify-buttons button{
