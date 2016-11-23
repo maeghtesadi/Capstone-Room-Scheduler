@@ -28,15 +28,6 @@ namespace Mappers
             this.lastID = tdgReservation.getLastID();
         }
 
-        // Method to get all reservations from DB and add them to the list
-        public void initializeDirectoryOfReservation()
-        {
-            foreach (KeyValuePair<int, Reservation> reservation in getAllReservation())
-            {
-                if (!DirectoryOfReservations.getInstance().reservationList.Contains(reservation.Value))
-                    DirectoryOfReservations.getInstance().reservationList.Add(reservation.Value);
-            }
-        }
         public static ReservationMapper getInstance()
         {
             return instance;
@@ -107,7 +98,7 @@ namespace Mappers
 
 
         /**
-         * Retrieve all resevations
+         * Retrieve all reservations
          * */
         public Dictionary<int, Reservation> getAllReservation()
         {
@@ -139,6 +130,24 @@ namespace Mappers
             }
             return reservations;
         }
+
+        /**
+         * Initialize the list of reservation, used for instantiating console
+         * */
+        public void initializeDirectory()
+        {
+            //Get all reservations in the DB
+            Dictionary<int, Object[]> result = tdgReservation.getAll();
+
+            //Loop through each of the result:
+            foreach (KeyValuePair<int, Object[]> record in result)
+            {
+               //Create an instance, add it to the reservation identity map and to the return variable
+               Reservation reservation = DirectoryOfReservations.getInstance().makeNewReservation((int)record.Key, (int)record.Value[1], (int)record.Value[2], (string)record.Value[3], (DateTime)record.Value[4]);
+               reservationIdentityMap.addTo(reservation);
+            }
+        }
+
 
         /**
          * Set reservation attributes
@@ -218,7 +227,7 @@ namespace Mappers
             List<int> IDlist = new List<int>();
             IDlist = ReservationIdentityMap.getInstance().findReservationIDs(userID, date);
 
-            if (IDlist == null)
+            if (IDlist == null || IDlist.Count == 0)
             {
                 IDlist = tdgReservation.getReservationIDs(userID, date);
                 if (IDlist == null)

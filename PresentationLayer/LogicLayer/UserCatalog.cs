@@ -29,6 +29,7 @@ namespace LogicLayer
         public User makeNewUser(int userID, String username, String password, String name)
         {
             User user = new User(userID, username, password, name);
+            registeredUsers.Add(user);
             return user;
         }
 
