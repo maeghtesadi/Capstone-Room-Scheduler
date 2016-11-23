@@ -162,12 +162,20 @@ min-height:100px;
 left:540px;
 bottom:100px;
 border-radius:3px;
-padding:2px;
+padding:6px;
 display:none;
+color:white;
 }
+
+.waitlist-item {
+  color:white;
+    
+}
+
+
 .waitlist-tooltip:before {
   bottom:-10px;
-  left:-9px;
+  left:-14px;
   position:relative;
     width: 0;
     height: 0;
